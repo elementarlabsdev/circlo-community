@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Apply Prisma migrations and start the application
 npx prisma migrate deploy
