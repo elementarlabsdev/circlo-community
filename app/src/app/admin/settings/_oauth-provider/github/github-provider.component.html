@@ -1,14 +1,14 @@
 <h2 ngs-dialog-title>{{ 'admin.settings.oauth.github.title' | transloco }}</h2>
 <ngs-dialog-content>
+  <p>
+    <a href="https://github.com/settings/developers" target="_blank"
+       class="link">https://github.com/settings/developers</a>
+  </p>
   <div class="bg-surface-container-low rounded-2xl p-1">
     <table class="ngs-table text-sm">
       <tr>
         <td class="p-2">{{ 'admin.settings.oauth.github.homepage' | transloco }}:</td>
         <td class="p-2">{{ _data.hostUrl }}</td>
-      </tr>
-      <tr>
-        <td class="p-2">{{ 'admin.settings.oauth.github.webhookUrl' | transloco }}:</td>
-        <td class="p-2">{{ _data.hostUrl }}/api/v1/oauth/github/callback</td>
       </tr>
       <tr>
         <td class="p-2">{{ 'admin.settings.oauth.github.callback' | transloco }}:</td>
@@ -29,10 +29,6 @@
       <ngs-slide-toggle formControlName="isEnabled">{{ 'common.enabled' | transloco }}</ngs-slide-toggle>
     </div>
   </form>
-  <p>
-    <a href="https://github.com/settings/developers" target="_blank"
-       class="link">https://github.com/settings/developers</a>
-  </p>
 </ngs-dialog-content>
 <ngs-dialog-actions align="end">
   <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
