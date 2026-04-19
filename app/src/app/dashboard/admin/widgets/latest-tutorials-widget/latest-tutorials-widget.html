@@ -1,0 +1,25 @@
+<ngs-card class="h-full">
+  <ngs-card-header>
+    <ngs-card-title>{{ 'admin.dashboard.widgets.latestTutorials.title' | transloco }}</ngs-card-title>
+  </ngs-card-header>
+  <ngs-card-content>
+    @if (tutorials().length) {
+      <div class="h-full relative">
+        <ngs-scrollbar-area>
+          <div class="px-5 pb-5 flex flex-col gap-3">
+            @for (tutorial of tutorials(); track tutorial.id) {
+              <div>
+                <a [routerLink]="['/studio/tutorials', tutorial.id, 'overview']" class="link">{{ tutorial.title }}</a>
+              </div>
+            }
+          </div>
+        </ngs-scrollbar-area>
+      </div>
+    } @else {
+      <div class="h-full flex items-center flex-col justify-center gap-2">
+        <ngs-icon name="fluent:video-24-regular" class="size-8 text-neutral-600"/>
+        <div class="text-neutral-500">{{ 'admin.dashboard.widgets.latestTutorials.noTutorials' | transloco }}</div>
+      </div>
+    }
+  </ngs-card-content>
+</ngs-card>

@@ -1,0 +1,95 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'account.stripe.heading' | transloco }}</h1>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-10">
+          <div class="max-w-2xl">
+            <div class="flex items-center gap-4 mb-8">
+              <img src="/assets/integrations/stripe.svg" alt="Stripe" class="h-12">
+              <div>
+                <h2 class="text-xl font-bold">Stripe Connect</h2>
+                <p class="text-secondary">{{ 'account.stripe.description' | transloco }}</p>
+              </div>
+            </div>
+
+            <div *can="Action.Manage; subject: 'Stripe'">
+              <div class="bg-surface-container-low p-6 rounded-xl border border-surface-container">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-sm text-secondary mb-1">{{ 'account.stripe.status-label' | transloco }}</div>
+                    <div class="flex items-center gap-2">
+                      @if (stripeAccountStatus() === 'active') {
+                        <ngs-icon name="fluent:checkmark-circle-24-regular" class="text-success"/>
+                        <span class="font-medium text-success">{{ 'account.stripe.status.active' | transloco }}</span>
+                      } @else if (stripeAccountStatus() === 'onboarding') {
+                        <ngs-icon name="fluent:clock-24-regular" class="text-warning"/>
+                        <span class="font-medium text-warning">{{ 'account.stripe.status.onboarding' | transloco }}</span>
+                      } @else {
+                        <ngs-icon name="fluent:info-24-regular" class="text-secondary"/>
+                        <span class="font-medium">{{ 'account.stripe.status.not-connected' | transloco }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  @if (stripeAccountStatus() === 'active') {
+                    <div class="flex gap-2">
+                      <button ngsButton="outlined" (click)="openDashboard()">
+                        {{ 'account.stripe.dashboard-button' | transloco }}
+                      </button>
+                      <button ngsButton="outlined" color="warn" (click)="disconnect()">
+                        {{ 'account.stripe.disconnect-button' | transloco }}
+                      </button>
+                    </div>
+                  } @else if (stripeAccountStatus() === 'onboarding') {
+                    <div class="flex gap-2">
+                      <button ngsButton="filled" color="primary" (click)="connect()">
+                        {{ 'account.stripe.continue-onboarding' | transloco }}
+                      </button>
+  <!--                    <button ngsButton="outlined" (click)="refreshStatus()">-->
+  <!--                      <ngs-icon name="fluent:arrow-counterclockwise-24-regular"/>-->
+  <!--                      Refresh-->
+  <!--                    </button>-->
+                      <button ngsButton color="warn" (click)="disconnect()">
+                        {{ 'account.stripe.disconnect-button' | transloco }}
+                      </button>
+                    </div>
+                  } @else {
+                    <button ngsButton="filled" color="primary" (click)="connect()">
+                      {{ 'account.stripe.connect-button' | transloco }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <div class="mt-8 text-sm text-secondary">
+                <p>{{ 'account.stripe.info' | transloco }}</p>
+              </div>
+            </div>
+
+            <div *can="Action.Manage; subject: 'Stripe'; else: notConfigured"></div>
+
+            <ng-template #notConfigured>
+              <div class="bg-surface-container-low p-6 rounded-xl border border-surface-container">
+                <div class="flex items-center gap-3 text-warning">
+                  <ngs-icon name="fluent:warning-24-regular" class="text-2xl"/>
+                  <div>
+                    <div class="font-bold">{{ 'account.stripe.not-configured.title' | transloco }}</div>
+                    <div class="text-sm text-secondary">{{ 'account.stripe.not-configured.description' | transloco }}</div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">Loading...</div>
+}

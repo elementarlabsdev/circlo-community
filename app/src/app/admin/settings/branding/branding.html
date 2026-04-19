@@ -1,0 +1,86 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'admin.settings.customization-heading' | transloco }}</h1>
+        <button ngsButton="filled" (click)="save()">{{ 'common.save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-6 xl:p-12">
+          <form [formGroup]="form" class="xl:w-1/2">
+            <div class="space-y-7 mb-7">
+              <div>
+                <div class="text-sm">{{ 'admin.settings.branding.logo' | transloco }}</div>
+                <div class="bg-surface-container-low w-max min-xl:w-1/2 rounded-2xl p-5 flex mt-3.5 items-center justify-between gap-6  relative">
+                  @if (settings.siteLogoUrl) {
+                    <button class="absolute -top-1 -end-1 size-5 cursor-pointer" (click)="removeSiteLogoUrl()">
+                      <ngs-icon name="fluent:dismiss-circle-24-regular" class="text-red-500"/>
+                    </button>
+                  }
+                  <div class="text-sm">
+                    <div class="font-semibold">{{ 'admin.settings.branding.allowFiles' | transloco }}</div>
+                    <div class="mt-1">{{ 'admin.settings.branding.maxFileSize' | transloco }}</div>
+                  </div>
+                  <button ngsUploadTrigger accept="image/*"
+                          class="border border-border rounded-xl flex-none cursor-pointer min-h-14 min-w-14 bg-surface-container-lowest
+                         flex items-center justify-center hover:outline-2 hover:outline-primary px-2"
+                          (fileSelected)="logoSelected($event)">
+                    @if (settings.siteLogoUrl) {
+                      <img [src]="settings.siteLogoUrl | imageProxy" alt="site logo url" class="max-h-12">
+                    } @else {
+                      <ngs-icon name="fluent:add-24-regular"/>
+                    }
+                  </button>
+                </div>
+                <div class="mt-4 text-tiny">
+                  {{ 'admin.settings.branding.logoDesc' | transloco }}
+                </div>
+              </div>
+              <div>
+                <div class="text-sm">{{ 'admin.settings.branding.favicon' | transloco }}</div>
+                <div class="bg-surface-container-low w-max min-xl:w-1/2 rounded-2xl p-5 flex mt-3.5 items-center justify-between gap-6  relative">
+                  @if (settings.siteIconUrl) {
+                    <button class="absolute -top-1 -end-1 size-5 cursor-pointer" (click)="removeSiteIconUrl()">
+                      <ngs-icon name="fluent:dismiss-circle-24-regular" class="text-red-500"/>
+                    </button>
+                  }
+                  <div class="text-sm">
+                    <div class="font-semibold">{{ 'admin.settings.branding.allowFiles' | transloco }}</div>
+                    <div class="mt-1">{{ 'admin.settings.branding.maxFileSize' | transloco }}</div>
+                  </div>
+                  <button ngsUploadTrigger accept="image/*"
+                          class="border border-border rounded-xl flex-none cursor-pointer min-h-14 min-w-14 bg-surface-container-lowest
+                         flex items-center justify-center hover:outline-2 hover:outline-primary px-2"
+                          (fileSelected)="faviconSelected($event)">
+                    @if (settings.siteIconUrl) {
+                      <img [src]="settings.siteIconUrl | imageProxy" alt="site logo url" class="max-h-12">
+                    } @else {
+                      <ngs-icon name="fluent:add-24-regular"/>
+                    }
+                  </button>
+                </div>
+                <div class="mt-4 text-tiny">
+                  {{ 'admin.settings.branding.faviconDesc' | transloco }}
+                </div>
+              </div>
+            </div>
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'admin.settings.branding.fontFamily' | transloco }}</ngs-label>
+              <ngs-select formControlName="fontFamily">
+                @for (font of googleFonts; track font.value) {
+                  <ngs-option [value]="font.value">
+                    {{ font.label }}
+                  </ngs-option>
+                }
+              </ngs-select>
+            </ngs-form-field>
+          </form>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6 xl:p-12">{{ 'common.loading' | transloco }}</div>
+}

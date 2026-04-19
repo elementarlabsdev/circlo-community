@@ -1,0 +1,70 @@
+<ngs-card class="h-full !bg-surface-container-lowest">
+  <ngs-card-header>
+    <h3 ngs-card-title>Activity</h3>
+  </ngs-card-header>
+  <ngs-card-content>
+    <div class="flex flex-col h-full">
+      <div class="flex flex-col gap-3 grow relative">
+        @if (activities().length > 0) {
+          <ngs-scrollbar-area>
+            <ngs-timeline>
+              @for (activity of activities(); track activity.id) {
+                @switch (activity.action) {
+                  @case ('TUTORIAL_CREATED') {
+                    <ngs-timeline-item>
+                      <ngs-timeline-title>
+                        Created a new tutorial
+                        <a [routerLink]="['/studio/tutorials', activity.details.id, 'overview']" class="link">{{ activity.details.title }}</a>
+                      </ngs-timeline-title>
+                      <ngs-timeline-description class="text-xs">
+                        {{ activity.createdAt | timeAgo }}
+                      </ngs-timeline-description>
+                    </ngs-timeline-item>
+                  }
+                  @case ('POST_CREATED') {
+                    <ngs-timeline-item>
+                      <ngs-timeline-title>
+                        Created a new post
+                        <a [routerLink]="['/studio/publications/edit', activity.details.hash]" class="link">{{ activity.details.title }}</a>
+                      </ngs-timeline-title>
+                      <ngs-timeline-description class="text-xs">
+                        {{ activity.createdAt | timeAgo }}
+                      </ngs-timeline-description>
+                    </ngs-timeline-item>
+                  }
+                  @case ('POST_PUBLISHED') {
+                    <ngs-timeline-item>
+                      <ngs-timeline-title>
+                        Published a post
+                        <a [routerLink]="['/studio/publications/edit', activity.details.hash]" class="link">{{ activity.details.title }}</a>
+                      </ngs-timeline-title>
+                      <ngs-timeline-description class="text-xs">
+                        {{ activity.createdAt | timeAgo }}
+                      </ngs-timeline-description>
+                    </ngs-timeline-item>
+                  }
+                  @case ('TUTORIAL_PUBLISHED') {
+                    <ngs-timeline-item>
+                      <ngs-timeline-title>
+                        Published a tutorial
+                        <a [routerLink]="['/studio/tutorials', activity.details.id, 'overview']" class="link">{{ activity.details.title }}</a>
+                      </ngs-timeline-title>
+                      <ngs-timeline-description class="text-xs">
+                        {{ activity.createdAt | timeAgo }}
+                      </ngs-timeline-description>
+                    </ngs-timeline-item>
+                  }
+                }
+              }
+            </ngs-timeline>
+          </ngs-scrollbar-area>
+        } @else {
+          <div class="grow flex items-center flex-col justify-center gap-2">
+            <ngs-icon name="fluent:clock-24-regular" class="size-8 text-neutral-600"/>
+            <div class="text-neutral-500">There are no activity yet.</div>
+          </div>
+        }
+      </div>
+    </div>
+  </ngs-card-content>
+</ngs-card>

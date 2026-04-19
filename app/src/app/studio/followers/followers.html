@@ -1,0 +1,86 @@
+@if (loaded()) {
+  @if (originalFollowersCount() > 0) {
+    <div class="flex-1 overflow-y-auto p-4 lg:p-10">
+      <div class="mx-auto max-w-6xl space-y-8">
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-xl md:text-2xl font-black tracking-tight">
+              Your Followers ({{ totalItems() | number }})
+            </h2>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div
+            class="flex flex-col gap-4 rounded-2xl bg-surface-container-lowest p-4 shadow-sm dark:bg-surface-dark md:flex-row md:items-center md:justify-between">
+            <div class="relative flex-1">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500">
+                <ngs-icon name="fluent:search-24-regular"/>
+              </span>
+              <input
+                class="h-12 w-full rounded-xl border-none bg-surface-container-lowest pl-11 pr-4 text-base font-medium text-text-main shadow-sm ring-1 ring-border-light focus:ring-2 focus:ring-primary dark:ring-border-dark dark:bg-background-dark dark:text-white dark:placeholder-gray-500 transition-all"
+                placeholder="Search follower by name..."
+                type="text"
+                [ngModel]="q()"
+                (ngModelChange)="q.set($event); onSearch()"/>
+            </div>
+            <ngs-button-toggle-group [value]="sortDir()" (change)="setSort($event.value)">
+              <ngs-button-toggle value="desc">New</ngs-button-toggle>
+              <ngs-button-toggle value="asc">Old</ngs-button-toggle>
+            </ngs-button-toggle-group>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-min gap-4"
+             style="grid-auto-rows: minmax(150px, auto);">
+          @for (sub of followers(); track sub.id) {
+            <div
+              class="group flex flex-col gap-4 rounded-2xl bg-surface-container-lowest p-5 shadow-sm transition-all
+                   hover:shadow-md dark:bg-surface-dark">
+              <ngs-dicebear [key]="sub.follower.id" [image]="sub.follower.avatarUrl | imageProxy:'120x120,sc,q90'"
+                            class="size-32 relative mx-auto"/>
+              <div class="flex flex-1 flex-col items-center text-center">
+                <div class="flex items-center gap-2">
+                  <h3 class="text-base font-bold">{{ sub.follower.name }}</h3>
+                  @if (sub.follower.personVerified) {
+                    <ngs-icon name="fluent:checkmark-starburst-24-regular" class="text-primary-500"/>
+                  }
+                </div>
+                <p class="mt-1 text-sm text-neutral-500 italic">
+                  &#64;{{ sub.follower.username }}
+                </p>
+              </div>
+              <div class="flex shrink-0 items-center justify-center gap-2 mt-4">
+                <app-subscription [targetId]="sub.follower.id" targetType="user" class="grow"/>
+              </div>
+            </div>
+          } @empty {
+            @if (q()) {
+              <div class="text-center col-span-4">There are no followers ngsching your search.</div>
+            }
+          }
+        </div>
+        @if (hasMore()) {
+          <div class="flex justify-center pb-8 pt-4">
+            <button (click)="loadMore()" [disabled]="loading()"
+                    class="flex h-12 items-center gap-3 rounded-full bg-surface-container-lowest px-8 text-sm font-bold
+                         text-text-main shadow-sm hover:bg-surface-container-lowest dark:bg-surface-dark dark:text-white
+                         dark:hover:bg-surface-dark/80 transition-all">
+              <span>{{ loading() ? 'Loading...' : 'Load More Members' }}</span>
+              <span class="ngserial-symbols-outlined">expand_more</span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <ngs-empty-state>
+      <ngs-empty-state-icon>
+        <ngs-icon name="fluent:person-24-regular"/>
+      </ngs-empty-state-icon>
+      <ngs-empty-state-content>
+        {{ 'noFollowers' | transloco }}.
+      </ngs-empty-state-content>
+    </ngs-empty-state>
+  }
+} @else {
+  <div class="p-10">{{ 'loading' | transloco }}</div>
+}

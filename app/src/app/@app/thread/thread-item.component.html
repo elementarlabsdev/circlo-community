@@ -1,0 +1,102 @@
+<div class="[&.root]:border [&.root]:border-border [&.root]:rounded-3xl bg-surface-container-lowest overflow-hidden"
+     [class.root]="!nested()">
+  <div class="px-5 pt-5 pb-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <ngs-dicebear [class]="depth() === 0 ? 'size-10' : 'size-7'"
+                      [key]="thread().author.id"
+                      [image]="thread().author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+        <a [routerLink]="['/user', thread().author.username]"
+           class="text-sm hover:text-primary hover:underline underline-offset-1">{{ thread().author.name }}</a>
+      </div>
+      <div class="text-xs">{{ thread().createdAt | timeAgo }}</div>
+    </div>
+    @if (thread().htmlContent) {
+      <div class="mt-5">
+        <ngs-markdown [data]="thread().htmlContent" [routerLink]="['/thread', thread().id]"
+                      class="cursor-pointer block"/>
+      </div>
+    }
+    @if (thread().mediaItems && thread().mediaItems!.length > 0) {
+      @if (thread().mediaItems!.length === 1) {
+        <div class="mt-5">
+          @let mediaItem = thread().mediaItems![0];
+          <div class="rounded-2xl overflow-hidden border border-border bg-surface-container-low"
+               [class.max-w-2xl]="mediaItem.payload?.orientation === 'landscape'"
+               [class.max-w-sm]="mediaItem.payload?.orientation === 'portrait'">
+            @if (mediaItem.type === 'image') {
+              <img [src]="mediaItem.url | imageProxy: '1600x1600,q90'"
+                   class="w-full h-auto block"
+                   [alt]="mediaItem.name">
+            } @else if (mediaItem.type === 'video') {
+              <ngs-video-player [src]="mediaItem.url"
+                                [payload]="mediaItem.payload"
+                                class="w-full block">
+              </ngs-video-player>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="mt-5 columns-2 gap-2">
+          @for (mediaItem of thread().mediaItems; track mediaItem.id) {
+            <div
+              class="rounded-2xl overflow-hidden border border-border bg-surface-container-low mb-2 break-inside-avoid">
+              @if (mediaItem.type === 'image') {
+                <img [src]="mediaItem.url | imageProxy: '1000x1000,q90'"
+                     class="w-full h-auto block"
+                     [alt]="mediaItem.name">
+              } @else if (mediaItem.type === 'video') {
+                <ngs-video-player [src]="mediaItem.url"
+                                  [payload]="mediaItem.payload"
+                                  class="w-full block">
+                </ngs-video-player>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+    <div class="flex items-center justify-between mt-4">
+      <div class="flex items-center relative -start-2">
+        <app-thread-number-of-replies [count]="thread().repliesCount"
+                                      (click)="onReplyClick()" class="cursor-pointer"/>
+
+        @if (thread().reactionsCount > 0) {
+          <button ngsButton (click)="toggleReaction()">
+            <ngs-icon [name]="hasReaction() ? 'fluent:heart-24-filled' : 'fluent:heart-24-regular'"
+                      [class.has-reaction]="hasReaction()"/>
+            <app-comment-likes-count [count]="thread().reactionsCount"/>
+          </button>
+        } @else {
+          <button ngsIconButton (click)="toggleReaction()">
+            <ngs-icon [name]="hasReaction() ? 'fluent:heart-24-filled' : 'fluent:heart-24-regular'"
+                      [class.has-reaction]="hasReaction()"/>
+          </button>
+        }
+      </div>
+      <div class="flex items-center gap-3 relative -end-2">
+        @if (canDelete()) {
+          <button ngsIconButton (click)="deleteThread()" [ngsTooltip]="'common.delete' | transloco">
+            <ngs-icon name="fluent:delete-24-regular"/>
+          </button>
+        }
+        <app-bookmark-button targetType="thread" [targetId]="thread().id"/>
+      </div>
+    </div>
+  </div>
+
+  @if (thread().replies && thread().replies!.length > 0 && depth() < 1) {
+    <div>
+      @for (reply of thread().replies; track reply.id) {
+        <app-thread-item
+          [nested]="true"
+          [thread]="reply"
+          [reactions]="reply.reactions || []"
+          (replyAdded)="replyAdded.emit()"
+          (deleted)="deleted.emit($event)"
+          class="border-t border-border"
+        />
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,7 @@
+@if (discussionLink) {
+  <a [routerLink]="discussionLink" class="hover:underline text-primary truncate" target="_blank">
+    {{ fieldData() }}
+  </a>
+} @else {
+  <span class="truncate">{{ fieldData() }}</span>
+}

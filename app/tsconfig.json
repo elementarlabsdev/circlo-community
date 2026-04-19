@@ -1,0 +1,71 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "paths": {
+      "@services/*": [
+        "./src/app/@services/*"
+      ],
+      "@interceptors/*": [
+        "./src/app/@interceptors/*"
+      ],
+      "@model/*": [
+        "./src/app/@model/*"
+      ],
+      "@modals/*": [
+        "./src/app/@modals/*"
+      ],
+      "@app/*": [
+        "./src/app/@app/*"
+      ],
+      "@pipes/*": [
+        "./src/app/@pipes/*"
+      ],
+      "@store/*": [
+        "./src/app/@store/*"
+      ],
+      "@cell-renderers/*": [
+        "./src/app/@cell-renderers/*"
+      ],
+      "@directives/*": [
+        "./src/app/@directives/*"
+      ],
+      "@elementar-uix/components/content-editor": [
+        "./projects/content-editor"
+      ],
+      "@elementar-uix/components/course-builder": [
+        "./projects/course-builder"
+      ],
+      "@elementar-uix/components/video-player": [
+        "./projects/video-player"
+      ],
+      "@/*": [
+        "./src/app/*"
+      ]
+    },
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "strictPropertyInitialization": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

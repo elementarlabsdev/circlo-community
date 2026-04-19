@@ -1,0 +1,32 @@
+<h2 ngs-dialog-title>{{ 'admin.settings.oauth.google.title' | transloco }}</h2>
+<ngs-dialog-content>
+  <div class="bg-surface-container-low ngs-table rounded-2xl p-1 text-sm">
+    <table>
+      <tr>
+        <td class="p-2">{{ 'admin.settings.oauth.google.origins' | transloco }}:</td>
+        <td class="p-2">{{ _data.hostUrl }}</td>
+      </tr>
+      <tr>
+        <td class="p-2">{{ 'admin.settings.oauth.google.redirects' | transloco }}:</td>
+        <td class="p-2">{{ _data.hostUrl }}/api/v1/oauth/google/callback</td>
+      </tr>
+    </table>
+  </div>
+  <form [formGroup]="form" class="flex flex-col gap-4 py-2 mt-5">
+    <ngs-form-field>
+      <ngs-label>{{ 'admin.settings.oauth.clientId' | transloco }}</ngs-label>
+      <input ngsInput formControlName="clientId" />
+    </ngs-form-field>
+    <ngs-form-field>
+      <ngs-label>{{ 'admin.settings.oauth.clientSecret' | transloco }}</ngs-label>
+      <input ngsInput formControlName="clientSecret" />
+    </ngs-form-field>
+    <div class="mt-1">
+      <ngs-slide-toggle formControlName="isEnabled">{{ 'common.enabled' | transloco }}</ngs-slide-toggle>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button ngsButton="filled" color="primary" [disabled]="form.invalid" (click)="apply()">{{ 'common.save' | transloco }}</button>
+</ngs-dialog-actions>

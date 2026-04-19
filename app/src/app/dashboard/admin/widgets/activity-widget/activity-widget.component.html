@@ -1,0 +1,70 @@
+<ngs-card class="h-full">
+  <ngs-card-header>
+    <ngs-card-title>{{ 'admin.dashboard.widgets.activity.title' | transloco }}</ngs-card-title>
+  </ngs-card-header>
+  <ngs-card-content>
+    <div class="h-full relative">
+      @if (activities().length > 0) {
+        <ngs-scrollbar-area>
+          <ngs-timeline class="px-5 pb-5">
+            @for (activity of activities(); track activity.id) {
+              @switch (activity.action) {
+                @case ('TUTORIAL_CREATED') {
+                  <ngs-timeline-item>
+                    <ngs-timeline-title>
+                      {{ 'admin.dashboard.widgets.activity.createdTutorial' | transloco }}
+                      <a [routerLink]="['/studio/tutorials', activity.details.id, 'overview']" class="link">{{ activity.details.title }}</a>
+                    </ngs-timeline-title>
+                    <ngs-timeline-description class="text-xs">
+                      {{ activity.createdAt | timeAgo }}
+                    </ngs-timeline-description>
+                  </ngs-timeline-item>
+                }
+                @case ('POST_CREATED') {
+                  <ngs-timeline-item>
+                    <ngs-timeline-title>
+                      {{ 'admin.dashboard.widgets.activity.createdPost' | transloco }}
+                      <a [routerLink]="['/studio/publications/edit', activity.details.hash]" class="link">{{ activity.details.title }}</a>
+                    </ngs-timeline-title>
+                    <ngs-timeline-description class="text-xs">
+                      {{ activity.createdAt | timeAgo }}
+                    </ngs-timeline-description>
+                  </ngs-timeline-item>
+                }
+                @case ('POST_PUBLISHED') {
+                  <ngs-timeline-item>
+                    <ngs-timeline-title>
+                      {{ 'admin.dashboard.widgets.activity.publishedPost' | transloco }}
+                      <a [routerLink]="['/studio/publications/edit', activity.details.hash]" class="link">{{ activity.details.title }}</a>
+                    </ngs-timeline-title>
+                    <ngs-timeline-description class="text-xs">
+                      {{ activity.createdAt | timeAgo }}
+                    </ngs-timeline-description>
+                  </ngs-timeline-item>
+                }
+                @case ('TUTORIAL_PUBLISHED') {
+                  <ngs-timeline-item>
+                    <ngs-timeline-title>
+                      {{ 'admin.dashboard.widgets.activity.publishedTutorial' | transloco }}
+                      <a [routerLink]="['/studio/tutorials', activity.details.id, 'overview']" class="link">{{ activity.details.title }}</a>
+                    </ngs-timeline-title>
+                    <ngs-timeline-description class="text-xs">
+                      {{ activity.createdAt | timeAgo }}
+                    </ngs-timeline-description>
+                  </ngs-timeline-item>
+                }
+              }
+            } @empty {
+              <div class="text-neutral-600">{{ 'admin.dashboard.widgets.activity.noActivity' | transloco }}</div>
+            }
+          </ngs-timeline>
+        </ngs-scrollbar-area>
+      } @else {
+        <div class="h-full flex items-center flex-col justify-center gap-2">
+          <ngs-icon name="fluent:clock-24-regular" class="size-8 text-neutral-600"/>
+          <div class="text-neutral-500">{{ 'admin.dashboard.widgets.activity.noActivity' | transloco }}</div>
+        </div>
+      }
+    </div>
+  </ngs-card-content>
+</ngs-card>

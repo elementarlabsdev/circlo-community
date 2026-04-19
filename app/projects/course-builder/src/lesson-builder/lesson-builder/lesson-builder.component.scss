@@ -1,0 +1,83 @@
+@reference 'tailwindcss';
+
+:host {
+  display: contents;
+
+  .blocks-container {
+    gap: --spacing(1);
+  }
+
+  &:not(.is-dragging) {
+    .block-divider {
+      display: none;
+    }
+
+    .blocks-container {
+      gap: --spacing(4);
+    }
+  }
+
+  .controls,
+  .drag-handle {
+    visibility: hidden;
+    z-index: -1;
+  }
+
+  .drag-handle {
+    cursor: grab;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .is-focus-within {
+    .controls,
+    .drag-handle {
+      visibility: visible;
+      z-index: 2;
+
+      &:hover {
+        z-index: 3;
+      }
+    }
+  }
+}
+
+.lb-block.cdk-drag-placeholder {
+  position: relative;
+
+  .drag-handle,
+  .controls {
+    display: none;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-surface-container);
+    z-index: 1;
+  }
+}
+
+
+.lb-block.cdk-drag-placeholder {
+  opacity: .5;
+}
+
+.lb-block.cdk-drag-preview {
+  padding: 0 --spacing(5);
+
+  .drag-handle {
+    cursor: grab;
+    position: absolute;
+    right: 0;
+    top: theme('spacing.2');
+    visibility: visible !important;
+    z-index: 2 !important;
+  }
+
+  .controls {
+    display: none;
+  }
+}

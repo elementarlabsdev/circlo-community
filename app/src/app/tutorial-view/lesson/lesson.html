@@ -1,0 +1,136 @@
+@if (loaded()) {
+  <div class="grow lg:grid grid-cols-[120px_900px] gap-10 lg:min-h-full">
+    <aside>
+      <div class="lg:sticky controls lg:ps-4 lg:flex">
+        <div class="pt-12">
+          @if (lesson()) {
+            <div class="flex justify-center lg:flex-col gap-6 lg:relative lg:-end-4">
+              <div class="flex flex-col gap-1 items-center justify-center group cursor-pointer">
+                <ngs-icon name="fluent:chat-24-regular" class="group-hover:text-primary"/>
+                <div>
+                  {{ lesson().commentsCount }}
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </aside>
+    <div class="px-6 py-12">
+      <div class="flex flex-col gap-10">
+        @if (lesson()) {
+          <app-layout-slot slotType="lessonBefore"/>
+
+          <main class="border border-border rounded-2xl">
+            @if (lesson().featuredImageUrl) {
+              <div class="hidden lg:flex items-center justify-center h-[400px] max-h-[400px] relative overflow-hidden bg-surface-container">
+                <img [alt]="lesson().name" class="bg-cover lazyload"
+                     [attr.data-src]="lesson().featuredImageUrl | imageProxy:'880x430,q80'">
+              </div>
+            }
+            <div class="p-5 lg:p-16">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-sm">
+                  @if (tutorial()!.channel) {
+                    <div class="relative me-3">
+                      <ngs-dicebear class="size-11"
+                                    [key]="tutorial()!.author.id"
+                                    [image]="tutorial()!.author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+                      <div class="absolute -bottom-0.5 -end-3 w-max">
+                        <ngs-dicebear class="size-8 border-2 border-surface-container-lowest"
+                                      [key]="tutorial()!.channel?.id"
+                                      [image]="tutorial()!.channel?.logoUrl | imageProxy: '100x100,sc,q90'"/>
+                      </div>
+                    </div>
+                    <span class="text-neutral-500">{{ 'publishedIn' | transloco }}</span>
+                    <a [routerLink]="['/channel', tutorial()!.channel?.slug]"
+                       class="hover:text-primary hover:underline underline-offset-1">{{ tutorial()!.channel?.name }}</a>
+                    <span class="text-neutral-500">{{ 'by' | transloco }}</span>
+                    <a [routerLink]="['/user', tutorial()!.author.username]"
+                       class="hover:text-primary hover:underline underline-offset-1">{{ tutorial()!.author.name }}</a>
+                  } @else {
+                    <ngs-dicebear class="size-9"
+                                  [key]="tutorial()!.author.id"
+                                  [image]="tutorial()!.author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+                    <a [routerLink]="['/user', tutorial()!.author.username]"
+                       class="hover:text-primary hover:underline underline-offset-1">{{ tutorial()!.author.name }}</a>
+                  }
+                </div>
+                <app-subscription [targetId]="tutorial()!.author.id" targetType="user"/>
+              </div>
+
+              <h1 class="text-2xl md:text-3xl lg:text-5xl font-extrabold lg:leading-tight mt-6">{{ lesson().name }}</h1>
+
+              <div class="flex items-center flex-wrap justify-between gap-4 mt-6">
+                <div class="flex items-center flex-wrap gap-4">
+                  <div class="text-xs whitespace-nowrap">{{ tutorial()!.publishedAt | timeAgo }}</div>
+                  <ngs-divider vertical/>
+                  <div class="text-xs whitespace-nowrap">
+                    <app-views-count [count]="lesson().viewsCount"/>
+                  </div>
+                  <ngs-divider vertical/>
+                  <div class="text-xs whitespace-nowrap">
+                    <app-reading-time [readingTime]="lesson().readingTime"/>
+                  </div>
+                </div>
+              </div>
+
+              <article class="prose-sm lg:prose lg:max-w-full mt-12 dark:prose-invert space-y-8">
+                <app-blocks-content [blocksContent]="lesson().blocksContent"/>
+              </article>
+
+              @if (tutorial()!.topics.length > 0) {
+                <div class="flex items-center flex-wrap gap-3.5 mt-8 text-tiny relative">
+                  @for (topic of tutorial()!.topics; track topic) {
+                    <a [routerLink]="['/topic', topic.slug]"
+                       class="bg-surface-container text-on-surface px-4 py-2.5 no-underline
+                                hover:bg-surface-container-high rounded-full">{{ topic.name }}</a>
+                  }
+                </div>
+              }
+            </div>
+          </main>
+
+          <div class="flex items-center justify-between">
+            @if (previousItem()) {
+              <a [routerLink]="['/tutorial', tutorial()!.slug, previousItem().type, previousItem().slug]"
+                 ngsButton="outlined" class="gap-2">
+                <ngs-icon name="fluent:arrow-left-24-regular"/>
+                Previous
+              </a>
+            } @else {
+              <button ngsButton="outlined" class="gap-2" disabled>
+                <ngs-icon name="fluent:arrow-left-24-regular"/>
+                Previous
+              </button>
+            }
+
+            @if (nextItem()) {
+              <a [routerLink]="['/tutorial', tutorial()!.slug, nextItem().type, nextItem().slug]" ngsButton="filled" class="gap-2">
+                Next
+                <ngs-icon name="fluent:arrow-right-24-regular"/>
+              </a>
+            } @else {
+              <button ngsButton="filled" class="gap-2" disabled>
+                Next
+                <ngs-icon name="fluent:arrow-right-24-regular"/>
+              </button>
+            }
+          </div>
+
+          <app-layout-slot slotType="lessonAfter"/>
+
+          @if (isDiscussionEnabled()) {
+            <app-layout-slot slotType="lessonBeforeComments"/>
+            <app-comment-list id="comments" targetType="lesson"
+                              [targetId]="lesson().id"
+                              [commentsLength]="lesson().commentsCount"
+                              (commentsAdded)="onCommentAdded()" class="hidden lg:block border-t border-t-border pt-10"/>
+          }
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="p-12">Loading...</div>
+}

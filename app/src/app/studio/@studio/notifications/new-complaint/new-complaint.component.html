@@ -1,0 +1,35 @@
+<a [routerLink]="['/admin/complaints']" target="_blank">
+  <ngs-notification [isUnread]="isUnread()" ngSkipHydration>
+    @if (lastActor()) {
+      <ngs-dicebear [key]="lastActor().id"
+                    [image]="lastActor().avatarUrl"
+                    [alt]="avatarAltText()" ngsNotificationAvatar/>
+    } @else {
+      <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center" ngsNotificationAvatar>
+        <i class="fluent:shield-error-24-regular text-xl"></i>
+      </div>
+    }
+    <ngs-notification-message>
+      @if (lastActor()) {
+        @if (count() === 1 || (count() === 2 && displayActors().length === 1)) {
+          <a [routerLink]="['/user', actorUsername()]" class="hover:underline" ngs-notification-actor>{{ lastActor().name }}</a>
+        } @else if (count() === 2 && displayActors().length === 2) {
+          <a [routerLink]="['/user', displayActors()[0].username]" class="hover:underline" ngs-notification-actor>{{ displayActors()[0].name }}</a>
+          and
+          <a [routerLink]="['/user', displayActors()[1].username]" class="hover:underline" ngs-notification-actor>{{ displayActors()[1].name }}</a>
+        } @else if (displayActors().length > 0) {
+          <a [routerLink]="['/user', lastActor().username]"
+             class="hover:underline" ngs-notification-actor>{{ lastActor().name }}</a>
+          and {{ othersCount() }} {{ othersCount() === 1 ? 'other' : 'others' }}
+        }
+      } @else {
+        Someone
+      }
+
+      reported
+      <span class="font-bold">"{{ entityName() }}"</span>
+    </ngs-notification-message>
+
+    <ngs-notification-time>{{ notification().createdAt | timeAgo }}</ngs-notification-time>
+  </ngs-notification>
+</a>

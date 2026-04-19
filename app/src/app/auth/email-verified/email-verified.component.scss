@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+
+  .form-container {
+    //@apply col-span-2;
+    //
+    //&.has-image {
+    //  @apply col-span-1;
+    //}
+  }
+
+  .image {
+    background-image: var(--image-url);
+    background-size: cover;
+  }
+}

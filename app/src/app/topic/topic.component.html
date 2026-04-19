@@ -1,0 +1,90 @@
+@if (loaded()) {
+  <div class="lg:max-w-[1120px] mx-auto pt-10">
+    <div class="px-6 lg:px-0">
+      <ngs-breadcrumbs lastItemAsLink>
+        <a routerLink="/" ngs-breadcrumb-item>{{ 'breadcrumbs.home' | transloco }}</a>
+        <ngs-breadcrumb-separator>/</ngs-breadcrumb-separator>
+        <a routerLink="/topics" ngs-breadcrumb-item>{{ 'breadcrumbs.topics' | transloco }}</a>
+      </ngs-breadcrumbs>
+      <h1 class="text-3xl font-extrabold mt-2">
+        {{ topic.name }}
+      </h1>
+    </div>
+  </div>
+  <div class="grow px-6 lg:px-0 lg:grid lg:grid-cols-[740px_380px] lg:w-[1120px] mx-auto gap-10 lg:min-h-full">
+    <div class="py-10">
+      <main class="space-y-10">
+        @if (items().length > 0) {
+          <app-feed-items [items]="items()" [reactions]="reactions"/>
+
+          @if (pagination().totalPages > 1) {
+            <ngs-paginator route="/feed/page"
+                           [totalItems]="pagination().totalItems"
+                           [pageSize]="pagination().pageSize"
+                           [pageNumber]="pageNumber"
+                           (pageChanged)="onPageChanged($event)"/>
+          }
+        } @else {
+          <div class="text-sm text-center">{{ 'thereAreNoPublications' | transloco }}.</div>
+        }
+      </main>
+    </div>
+    <aside class="py-10">
+      <div class="bg-surface-container-low rounded-2xl p-8 space-y-5">
+        <ngs-dicebear [key]="topic.id"
+                      [image]="topic.logoUrl | imageProxy:'200x200,sc'" class="size-32"/>
+        <div>
+          <div class="text-sm text-neutral-700 dark:text-neutral-500 mt-2 items-center flex gap-4">
+            <app-followers-count [count]="topic.followersCount"/>
+            @if (allowPublications()) {
+              <ngs-divider vertical/>
+              <app-publications-count [count]="topic.publicationsCount"/>
+            }
+            @if (allowTutorials()) {
+              <ngs-divider vertical/>
+              <app-tutorials-count [count]="topic.tutorialsCount"/>
+            }
+          </div>
+          @if (topic.description) {
+            <div class="text-sm leading-relaxed mt-3">{{ topic.description }}</div>
+          }
+
+          <div class="mt-6">
+            <app-subscription [targetId]="topic.id" targetType="topic"/>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+} @else {
+  <div class="lg:max-w-[1120px] mx-auto pt-10">
+    <ngs-skeleton>
+      <div class="px-6 lg:px-0">
+        <div class="flex gap-2">
+          <ngs-skeleton class="w-40 h-4"/>
+          <span class="relative text-neutral-500 -top-1">/</span>
+          <ngs-skeleton class="w-48 h-4"/>
+        </div>
+        <div class="text-3xl font-extrabold mt-2 flex items-center gap-4 mt-8">
+          <ngs-skeleton class="w-60"/>
+        </div>
+      </div>
+    </ngs-skeleton>
+  </div>
+  <div class="grow px-6 lg:px-0 lg:grid lg:grid-cols-[740px_380px] lg:w-[1120px] mx-auto gap-10 lg:min-h-full">
+    <div class="py-10">
+<!--      <ngs-skeleton direction="col">-->
+<!--        <div class="space-y-10">-->
+<!--          @for (skeletonItem of skeleton; track skeletonItem) {-->
+<!--            <app-publication-skeleton/>-->
+<!--          }-->
+<!--        </div>-->
+<!--      </ngs-skeleton>-->
+    </div>
+    <aside class="py-10">
+      <ngs-skeleton>
+        <ngs-skeleton class="rounded-2xl h-72"/>
+      </ngs-skeleton>
+    </aside>
+  </div>
+}

@@ -1,0 +1,82 @@
+<div class="p-12 h-full overflow-y-auto">
+  @if (notifications().length === 0) {
+    <ngs-empty-state>
+      <ngs-empty-state-icon>
+        <ngs-icon name="fluent:alert-24-regular"/>
+      </ngs-empty-state-icon>
+      <ngs-empty-state-content>
+        {{ 'noNotifications' | transloco }}.
+      </ngs-empty-state-content>
+    </ngs-empty-state>
+  } @else {
+    <div class="lg:xl:w-6/12">
+      <h2 class="text-xl md:text-2xl font-black tracking-tight mb-7">
+        Notifications ({{ totalNotificationsCount() | number }})
+      </h2>
+      <ngs-notification-list [static]="false" [notifications]="notifications()">
+        <ng-template ngsNotificationDef="NEW_REACTION" let-notification>
+          <app-new-reaction [notification]="notification"
+                            [isUnread]="!notification.isRead"
+                            (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="NEW_COMMENT" let-notification>
+          <app-new-comment [notification]="notification"
+                           [isUnread]="!notification.isRead"
+                           (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="NEW_FOLLOWER" let-notification>
+          <app-new-follower [notification]="notification"
+                            [isUnread]="!notification.isRead"
+                            (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="REPLY_COMMENT" let-notification>
+          <app-reply-comment [notification]="notification"
+                             [isUnread]="!notification.isRead"
+                             (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="NEW_COMPLAINT" let-notification>
+          <app-new-complaint [notification]="notification"
+                             [isUnread]="!notification.isRead"
+                             (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="PAYMENT_RECEIVED" let-notification>
+          <app-payment-received [notification]="notification"
+                                [isUnread]="!notification.isRead"
+                                (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="SUBSCRIPTION_PURCHASED" let-notification>
+          <app-subscription-purchased [notification]="notification"
+                                      [isUnread]="!notification.isRead"
+                                      (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="PUBLICATION_PURCHASED" let-notification>
+          <app-publication-purchased [notification]="notification"
+                                     [isUnread]="!notification.isRead"
+                                     (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="TUTORIAL_PURCHASED" let-notification>
+          <app-tutorial-purchased [notification]="notification"
+                                  [isUnread]="!notification.isRead"
+                                  (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="CREDITS_PURCHASED" let-notification>
+          <app-credits-purchased [notification]="notification"
+                                 [isUnread]="!notification.isRead"
+                                 (click)="markAsRead(notification)"/>
+        </ng-template>
+        <ng-template ngsNotificationDef="THREAD_REPLY" let-notification>
+          <app-thread-reply [notification]="notification"
+                            [isUnread]="!notification.isRead"
+                            (click)="markAsRead(notification)"/>
+        </ng-template>
+      </ngs-notification-list>
+      @if (notifications().length < totalNotificationsCount()) {
+        <div class="mt-6">
+          <button class="ngs-btn ngs-btn--primary" (click)="loadMore()" [disabled]="loadingMore()">
+            {{ loadingMore() ? ('loading' | transloco) : ('loadMore' | transloco) }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

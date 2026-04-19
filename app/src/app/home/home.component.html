@@ -1,0 +1,15 @@
+<div class="grow grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-6 px-4 min-h-full lg:px-0">
+  <div class="hidden lg:block">
+    <app-sidebar class="lg:sticky"/>
+  </div>
+  <div class="pt-4 pb-7 lg:pt-7">
+    <app-layout-slot slotType="homeBeforeMainContent"/>
+    <router-outlet/>
+    <app-layout-slot slotType="homeAfterMainContent"/>
+  </div>
+  <div class="hidden xl:block">
+    <div class="aside lg:sticky pt-7 pb-7 lg:pe-6">
+      <app-home-aside/>
+    </div>
+  </div>
+</div>

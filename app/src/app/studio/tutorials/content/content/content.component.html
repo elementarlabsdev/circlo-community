@@ -1,0 +1,107 @@
+<ngs-panel>
+  <ngs-panel-header class="border-b h-16 border-b-border px-6 flex items-center justify-between">
+    <h1 class="font-bold text-on-primary-fixed">{{ 'tutorialContent.heading' | transloco }}</h1>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-scrollbar-area>
+      <div class="p-12">
+        <div class="w-2/3">
+          <div class="mb-7">
+            @if (loaded()) {
+              @for (section of tutorial().sections; track section; let index = $index) {
+                @if (section.loading) {
+                  <ngs-skeleton>
+                    <ngs-skeleton class="h-10"/>
+                  </ngs-skeleton>
+                } @else {
+                  <div class="flex items-center justify-between gap-3 mb-4">
+                    <div class="grow pe-7">
+                      <h3 class="text-xl font-semibold leading-[2]" ngs-inline-text-edit delay="500"
+                          (contentChanged)="onSectionNameChanged($event, section.id)">{{ section.name }}</h3>
+                    </div>
+                    <button ngsIconButton
+                            (click)="moveSection(index, -1)"
+                            [disabled]="index === 0 || savingSectionsOrder">
+                      <ngs-icon name="fluent:arrow-up-24-regular"/>
+                    </button>
+                    <button ngsIconButton
+                            (click)="moveSection(index, 1)"
+                            [disabled]="index === tutorial().sections.length - 1 || savingSectionsOrder">
+                      <ngs-icon name="fluent:arrow-down-24-regular"/>
+                    </button>
+                    <button ngsButton="tonal" [ngsMenuTriggerFor]="sectionMenuRef">Add</button>
+                    <ngs-menu #sectionMenuRef xPosition="before">
+                      <button ngs-menu-item (click)="addLesson(section)">Lesson</button>
+                      <button ngs-menu-item (click)="addQuiz(section)">Quiz</button>
+                    </ngs-menu>
+                  </div>
+                  <div class="tutorial-items border border-border rounded-2xl p-5 mb-7 flex flex-col gap-4"
+                       cdkDropList
+                       (cdkDropListDropped)="dropItem($event, section)">
+                    @for (item of section.items; track item; let index = $index) {
+                      @if (item.loading) {
+                        <ngs-skeleton>
+                          <ngs-skeleton class="h-14"/>
+                        </ngs-skeleton>
+                      } @else {
+                        <div class="tutorial-item bg-surface-container-low overflow-hidden rounded-2xl p-5 ps-2
+                                    flex items-center justify-between gap-3" cdkDrag>
+                          <button ngsIconButton cdkDragHandle>
+                            <ngs-icon name="fluent:re-order-dots-vertical-24-regular"/>
+                          </button>
+                          @switch (item.type) {
+                            @case ('lesson') {
+                              <ngs-inline-text-edit class="grow leading-[2]" delay="500"
+                                                    (contentChanged)="onLessonNameChanged($event, item.lesson.id)">
+                                {{ item.lesson.name }}
+                              </ngs-inline-text-edit>
+                              <div class="flex items-center justify-between">
+                                <a [routerLink]="lessonUrl(item.lesson)" ngsButton>
+                                  Edit
+                                </a>
+                                <button ngsIconButton>
+                                  <ngs-icon name="fluent:delete-24-regular"/>
+                                </button>
+                              </div>
+                            }
+                            @case ('quiz') {
+                              <ngs-inline-text-edit class="grow leading-[2]" delay="500"
+                                                    (contentChanged)="onQuizNameChanged($event, item.quiz.id)">
+                                {{ item.quiz.name }}
+                              </ngs-inline-text-edit>
+                              <div class="flex items-center justify-between">
+                                <a [routerLink]="quizUrl(item.quiz)" ngsButton>
+                                  Edit
+                                </a>
+                                <button ngsIconButton>
+                                  <ngs-icon name="fluent:delete-24-regular"/>
+                                </button>
+                              </div>
+                            }
+                          }
+
+                          <ng-template cdkDragPlaceholder>
+                            <div class="drag-placeholder"></div>
+                          </ng-template>
+                        </div>
+                      }
+                    } @empty {
+                      <div class="text-sm text-neutral-600">
+                        There are no lessons yet.
+                      </div>
+                    }
+                  </div>
+                }
+              } @empty {
+                <div class="text-sm text-neutral-600">There are no sections yet.</div>
+              }
+            } @else {
+              Loading...
+            }
+          </div>
+          <button ngsButton="filled" (click)="newSection()">Add Section</button>
+        </div>
+      </div>
+    </ngs-scrollbar-area>
+  </ngs-panel-content>
+</ngs-panel>

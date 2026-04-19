@@ -1,0 +1,9 @@
+<div class="mb-8 flex flex-col items-center justify-center">
+  <ngs-dicebear [key]="profile().id"
+                [image]="profile().avatarUrl | imageProxy: '200x200,sc,q90'" class="size-28"/>
+  <div class="text-md font-medium mt-4">{{ profile().name }}</div>
+  <div class="text-xs text-neutral-500 mt-0.5">{{ profile().roleName }}</div>
+</div>
+<button ngsButton class="w-full" (click)="logout()">
+  <ngs-icon name="fluent:arrow-exit-24-regular"/> Log Out
+</button>

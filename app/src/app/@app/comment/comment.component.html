@@ -1,0 +1,67 @@
+
+<div class="flex gap-3 rounded-2xl relative">
+  <ngs-dicebear [image]="comment().author.avatarUrl | imageProxy: '100x100,sc,q90'"
+                [key]="comment().author.id" class="size-9"/>
+  <div class="grow">
+    <div class="border border-border bg-surface-container-lowest content rounded-3xl p-5 relative group">
+      <div class="top-1 end-1 absolute opacity-0 group-hover:opacity-100">
+        <button ngsIconButton [ngsMenuTriggerFor]="extraActions"><ngs-icon name="fluent:more-vertical-24-regular"/></button>
+      </div>
+      <div class="flex items-center gap-2">
+        <a [routerLink]="['/user', comment().author.username]" class="hover:text-primary hover:underline text-sm">
+          {{ comment().author.name }}
+        </a>
+        <span class="text-neutral-500 text-tiny">{{ comment().createdAt | timeAgo }}</span>
+      </div>
+      @if (comment().isHidden) {
+        <div class="mt-3 text-md text-neutral-500">{{ 'comment.hiddenContent' | transloco }}</div>
+      } @else {
+        <div [innerHTML]="comment().htmlContent | safeHtml" class="mt-3 text-md prose max-w-full"></div>
+      }
+    </div>
+    <div class="flex mt-1">
+      @if (comment().reactionsCount > 0) {
+        <button ngsButton (click)="toggleReaction()">
+          <ngs-icon [name]="hasReaction() ? 'fluent:heart-24-filled' : 'fluent:heart-24-regular'"
+                    [class.has-reaction]="hasReaction()"/>
+          <app-comment-likes-count [count]="comment().reactionsCount"/>
+        </button>
+      } @else {
+        <button ngsIconButton (click)="toggleReaction()">
+          <ngs-icon [name]="hasReaction() ? 'fluent:heart-24-filled' : 'fluent:heart-24-regular'"
+                    [class.has-reaction]="hasReaction()"/>
+        </button>
+      }
+      @if (depth() <= threadCommentsDepth()) {
+        <button ngsButton class="comment-button" (click)="reply()">
+          <ngs-icon name="fluent:chat-24-regular"/>
+          {{ 'comment.reply' | transloco }}
+        </button>
+      }
+    </div>
+
+    @if (replyActive() && depth() <= threadCommentsDepth()) {
+      <app-comment-editor isReply class="mt-3" (canceled)="onCancel()" (sent)="onSent($event)"/>
+    }
+
+    @if (comment().replies && comment().replies.length > 0) {
+      <div class="mt-5 space-y-5">
+        @for (reply of comment().replies; track reply) {
+          <app-comment [comment]="reply"
+                       [threadCommentsDepth]="threadCommentsDepth()"
+                       [depth]="depth() + 1"
+                       [targetId]="targetId()"
+                       [targetType]="targetType()"/>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<ngs-menu #extraActions="ngsMenu">
+  <button ngs-menu-item addComplaint
+          [reportedUrl]="viewUrl"
+          [targetId]="comment().id"
+          targetType="comment">Report</button>
+  <a ngs-menu-item target="_blank" [href]="viewUrl">View</a>
+</ngs-menu>

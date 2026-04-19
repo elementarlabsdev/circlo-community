@@ -1,0 +1,26 @@
+<div class="p-6 border border-border bg-surface-container-lowest rounded-2xl">
+  <div class="flex gap-6 flex-col lg:flex-row">
+    <ngs-dicebear [key]="topic().id"
+                  [image]="topic().logoUrl | imageProxy: '200x200,sc,q90'"
+                  [alt]="topic().name"  class="size-32"/>
+    <div class="grow">
+      <div class="flex items-center justify-between">
+        <a [routerLink]="['/topic', topic().slug]"
+           class="font-bold text-xl hover:text-primary">{{ topic().name }}</a>
+        <app-subscription [targetId]="topic().id" targetType="topic"/>
+      </div>
+      <div class="lg:min-h-16 overflow-ellipsis overflow-hidden py-3 text-sm">
+        {{ topic().description }}
+      </div>
+      <div class="flex items-center gap-2 mt-1">
+        <div class="text-tiny text-neutral-500 dark:text-neutral-400">
+          <app-publications-count [count]="topic().publicationsCount"/>
+        </div>
+        <ngs-divider vertical/>
+        <div class="text-tiny text-neutral-500 dark:text-neutral-400">
+          <app-tutorials-count [count]="topic().tutorialsCount"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

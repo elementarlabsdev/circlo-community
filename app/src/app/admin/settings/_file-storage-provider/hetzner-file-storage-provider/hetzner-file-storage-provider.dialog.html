@@ -1,0 +1,31 @@
+<div ngs-dialog-title>Hetzner Object Storage {{ 'settings' | transloco }}</div>
+<ngs-dialog-content>
+  <form [formGroup]="form">
+    <div class="space-y-3 mt-2">
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.fileStorage.accessKeyId' | transloco }}</ngs-label>
+        <input ngsInput type="text" formControlName="accessKeyId">
+      </ngs-form-field>
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.fileStorage.secretAccessKey' | transloco }}</ngs-label>
+        <input ngsInput type="text" formControlName="secretAccessKey">
+      </ngs-form-field>
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.fileStorage.bucket' | transloco }}</ngs-label>
+        <input ngsInput type="text" formControlName="bucket">
+      </ngs-form-field>
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.fileStorage.region' | transloco }}</ngs-label>
+        <input ngsInput type="text" formControlName="region">
+        <ngs-hint>e.g. "nbg1,hel1,fsn1" and etc.</ngs-hint>
+      </ngs-form-field>
+      <div class="mt-2 flex flex-col gap-2">
+        <ngs-slide-toggle formControlName="isEnabled">{{ 'isEnabled' | transloco }}</ngs-slide-toggle>
+      </div>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button ngsButton="filled" [disabled]="form.invalid" (click)="apply()">{{ 'common.apply' | transloco }}</button>
+</ngs-dialog-actions>

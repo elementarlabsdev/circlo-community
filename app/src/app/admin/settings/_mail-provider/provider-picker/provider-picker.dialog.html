@@ -1,0 +1,28 @@
+<h2 ngs-dialog-title>{{ 'admin.settings.mail.picker.title' | transloco }}</h2>
+<ngs-dialog-content>
+  <div class="flex flex-col gap-3 py-2">
+    @if (providers.length === 0) {
+      <div class="text-sm text-neutral-500">
+        {{ 'admin.complaints.list.noData' | transloco }}
+      </div>
+    }
+    @for (p of providers; track index; let index = $index) {
+      <div class="flex items-center justify-between border border-border rounded-xl px-4 py-3">
+        <div class="flex items-center gap-2">
+          @if (p.logoUrl) {
+            <img [src]="p.logoUrl" alt="" class="size-6">
+          }
+          <div>{{ p.name }}</div>
+        </div>
+        @if (p.configured) {
+          <button ngsButton="outlined" color="primary" (click)="edit(p)">{{ 'common.edit' | transloco }}</button>
+        } @else {
+          <button ngsButton="outlined" (click)="choose(p)">{{ 'admin.settings.mail.picker.setup' | transloco }}</button>
+        }
+      </div>
+    }
+  </div>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton type="button" (click)="close()">{{ 'common.close' | transloco }}</button>
+</ngs-dialog-actions>

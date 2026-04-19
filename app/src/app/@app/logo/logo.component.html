@@ -1,0 +1,5 @@
+@if (appStore.siteLogoUrl()) {
+  <img [src]="appStore.siteLogoUrl() | imageProxy" [alt]="appStore.siteName()" class="max-h-9 max-w-[130px]">
+} @else {
+  {{ appStore.siteName() }}
+}

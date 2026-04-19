@@ -1,0 +1,38 @@
+<ngs-panel>
+  <ngs-panel-header autoHeight>
+    <ngs-toolbar class="h-16 border-b border-b-border px-6">
+      <ngs-toolbar-title>Edit Role</ngs-toolbar-title>
+      <ngs-toolbar-spacer/>
+      <div class="flex gap-2">
+        <a routerLink="/admin/roles" ngsButton>Cancel</a>
+        <button (click)="submit()" ngsButton="filled" [loading]="saving">Save</button>
+      </div>
+    </ngs-toolbar>
+  </ngs-panel-header>
+
+  <ngs-panel-content>
+    <div class="p-12">
+      @if (loading) {
+        <p>Loading role...</p>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4 max-w-2xl">
+          <ngs-form-field>
+            <ngs-label>Name</ngs-label>
+            <input ngsInput formControlName="name" placeholder="e.g. Administrator">
+            @if (form.get('name')?.errors?.['required'] && form.get('name')?.touched) {
+              <ngs-error>Name is required</ngs-error>
+            }
+          </ngs-form-field>
+
+          <ngs-form-field>
+            <ngs-label>Type (unique code)</ngs-label>
+            <input ngsInput formControlName="type" placeholder="e.g. admin" [readonly]="isBuiltIn">
+            @if (form.get('type')?.errors?.['required'] && form.get('type')?.touched) {
+              <ngs-error>Type is required</ngs-error>
+            }
+          </ngs-form-field>
+        </form>
+      }
+    </div>
+  </ngs-panel-content>
+</ngs-panel>

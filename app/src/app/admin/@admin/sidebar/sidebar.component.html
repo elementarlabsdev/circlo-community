@@ -1,0 +1,35 @@
+<ngs-sidebar>
+  <ngs-sidebar-header class="h-16">
+    <div class="flex items-center justify-between h-full ps-6">
+      <a routerLink="/" class="text-lg font-bold">
+        <app-logo/>
+      </a>
+    </div>
+  </ngs-sidebar-header>
+  <ngs-sidebar-body>
+    <ngs-scrollbar-area [absolute]="true">
+      <ngs-sidebar-nav [activeKey]="activeLinkId" class="px-4 pb-5">
+        @for (navItem of navItems(); track navItem) {
+          @switch (navItem.type) {
+            @case ('link') {
+              <a ngs-sidebar-nav-item
+                 [routerLink]="navItem.link"
+                 [key]="navItem.key">
+                @if (navItem.icon) {
+                  <ngs-icon [name]="navItem.icon" ngsSidebarNavItemIcon/>
+                }
+                {{ navItem.name | transloco }}
+              </a>
+            }
+            @case ('heading') {
+              <ngs-sidebar-nav-heading>{{ navItem.name | transloco }}</ngs-sidebar-nav-heading>
+            }
+          }
+        }
+      </ngs-sidebar-nav>
+    </ngs-scrollbar-area>
+  </ngs-sidebar-body>
+<!--  <ngs-sidebar-footer class="border-t border-t-surface-container">-->
+<!--    <div class="h-14 flex items-center text-sm">2026 &copy;</div>-->
+<!--  </ngs-sidebar-footer>-->
+</ngs-sidebar>

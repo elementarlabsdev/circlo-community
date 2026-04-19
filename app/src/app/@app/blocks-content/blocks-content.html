@@ -1,0 +1,166 @@
+@for (block of blocksContent(); track block.id) {
+  @switch (block.type) {
+    @case ('heading') {
+      @switch (block.settings['level']) {
+        @case (2) {
+          <h2>{{ block.content }}</h2>
+        }
+        @case (3) {
+          <h3>{{ block.content }}</h3>
+        }
+        @case (4) {
+          <h4>{{ block.content }}</h4>
+        }
+      }
+    }
+    @case ('paragraph') {
+      <p [innerHTML]="block.content | safeHtml"></p>
+    }
+<!--    @case ('toc') {-->
+<!--      <section class="pb-1">-->
+<!--        <div class="font-bold text-xl mb-6">{{ 'publication.tableOfContents' | transloco }}</div>-->
+<!--        @for (item of block.data['items']; track item.id) {-->
+<!--          <ul>-->
+<!--            <li>-->
+<!--              <a [href]="'#' + item.reference">{{ item.text }}</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        }-->
+<!--      </section>-->
+<!--    }-->
+    @case ('delimiter') {
+      <div>
+        <ngs-divider class="my-20"/>
+      </div>
+    }
+    @case ('divider') {
+      <div>
+        <ngs-divider class="my-20"/>
+      </div>
+    }
+    @case ('image') {
+      <ngs-image-zoom-viewer>
+        <img [src]="block.content.src | imageProxy:'1000x,q80'"
+             [alt]="block.content.alt" class="max-w-full" ngsImageZoomViewerImage>
+      </ngs-image-zoom-viewer>
+    }
+    @case ('code') {
+      <ngs-code-highlighter [code]="block.content" [language]="block.settings.language"/>
+<!--      <div [innerHTML]="block.content | convertCode:block.settings.language | async"></div>-->
+    }
+    @case ('quote') {
+      <blockquote>
+        <div [innerHTML]="block.content.cite | safeHtml"></div>
+        @if (block.content.caption) {
+          <cite class="text-sm text-neutral-500 mt-3">{{ block.content.caption }}</cite>
+        }
+      </blockquote>
+    }
+    @case ('orderedList') {
+      <ol>
+        @for (listItem of block.content; track listItem) {
+          <li [innerHTML]="listItem.content | safeHtml"></li>
+        }
+      </ol>
+    }
+
+    @case ('bulletList') {
+      <ul>
+        @for (listItem of block.content; track listItem) {
+          <li [innerHTML]="listItem.content | safeHtml"></li>
+        }
+      </ul>
+    }
+<!--    @case ('alert') {-->
+<!--      @switch (block.data.type) {-->
+<!--        @case ('primary') {-->
+<!--          <div class="rounded-2xl p-4 bg-primary-100 text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('secondary') {-->
+<!--          <div class="rounded-2xl p-4 bg-gray-100 text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('info') {-->
+<!--          <div class="rounded-2xl p-4 bg-sky-100 text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('success') {-->
+<!--          <div class="rounded-2xl p-4 bg-green-100 text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('warning') {-->
+<!--          <div class="rounded-2xl p-4 bg-orange-100 text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('danger') {-->
+<!--          <div class="rounded-2xl p-4 bg-red-100 text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('light') {-->
+<!--          <div class="rounded-2xl p-4 border border-border text-md dark:text-neutral-800">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--        @case ('dark') {-->
+<!--          <div class="rounded-2xl p-4 bg-inverse-surface text-inverse-on-surface text-md">-->
+<!--            {{ block.data.message }}-->
+<!--          </div>-->
+<!--        }-->
+<!--      }-->
+<!--    }-->
+    @case ('table') {
+      <div class="border border-border rounded-2xl overflow-hidden">
+        <table ngs-native-table class="not-prose">
+          <tbody>
+            @for (row of block['content']; track row; let last = $last) {
+              <tr>
+                @for (cell of row; track cell) {
+                  <td [innerHTML]="cell.content | safeHtml" class="py-3 px-5"></td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @case ('embed') {
+      <div class="my-10">
+        @switch (block.content.type) {
+          @case ('codepen') {
+            <iframe allowfullscreen frameborder="0"
+                    [src]="block.content.url | safeResourceUrl"
+                    class="w-full h-[500px]"></iframe>
+          }
+          @case ('github') {
+            <iframe allowfullscreen frameborder="0"
+                    [src]="block.content.url | safeResourceUrl"
+                    class="w-full h-[500px] border border-border rounded-2xl overflow-hidden p-0"></iframe>
+          }
+          @case ('youtube') {
+            <iframe allowfullscreen frameborder="0" allowtransparency="true"
+                    [src]="block.content.url | safeResourceUrl"
+                    class="w-full h-[400px]"></iframe>
+          }
+          @case ('twitter') {
+            <iframe allowfullscreen frameborder="0" scrolling="no" allowtransparency="true"
+                    [src]="block.content.url | safeResourceUrl"
+                    class="w-[600px] h-[780px]"></iframe>
+          }
+          @default {
+            <iframe allowfullscreen frameborder="0" allowtransparency="true"
+                    [src]="block.content.url | safeResourceUrl"
+                    [width]="block.settings.width"
+                    [height]="block.settings.height" class="w-full"></iframe>
+          }
+        }
+      </div>
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@reference 'tailwindcss';
+
+:host {
+  ::ng-deep {
+    .prose {
+      a {
+        color: var(--color-primary);
+
+        &:hover {
+          color: var(--color-tertiary);
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+      }
+    }
+  }
+}
+
+:host-context(body:has(ngs-announcement)) {
+  .controls {
+    top: --spacing(38);
+  }
+
+  .aside {
+    top: --spacing(26);
+  }
+}

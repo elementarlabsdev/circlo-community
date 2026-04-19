@@ -1,0 +1,39 @@
+<h2 ngs-dialog-title>{{ 'studio.publications.modal.addChannel' | transloco }}</h2>
+<ngs-dialog-content>
+  <ngs-panel class="h-[620px]">
+    <ngs-panel-header>
+      <ngs-form-field class="w-full mt-1">
+        <ngs-label>{{ 'studio.publications.modal.search' | transloco }}</ngs-label>
+        <input type="text" ngsInput [(ngModel)]="query">
+      </ngs-form-field>
+    </ngs-panel-header>
+    <ngs-panel-content class="-mx-4 px-4 pb-2 pt-4">
+      <ngs-selection-list [multiple]="false">
+        <ngs-list-option [value]="null"
+                         [selected]="selectedChannel() === null"
+                         (click)="selectChannel(null)">{{ 'studio.publications.modal.personalChannel' | transloco }}</ngs-list-option>
+        @for (channel of channels(); track channel.id) {
+          <ngs-list-option [value]="channel.id"
+                           [selected]="selectedChannel()?.id === channel.id"
+                           (click)="selectChannel(channel)">{{ channel.name }}</ngs-list-option>
+        }
+      </ngs-selection-list>
+    </ngs-panel-content>
+    <ngs-panel-footer>
+      <ngs-paginator #paginator="ngsPaginator"
+                     [pageSize]="20"
+                     [pageIndex]="pageNumber() - 1"
+                     [length]="totalCount()"
+                     [pageSizeOptions]="[20, 50]"
+                     hidePageSize
+                     showFirstLastButtons
+                     (page)="onPageChange($event)"/>
+    </ngs-panel-footer>
+  </ngs-panel>
+</ngs-dialog-content>
+<ngs-dialog-actions>
+  <div class="text-sm absolute start-5">{{ 'studio.publications.modal.clickToSelect' | transloco }}</div>
+  <a routerLink="/studio/channels" ngsButton (click)="cancel()">{{ 'studio.publications.modal.manageChannels' | transloco }}</a>
+  <button ngsButton (click)="cancel()">{{ 'studio.cancel' | transloco }}</button>
+  <button ngsButton="filled" (click)="apply()">{{ 'studio.publications.modal.add' | transloco }}</button>
+</ngs-dialog-actions>

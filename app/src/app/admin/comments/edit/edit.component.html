@@ -1,0 +1,50 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 border-b border-b-border">
+      <div class="h-full flex items-center gap-5 justify-between px-5">
+        <div class="flex items-center gap-5">
+          <div class="font-bold">{{ 'admin.comments.edit.title' | transloco }}</div>
+          <a ngsButton="tonal" target="_blank"
+             [routerLink]="['/discussion', comment().id]">{{ 'table.action.view' | transloco }}</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <a routerLink="/admin/comments" ngsButton>{{ 'common.cancel' | transloco }}</a>
+          <button ngsButton="filled" type="button" [disabled]="saving() || form.invalid" (click)="save()">{{ 'common.save' | transloco }}</button>
+        </div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content class="overflow-y-auto p-10">
+      <div class="flex flex-col gap-2 mb-7">
+        <div>{{ 'admin.comments.edit.author' | transloco }}: {{ comment().author.name }}</div>
+        <div>{{ 'admin.comments.edit.publication' | transloco }}: {{ comment().publication.title }}</div>
+        <div>{{ 'admin.complaints.view.created' | transloco }}: {{ comment().createdAt | timeAgo }}</div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="flex flex-col gap-4 w-1/2">
+        <ngs-form-field>
+          <ngs-label>{{ 'admin.complaints.view.details' | transloco }}</ngs-label>
+          <textarea ngsInput
+                    ngsTextareaAutoSize
+                    minRows="6"
+                    maxRows="20"
+                    formControlName="content"
+                    [placeholder]="'admin.comments.edit.placeholder' | transloco"></textarea>
+        </ngs-form-field>
+        <div class="flex items-center justify-between">
+          <ngs-slide-toggle formControlName="isHidden">
+            {{ 'admin.comments.edit.hidden' | transloco }}
+          </ngs-slide-toggle>
+        </div>
+        <div class="mt-4 flex gap-2 items-center">
+          <button ngsButton="tonal" type="button" (click)="delete()" [disabled]="saving() || deleting()">
+            {{ 'table.action.delete' | transloco }}
+          </button>
+        </div>
+      </form>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">
+    {{ 'common.loading' | transloco }}
+  </div>
+}

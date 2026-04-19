@@ -1,0 +1,327 @@
+@if (loaded()) {
+  @if (totalItemsCount() > 0) {
+    <ngs-panel>
+      <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+        <div class="flex flex-col h-full gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-4">
+            <h1 class="font-bold">Tutorials</h1>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Manage and edit your tutorials.</p>
+          </div>
+          <div class="items-center flex gap-3">
+            <button ngsButton (click)="toggleFilters()">Filters</button>
+            <button ngsButton="filled" (click)="createTutorial()">
+              <ngs-icon name="fluent:add-24-regular"/>
+              Create New Tutorial
+            </button>
+          </div>
+        </div>
+      </ngs-panel-header>
+      <ngs-panel-content>
+        <ngs-scrollbar-area>
+          <main class="flex-1 py-8">
+            <div class="px-4 sm:px-6 lg:px-8">
+              @if (filtersEnabled()) {
+                <div class="mb-8 flex flex-col gap-1 bg-surface-container-lowest dark:bg-card-dark p-2 rounded-3xl shadow-sm border
+                            border-neutral-100 dark:border-neutral-800">
+                  <div class="flex flex-col sm:flex-row gap-2">
+                    <div class="relative flex-1">
+                      <div
+                        class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-neutral-500 dark:text-neutral-400">
+                        <ngs-icon name="fluent:search-24-regular"/>
+                      </div>
+                      <input [(ngModel)]="search" (ngModelChange)="onSearchChange()"
+                             class="block w-full rounded-full border-0 bg-transparent py-3 pl-12 pr-4 text-base text-on-surface
+                        placeholder:text-neutral-500 focus:ring-0 dark:text-on-surface sm:leading-6"
+                             placeholder="Search tutorials by title..." type="text"/>
+                    </div>
+                  </div>
+                  <div class="flex flex-col lg:flex-row items-center justify-between gap-3 w-full border-t border-neutral-100
+                  dark:border-neutral-700 pt-2 px-1">
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                      <label class="sr-only" for="channel-filter">Filter by Channel</label>
+                      <div class="relative w-full sm:w-auto group">
+                        <select [(ngModel)]="channel" (ngModelChange)="onFilterChange()"
+                                class="appearance-none block w-full sm:min-w-[160px] cursor-pointer rounded-full border-0
+                           bg-surface-container-low py-1.5 pl-4 pr-2 text-sm font-medium text-on-surface
+                           hover:bg-surface-container-lowest-container focus:ring-0
+                           dark:bg-surface-container-lowest-container dark:text-on-surface
+                           dark:hover:bg-surface-container-lowest-container-high sm:leading-6 transition-colors"
+                                id="channel-filter">
+                          <option value="all">All Channels</option>
+                          @for (item of channels; track item.id) {
+                            <option [value]="item.id">{{ item.name }}</option>
+                          }
+                        </select>
+                        <div
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 dark:text-neutral-400">
+                          <ngs-icon name="fluent:chevron-down-24-regular" class="size-5"/>
+                        </div>
+                      </div>
+                      <label class="sr-only" for="topic-filter">Filter by Topic</label>
+                      <div class="relative w-full sm:w-auto group">
+                        <select [(ngModel)]="topic" (ngModelChange)="onFilterChange()"
+                                class="appearance-none block w-full sm:min-w-[160px] cursor-pointer rounded-full border-0
+                           bg-surface-container-low py-1.5 pl-4 pr-2 text-sm font-medium text-on-surface
+                           hover:bg-surface-container-lowest-container focus:ring-0 dark:bg-surface-container-lowest-container
+                           dark:text-on-surface dark:hover:bg-surface-container-lowest-container-high sm:leading-6 transition-colors"
+                                id="topic-filter">
+                          <option value="all">All Topics</option>
+                          @for (item of topics; track item.id) {
+                            <option [value]="item.id">{{ item.name }}</option>
+                          }
+                        </select>
+                        <div
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 dark:text-neutral-400">
+                          <ngs-icon name="fluent:chevron-down-24-regular" class="size-5"/>
+                        </div>
+                      </div>
+                      <label class="sr-only" for="status-filter">Filter by Status</label>
+                      <div class="relative w-full sm:w-auto group">
+                        <select [(ngModel)]="status" (ngModelChange)="onFilterChange()"
+                                class="appearance-none block w-full sm:min-w-[160px] cursor-pointer rounded-full border-0 bg-surface-container-low
+                           py-1.5 pl-4 pr-2 text-sm font-medium text-on-surface hover:bg-surface-container-lowest-container
+                           focus:ring-0 dark:bg-surface-container-lowest-container dark:text-on-surface
+                           dark:hover:bg-surface-container-lowest-container-high sm:leading-6 transition-colors"
+                                id="status-filter">
+                          <option value="all">All Statuses</option>
+                          <option value="published">Published</option>
+                          <option value="draft">Draft</option>
+                          <option value="archived">Archived</option>
+                        </select>
+                        <div
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 dark:text-neutral-400">
+                          <ngs-icon name="fluent:chevron-down-24-regular" class="size-5"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-3 w-full lg:w-auto">
+                      <div class="w-px h-8 bg-neutral-200 dark:bg-neutral-700 hidden lg:block"></div>
+                      <label class="sr-only" for="sort-filter">Sort by</label>
+                      <div class="relative w-full lg:w-auto group">
+                        <select [(ngModel)]="sort" (ngModelChange)="onFilterChange()"
+                                class="appearance-none block w-full sm:min-w-[200px] cursor-pointer rounded-full border-0 bg-surface-container-low
+                    py-1.5 pl-10 pr-2 text-sm font-medium text-on-surface hover:bg-surface-container-lowest-container
+                    focus:ring-0 dark:bg-surface-container-lowest-container dark:text-on-surface
+                    dark:hover:bg-surface-container-lowest-container-high sm:leading-6 transition-colors ring-1 ring-inset
+                    ring-neutral-200 dark:ring-neutral-700 focus:ring-2 focus:ring-primary dark:focus:ring-primary"
+                                id="sort-filter">
+                          <option value="newest">Newest First</option>
+                          <option value="oldest">Oldest First</option>
+                          <option value="title-asc">Title (A-Z)</option>
+                          <option value="title-desc">Title (Z-A)</option>
+                          <option value="status">Status</option>
+                        </select>
+                        <div
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 dark:text-neutral-400">
+                          <ngs-icon name="fluent:chevron-down-24-regular" class="size-5"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 @container">
+                @for (tutorial of data; track tutorial.id) {
+                  <ngs-card class="overflow-hidden">
+                    <article class="group">
+                      <div class="relative aspect-[3/2] w-full overflow-hidden bg-neutral-300 dark:bg-neutral-800">
+                        @if (tutorial.featuredImageUrl) {
+                          <img [src]="tutorial.featuredImageUrl"
+                               class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                               [alt]="tutorial.title">
+                        } @else {
+                          <div
+                            class="absolute inset-0 flex items-center justify-center text-neutral-500 dark:text-neutral-500 transition-transform duration-700 group-hover:scale-105">
+                            <ngs-icon name="fluent:image-24-regular" class="!text-[80px] !size-[80px] filled"/>
+                          </div>
+                        }
+                        <div class="absolute left-4 top-4">
+                          <span
+                            class="inline-flex items-center rounded-lg bg-surface-container-lowest/95 px-3 py-1.5 text-xs font-bold backdrop-blur-md dark:bg-surface-container-lowest-container-high/90"
+                            [class.text-green-700]="tutorial.status.type === 'published'"
+                            [class.dark:text-green-300]="tutorial.status.type === 'published'"
+                            [class.text-neutral-600]="tutorial.status.type === 'draft'"
+                            [class.dark:text-neutral-300]="tutorial.status.type === 'draft'"
+                            [class.text-yellow-700]="tutorial.status.type === 'archived'"
+                            [class.dark:text-yellow-400]="tutorial.status.type === 'archived'"
+                          >
+                              {{ tutorial.status.name | transloco }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="px-5 pt-5">
+                        @if (tutorial.channel) {
+                          <div class="mb-2 flex items-center gap-2">
+                            <div class="h-1.5 w-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></div>
+                            <span
+                              class="text-sm font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400">
+                              {{ tutorial.channel.name }}
+                            </span>
+                          </div>
+                        }
+                        <h3
+                          class="mb-2 text-lg text-left font-bold group-hover:text-primary cursor-pointer transition-colors"
+                          (click)="edit(tutorial)">
+                          {{ tutorial.title }}
+                        </h3>
+                        <div class="mb-3 mt-1 flex items-center gap-4 text-tiny text-neutral-500 dark:text-neutral-400">
+                          <div class="flex items-center gap-1.5">
+                            <ngs-icon name="fluent:calendar-ltr-24-regular" class="!text-[18px] !size-[18px] filled"/>
+                            @if (tutorial.publishedAt) {
+                              <span>{{ tutorial.publishedAt | timeAgo }}</span>
+                            } @else {
+                              <span>{{ tutorial.updatedAt | timeAgo }}</span>
+                            }
+                          </div>
+                          <div class="flex items-center gap-1.5" title="View Count">
+                            <ngs-icon name="fluent:eye-24-regular" class="!text-[18px] !size-[18px] filled"/>
+                            <span>{{ tutorial.viewsCount | number }}</span>
+                          </div>
+                        </div>
+                        @if (tutorial.topics) {
+                          <ngs-chip-listbox>
+                            @for (topic of tutorial.topics; track topic.id) {
+                              <ngs-chip>{{ topic.name }}</ngs-chip>
+                            }
+                          </ngs-chip-listbox>
+                        }
+                      </div>
+                    </article>
+                    <ngs-card-actions>
+                      <button *can="Action.Update; subject: tutorial" ngsButton (click)="edit(tutorial)">
+                        <ngs-icon name="fluent:edit-24-regular"/>
+                        <span class="text-sm font-medium">Edit</span>
+                      </button>
+                      <button *can="Action.Delete; subject: tutorial" ngsButton (click)="delete(tutorial)">
+                        <ngs-icon name="fluent:delete-24-regular"/>
+                        <span class="text-sm font-medium">Delete</span>
+                      </button>
+                    </ngs-card-actions>
+                  </ngs-card>
+
+                  <!--                  <article class="group flex flex-col rounded-3xl bg-surface-container-lowest-->
+                    <!--                        shadow-sm transition-all hover:shadow-xl hover:-tranneutral-y-1 overflow-hidden">-->
+                    <!--                    <div class="relative aspect-[3/2] w-full overflow-hidden bg-neutral-300 dark:bg-neutral-800">-->
+                    <!--                      @if (tutorial.featuredImageUrl) {-->
+                    <!--                        <img [src]="tutorial.featuredImageUrl" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" [alt]="tutorial.title">-->
+                    <!--                      } @else {-->
+                    <!--                        <div class="absolute inset-0 flex items-center justify-center text-neutral-500 dark:text-neutral-500 transition-transform duration-700 group-hover:scale-105">-->
+                    <!--                          <ngs-icon name="fluent:image-24-regular" class="!text-[80px] !size-[80px] filled"/>-->
+                    <!--                        </div>-->
+                    <!--                      }-->
+                    <!--                      <div class="absolute left-4 top-4">-->
+                    <!--                      <span class="inline-flex items-center rounded-lg bg-surface-container-lowest/95 px-3 py-1.5 text-xs font-bold shadow-sm backdrop-blur-md dark:bg-surface-container-lowest-container-high/90"-->
+                    <!--                            [class.text-green-700]="tutorial.status.type === 'published'"-->
+                    <!--                            [class.dark:text-green-300]="tutorial.status.type === 'published'"-->
+                    <!--                            [class.text-neutral-600]="tutorial.status.type === 'draft'"-->
+                    <!--                            [class.dark:text-neutral-300]="tutorial.status.type === 'draft'"-->
+                    <!--                            [class.text-yellow-700]="tutorial.status.type === 'archived'"-->
+                    <!--                            [class.dark:text-yellow-400]="tutorial.status.type === 'archived'"-->
+                    <!--                      >-->
+                    <!--                  {{ tutorial.status.name | transloco }}-->
+                    <!--              </span>-->
+                    <!--                      </div>-->
+                    <!--                    </div>-->
+                    <!--                    <div class="flex flex-col flex-1 px-6 pt-6 pb-2">-->
+                    <!--                      @if (tutorial.channel) {-->
+                    <!--                        <div class="mb-2 flex items-center gap-2">-->
+                    <!--                          <div class="h-1.5 w-1.5 rounded-full bg-primary-600 dark:bg-primary-400"></div>-->
+                    <!--                          <span class="text-sm font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400">{{ tutorial.channel.name }}</span>-->
+                    <!--                        </div>-->
+                    <!--                      }-->
+                    <!--                      <h3 class="mb-2 text-lg text-left font-bold group-hover:text-primary cursor-pointer transition-colors"-->
+                    <!--                          (click)="edit(tutorial)">-->
+                    <!--                        {{ tutorial.title }}-->
+                    <!--                      </h3>-->
+                    <!--                      <div class="mb-3 mt-1 flex items-center gap-4 text-tiny text-neutral-500 dark:text-neutral-400">-->
+                    <!--                        <div class="flex items-center gap-1.5">-->
+                    <!--                          <ngs-icon name="fluent:calendar-ltr-24-regular" class="!text-[18px] !size-[18px] filled"/>-->
+                    <!--                          @if (tutorial.publishedAt) {-->
+                    <!--                            <span>{{ tutorial.publishedAt | timeAgo }}</span>-->
+                    <!--                          } @else {-->
+                    <!--                            <span>{{ tutorial.updatedAt | timeAgo }}</span>-->
+                    <!--                          }-->
+                    <!--                        </div>-->
+                    <!--                        <div class="flex items-center gap-1.5" title="View Count">-->
+                    <!--                          <ngs-icon name="fluent:eye-24-regular" class="!text-[18px] !size-[18px] filled"/>-->
+                    <!--                          <span>{{ tutorial.viewsCount | number }}</span>-->
+                    <!--                        </div>-->
+                    <!--                      </div>-->
+                    <!--                      <div class="mb-4 flex flex-wrap gap-2">-->
+                    <!--                        @for (topic of tutorial.topics; track topic.id) {-->
+                    <!--                          <span class="inline-flex items-center rounded-lg bg-surface-container-low px-2.5 py-1 text-xs font-medium text-on-surface-variant border border-neutral-200 dark:border-neutral-700 dark:bg-surface-container-lowest-container-high">{{ topic.name }}</span>-->
+                    <!--                        }-->
+                    <!--                      </div>-->
+                    <!--                      <div class="mt-auto flex items-end justify-end border-t border-neutral-200 dark:border-neutral-700 pt-2">-->
+                    <!--                        <div class="flex items-center gap-2">-->
+                    <!--                          <button ngsButton (click)="edit(tutorial)">-->
+                    <!--                            <ngs-icon name="fluent:edit-24-regular"/>-->
+                    <!--                            <span class="text-sm font-medium">Edit</span>-->
+                    <!--                          </button>-->
+                    <!--                          <button ngsButton (click)="delete(tutorial)">-->
+                    <!--                            <ngs-icon name="fluent:delete-24-regular"/>-->
+                    <!--                            <span class="text-sm font-medium">Delete</span>-->
+                    <!--                          </button>-->
+                    <!--                        </div>-->
+                    <!--                      </div>-->
+                    <!--                    </div>-->
+                    <!--                  </article>-->
+                } @empty {
+                  @if (search) {
+                    <div class="col-span-1 lg:col-span-3 xl:col-span-4 text-sm text-center">
+                      There are no tutorials matching your search criteria.
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          </main>
+        </ngs-scrollbar-area>
+      </ngs-panel-content>
+      @if (pagination.totalPages && pagination.totalPages > 1) {
+        <ngs-panel-footer class="border-t h-14 border-t-surface-container">
+          <div class="flex items-center h-full justify-between px-4">
+            <div class="text-sm text-neutral-500 dark:text-neutral-400">
+              Showing <span class="font-semibold text-on-surface">{{ showingFrom() }}</span> to <span
+              class="font-semibold text-on-surface">{{ showingTo() }}</span> of <span
+              class="font-semibold text-on-surface">{{ pagination.totalItems }}</span> results
+            </div>
+            <div class="flex items-center gap-2 p-2">
+              <button ngsIconButton (click)="goToFirst()" [disabled]="!canPrev()">
+                <ngs-icon name="fluent:arrow-enter-left-24-regular"/>
+              </button>
+              <button ngsIconButton (click)="prevPage()" [disabled]="!canPrev()">
+                <ngs-icon name="fluent:chevron-left-24-regular"/>
+              </button>
+              <div class="text-sm">
+                Page {{ pagination.pageNumber }} of {{ pagination.totalPages }}
+              </div>
+              <button ngsIconButton (click)="nextPage()" [disabled]="!canNext()">
+                <ngs-icon name="fluent:chevron-right-24-regular"/>
+              </button>
+              <button ngsIconButton (click)="goToLast()" [disabled]="!canNext()">
+                <ngs-icon name="fluent:arrow-exit-24-regular"/>
+              </button>
+            </div>
+          </div>
+        </ngs-panel-footer>
+      }
+    </ngs-panel>
+  } @else {
+    <ngs-empty-state>
+      <ngs-empty-state-icon>
+        <ngs-icon name="fluent:video-24-regular"/>
+      </ngs-empty-state-icon>
+      <ngs-empty-state-content>There are no tutorials yet.</ngs-empty-state-content>
+      <ngs-empty-state-actions>
+        <button ngsButton="filled" (click)="createTutorial()">
+          <ngs-icon name="fluent:add-24-regular"/>
+          Create New Tutorial
+        </button>
+      </ngs-empty-state-actions>
+    </ngs-empty-state>
+  }
+} @else {
+  <div class="p-6">Loading...</div>
+}

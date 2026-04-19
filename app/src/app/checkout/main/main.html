@@ -1,0 +1,82 @@
+<div class="flex flex-col items-center justify-center min-h-screen p-10 bg-surface-container-low font-sans text-on-surface">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold mb-2 text-on-background">Express Checkout</h1>
+    <p class="text-lg text-on-surface-variant">Review and activate your Account Subscription</p>
+  </div>
+
+  <div class="max-w-[560px] w-full p-10 bg-surface rounded-3xl shadow-sm border border-border">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-16 h-16 bg-primary-container rounded-2xl flex items-center justify-center text-2xl">
+        <span>💎</span>
+      </div>
+      <div class="flex-1">
+        <h2 class="text-xl font-semibold mb-1 text-on-surface">Account Subscription</h2>
+        <p class="text-sm text-on-surface-variant">Monthly Private Access</p>
+      </div>
+      <div class="text-right">
+        <div class="text-2xl font-bold text-primary">{{ price() | currency:'USD':'symbol':'1.2-2' }}</div>
+<!--        <div class="text-[11px] font-bold text-positive mt-1">SAVE 20% YEARLY</div>-->
+      </div>
+    </div>
+
+    <ngs-divider class="my-6"/>
+
+<!--    <div class="grid grid-cols-2 gap-x-6 gap-y-4 mb-8">-->
+<!--      <div class="flex items-center gap-2 text-[15px] text-on-surface-variant">-->
+<!--        <span class="w-5 h-5 bg-positive text-on-positive rounded-full flex items-center justify-center text-[12px]">✓</span>-->
+<!--        <span>Unlimited Projects</span>-->
+<!--      </div>-->
+<!--      <div class="flex items-center gap-2 text-[15px] text-on-surface-variant">-->
+<!--        <span class="w-5 h-5 bg-positive text-on-positive rounded-full flex items-center justify-center text-[12px]">✓</span>-->
+<!--        <span>24/7 Priority Support</span>-->
+<!--      </div>-->
+<!--      <div class="flex items-center gap-2 text-[15px] text-on-surface-variant">-->
+<!--        <span class="w-5 h-5 bg-positive text-on-positive rounded-full flex items-center justify-center text-[12px]">✓</span>-->
+<!--        <span>Advanced Analytics</span>-->
+<!--      </div>-->
+<!--      <div class="flex items-center gap-2 text-[15px] text-on-surface-variant">-->
+<!--        <span class="w-5 h-5 bg-positive text-on-positive rounded-full flex items-center justify-center text-[12px]">✓</span>-->
+<!--        <span>Private Dashboard</span>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <div class="bg-surface-container p-6 rounded-2xl mb-8 space-y-4">
+      <div class="flex justify-between items-center text-sm font-medium">
+        <span class="text-on-surface-variant">Subtotal</span>
+        <span class="text-on-surface">{{ price() | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between items-center text-sm font-medium">
+        <span class="text-on-surface-variant">Setup Fee</span>
+        <span class="text-positive uppercase text-xs font-bold tracking-wider">Free</span>
+      </div>
+
+      <div class="pt-4 mt-2 border-t border-t-border flex justify-between items-center">
+        <span class="text-on-surface font-semibold">Total due today</span>
+        <span class="text-2xl font-bold text-on-surface">{{ price() | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <button [disabled]="loading()" (click)="onCheckout()"
+              class="w-full py-5 px-6 rounded-2xl bg-primary text-on-primary font-bold text-lg shadow-lg shadow-primary/20 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 disabled:opacity-70 disabled:pointer-events-none transition-all duration-200 relative overflow-hidden group">
+        @if (!loading()) {
+          <span class="flex items-center justify-center gap-2">
+            Activate Subscription
+            <span class="text-notice drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">⚡</span>
+          </span>
+        } @else {
+          <span class="block w-6 h-6 border-3 border-on-primary/30 border-t-on-primary rounded-full animate-spin mx-auto"></span>
+        }
+      </button>
+    </div>
+
+    <div class="flex items-center justify-center gap-2 text-sm text-on-surface-variant font-medium mb-6">
+      <span class="text-lg">🛡</span>
+      <span>Bank-level 256-bit SSL Encryption</span>
+    </div>
+
+    <p class="text-center text-xs text-on-surface-variant leading-relaxed px-4 opacity-70">
+      By confirming, you agree to our <a href="#" class="text-primary hover:underline">Terms</a> & <a href="#" class="text-primary hover:underline">Privacy</a>. Auto-renews monthly. Cancel anytime.
+    </p>
+  </div>
+</div>

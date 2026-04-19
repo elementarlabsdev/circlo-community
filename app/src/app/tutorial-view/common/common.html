@@ -1,0 +1,105 @@
+<div>
+  <div class="h-14 border-b flex-none border-b-border px-6 flex items-center justify-between">
+    @if (loaded()) {
+      <div class="flex items-center gap-4">
+        <h1 class="text-lg font-semibold">{{ tutorial().title }}</h1>
+        @if (tutorial().reactionsCount > 0) {
+          <span class="opacity-40">|</span>
+          <app-reaction-list [reactions]="reactions" size="small" />
+        }
+      </div>
+
+      <div class="text-on-surface-variant flex items-center gap-4 text-sm">
+        <div class="flex gap-1 items-center justify-center group cursor-pointer"
+             [ngsPopoverTriggerFor]="reactionsTpl"
+             [delay]="250" position="below-center" trigger="hover">
+          <ngs-icon [name]="hasReactions() ? 'fluent:heart-24-filled' : 'fluent:heart-24-regular'"
+                    class="group-hover:text-red-500 [&.has-reactions]:text-red-500"
+                    [class.has-reactions]="hasReactions()"/>
+          <div class="text-xs">
+            {{ tutorial().reactionsCount }}
+          </div>
+        </div>
+
+        <span class="opacity-40">|</span>
+
+        <div class="flex items-center gap-2">
+          <ngs-icon name="fluent:book-24-regular"/>
+          <span class="text-xs">{{ tutorial().lessonsCount }} lessons</span>
+        </div>
+        <span class="opacity-40">|</span>
+        <div class="flex items-center gap-2">
+          <ngs-icon name="fluent:calendar-clock-24-regular"/>
+          <div class="text-xs whitespace-nowrap">
+            @if (tutorial()?.estimatedTime?.minutes === 0) {
+              {{ 'readingTime.less-than-a-minute-read' | transloco }}
+            } @else if (tutorial()?.estimatedTime?.minutes != null) {
+              {{ tutorial()?.estimatedTime?.minutes }} {{ 'readingTimeInMinutes' | transloco:{ count: tutorial()?.estimatedTime?.minutes } }} {{ 'read' | transloco }}
+            }
+          </div>
+        </div>
+        <span class="opacity-40">|</span>
+        <app-bookmark-button targetType="tutorial" [targetId]="tutorial().id"/>
+      </div>
+
+      <ng-template #reactionsTpl>
+        <app-reaction-add [reactions]="reactions"
+                          targetType="tutorial"
+                          [targetId]="tutorial().id"
+                          (reactionAdded)="onReactionAdded()"
+                          (reactionDeleted)="onReactionDeleted()"/>
+      </ng-template>
+    } @else {
+      Loading...
+    }
+  </div>
+  <div class="grid grid-cols-[340px_1fr]">
+    <div class="border-r border-r-border">
+      <aside class="w-full sidebar sticky">
+        @if (loaded()) {
+          <div class="py-7 px-4">
+            <div class="flex flex-col gap-4 pr-2">
+              @for (section of tutorial().sections; track section.id; let sectionIndex = $index) {
+                <div>
+                  <div class="tracking-wide px-2 pb-2 flex items-center justify-between">
+                    <div class="text-xs uppercase text-neutral-500">Section {{ sectionIndex + 1 }}: {{ section.name }}</div>
+                  </div>
+                  <div class="ps-2">
+                    <ngs-nav-list>
+                      @for (item of section.items; track item.id; let lessonIndex = $index) {
+                        @if (item.type === 'lesson') {
+                          <a ngs-list-item class="rounded-lg" routerLinkActive="is-active"
+                             [routerLink]="['/tutorial', tutorialSlug, 'lesson', item.lesson.slug]">
+                            <div ngsListItemTitle class="flex items-center gap-2">
+                              <span class="inline-block w-5">{{ sectionIndex + 1 }}.{{ lessonIndex }}</span>
+                              <span>{{ item.lesson.name }}</span>
+                            </div>
+                          </a>
+                        } @else if (item.type === 'quiz') {
+                          <a ngs-list-item class="rounded-lg" routerLinkActive="is-active"
+                             [routerLink]="['/tutorial', tutorialSlug, 'quiz', item.quiz.slug]">
+                            <div ngsListItemTitle class="flex items-center gap-2">
+                              <span class="inline-block w-5">{{ sectionIndex + 1 }}.{{ lessonIndex }}</span>
+                              <span>{{ item.quiz.name }}</span>
+                            </div>
+                          </a>
+                        }
+                      }
+                    </ngs-nav-list>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          <div class="py-7 px-4">
+            Loading...
+          </div>
+        }
+      </aside>
+    </div>
+    <main>
+      <router-outlet [routerOutletData]="{ tutorialSlug }"/>
+    </main>
+  </div>
+</div>

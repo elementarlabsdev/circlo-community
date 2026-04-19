@@ -1,0 +1,163 @@
+<ngs-panel>
+  <ngs-panel-header>
+    <ngs-toolbar class="h-16 ps-4 pe-6 border-b border-b-border">
+      <a ngsIconButton routerLink="/admin/users">
+        <ngs-icon name="fluent:arrow-left-24-regular"/>
+      </a>
+      <ngs-toolbar-title>{{ 'admin.users.view.title' | transloco }}</ngs-toolbar-title>
+      <ngs-toolbar-spacer/>
+      @if (user()) {
+        <a ngsButton="filled" [routerLink]="['/admin/users', user().id, 'edit']">
+          <ngs-icon name="fluent:edit-24-regular" class="mr-2"/>
+          {{ 'common.edit' | transloco }}
+        </a>
+      }
+    </ngs-toolbar>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <div class="p-12 flex flex-col gap-12">
+      @if (loading()) {
+        <div class="flex justify-center p-8">
+          {{ 'loading' | transloco }}...
+        </div>
+      } @else if (user()) {
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <!-- Main Info -->
+          <div class="md:col-span-2 flex flex-col gap-12">
+            <section class="flex flex-col gap-1">
+              <h3 class="text-lg font-semibold mb-4">{{ 'admin.users.view.generalInfo' | transloco }}</h3>
+              <ngs-divider class="mb-4"/>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.name' | transloco }}</label>
+                  <div class="font-medium">{{ user().name }}</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.username' | transloco }}</label>
+                  <div class="font-medium">&#64;{{ user().username }}</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.email' | transloco }}</label>
+                  <div class="font-medium">{{ user().email }}</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.role' | transloco }}</label>
+                  <div class="font-medium">{{ user().role?.name }} ({{ user().role?.type }})</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.created' | transloco }}</label>
+                  <div class="font-medium">{{ user().createdAt | date:'medium' }}</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.updated' | transloco }}</label>
+                  <div class="font-medium">{{ (user().updatedAt | date:'medium') || '-' }}</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="flex flex-col gap-1">
+              <h3 class="text-lg font-semibold mb-4">{{ 'admin.users.view.status' | transloco }}</h3>
+              <ngs-divider class="mb-4"/>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="flex items-center gap-2">
+                  <ngs-icon [name]="user().isBlocked ? 'fluent:lock-closed-24-regular' : 'fluent:lock-open-24-regular'"
+                            [class]="user().isBlocked ? 'text-red-500' : 'text-green-500'"/>
+                  <span>{{ (user().isBlocked ? 'admin.users.blocked' : 'admin.users.active') | transloco }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <ngs-icon
+                    [name]="user().verified ? 'fluent:checkmark-circle-24-regular' : 'fluent:dismiss-circle-24-regular'"
+                    [class]="user().verified ? 'text-green-500' : 'text-yellow-500'"/>
+                  <span>{{ (user().verified ? 'admin.users.verified' : 'admin.users.notVerified') | transloco }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <ngs-icon
+                    [name]="user().isSuperAdmin ? 'fluent:shield-checkered-24-regular' : 'fluent:person-24-regular'"
+                    [class]="user().isSuperAdmin ? 'text-blue-500' : 'text-neutral-500'"/>
+                  <span>{{ (user().isSuperAdmin ? 'admin.users.admin' : 'admin.users.regularUser') | transloco }}</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="flex flex-col gap-1">
+              <h3 class="text-lg font-semibold mb-4">{{ 'admin.users.view.details' | transloco }}</h3>
+              <ngs-divider class="mb-4"/>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.jobTitle' | transloco }}</label>
+                  <div class="font-medium">{{ user().jobTitle || ('none' | transloco) }}</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.location' | transloco }}</label>
+                  <div class="font-medium">{{ user().location || ('none' | transloco) }}</div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.birthDate' | transloco }}</label>
+                  <div
+                    class="font-medium">{{ user().birthDate ? (user().birthDate | date:'longDate') : ('none' | transloco) }}
+                  </div>
+                </div>
+                <div>
+                  <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.gender' | transloco }}</label>
+                  <div class="font-medium">{{ user().gender ? (user().gender | titlecase) : ('none' | transloco) }}
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4">
+                <label class="block mb-1 text-sm text-neutral-500">{{ 'admin.users.bio' | transloco }}</label>
+                <div class="font-medium italic">{{ user().bio ? '"' + user().bio + '"' : ('none' | transloco) }}</div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Stats & Counts -->
+          <div class="flex flex-col gap-12">
+            <ngs-dicebear [image]="user().avatarUrl | imageProxy:'320x320,sc,q90'"
+                          [key]="user().id"
+                          class="size-32"/>
+            <section class="flex flex-col gap-1 bg-neutral-50 p-6 rounded-2xl">
+              <h3
+                class="text-md font-semibold mb-4 uppercase tracking-wider text-neutral-600">{{ 'admin.users.view.statistics' | transloco }}</h3>
+              <ngs-divider class="mb-4"/>
+              <div class="flex flex-col gap-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.publications' | transloco }}</span>
+                  <span class="font-bold text-lg">{{ user().publicationsCount | number }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.comments' | transloco }}</span>
+                  <span class="font-bold text-lg">{{ user().commentsCount | number }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.followers' | transloco }}</span>
+                  <span class="font-bold text-lg">{{ user().followersCount | number }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.subscriptions' | transloco }}</span>
+                  <span class="font-bold text-lg">{{ user()._count?.subscriptions | number }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.channels' | transloco }}</span>
+                  <span class="font-bold text-lg">{{ user()._count?.channels | number }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.threads' | transloco }}</span>
+                  <span class="font-bold text-lg">{{ user()._count?.threads | number }}</span>
+                </div>
+                <ngs-divider/>
+                <div class="flex justify-between items-center">
+                  <span class="text-neutral-600">{{ 'admin.users.view.credits' | transloco }}</span>
+                  <span class="font-bold text-lg text-primary-600">{{ user().credits | number }}</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      } @else {
+        <div class="p-12 text-center text-neutral-500">
+          {{ 'admin.users.view.notFound' | transloco }}
+        </div>
+      }
+    </div>
+  </ngs-panel-content>
+</ngs-panel>

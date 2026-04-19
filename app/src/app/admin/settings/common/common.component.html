@@ -1,0 +1,26 @@
+<ngs-sidenav-container autosize hasBackdrop="false">
+  <ngs-sidenav #sidenav
+               [opened]="true"
+               mode="side"
+               class="border-e border-e-border w-[280px] relative">
+    <ngs-scrollbar-area [absolute]="true">
+      <div class="px-5 py-6">
+        <ngs-navigation [activeKey]="activeLinkId" appearance="secondary">
+          @for (navItem of navItems; track navItem) {
+            <a [routerLink]="navItem.url" ngs-navigation-item [key]="navItem.url">{{ navItem.name | transloco }}</a>
+          }
+        </ngs-navigation>
+      </div>
+    </ngs-scrollbar-area>
+  </ngs-sidenav>
+  <ngs-sidenav-content>
+    @if (sidenav.isMobile()) {
+      <div class="absolute top-3 start-4 z-10">
+        <button ngsIconButton (click)="sidenav.toggle()">
+          <ngs-icon name="fluent:panel-right-contract-24-regular"/>
+        </button>
+      </div>
+    }
+    <router-outlet/>
+  </ngs-sidenav-content>
+</ngs-sidenav-container>

@@ -1,0 +1,24 @@
+<a [routerLink]="['/thread', threadId()]" target="_blank">
+  <ngs-notification [isUnread]="isUnread()" ngSkipHydration>
+    <ngs-dicebear [key]="lastActor()?.id"
+                  [image]="lastActor()?.avatarUrl"
+                  [alt]="avatarAltText()" ngsNotificationAvatar/>
+    <ngs-notification-message>
+      @if (count() === 1 || (count() === 2 && displayActors().length === 1)) {
+        <a [routerLink]="['/user', actorUsername()]" class="hover:underline" ngs-notification-actor>{{ actorDisplayName() }}</a>
+      } @else if (count() === 2 && displayActors().length === 2) {
+        <a [routerLink]="['/user', displayActors()[0].username]" class="hover:underline" ngs-notification-actor>{{ displayActors()[0].name }}</a>
+        and
+        <a [routerLink]="['/user', displayActors()[1].username]" class="hover:underline" ngs-notification-actor>{{ displayActors()[1].name }}</a>
+      } @else if (displayActors().length > 0) {
+        <a [routerLink]="['/user', lastActor()?.username]"
+           class="hover:underline" ngs-notification-actor>{{ lastActor()?.name }}</a>
+        and {{ othersCount() }} {{ othersCount() === 1 ? 'other' : 'others' }}
+      }
+
+      responded to your thread
+    </ngs-notification-message>
+
+    <ngs-notification-time>{{ notification().createdAt | timeAgo }}</ngs-notification-time>
+  </ngs-notification>
+</a>

@@ -1,0 +1,40 @@
+@if (loading) {
+  <ngs-skeleton class="h-10 w-28 rounded-full"/>
+} @else {
+  @if (!isLogged) {
+    <app-login-guard>
+      @if (compact()) {
+        <button ngsIconButton [ngsTooltip]="'follow' | transloco">
+          <ngs-icon name="fluent:person-add-24-regular"/>
+        </button>
+      } @else {
+        <button ngsButton="outlined">{{ 'follow' | transloco }}</button>
+      }
+    </app-login-guard>
+  } @else {
+    @if (subscriptionStore.isFollowing(targetId())) {
+      @if (compact()) {
+        <button ngsIconButton (click)="unfollow()"
+                [ngsTooltip]="'unfollow' | transloco">
+          <ngs-icon name="fluent:person-prohibited-24-regular"/>
+        </button>
+      } @else {
+        <button ngsButton="filled" (click)="unfollow()" class="w-full">
+          {{ 'unfollow' | transloco }}
+        </button>
+      }
+    } @else {
+      @if (compact()) {
+        <button ngsIconButton (click)="follow()"
+                [disabled]="isDisabled"
+                [ngsTooltip]="'follow' | transloco">
+          <ngs-icon name="fluent:person-add-24-regular"/>
+        </button>
+      } @else {
+        <button ngsButton="outlined" [disabled]="isDisabled"
+                (click)="follow()" class="w-full">{{ 'follow' | transloco }}
+        </button>
+      }
+    }
+  }
+}

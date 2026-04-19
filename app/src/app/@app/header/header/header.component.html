@@ -1,0 +1,137 @@
+@if (announcement(); as announcementValue) {
+  <ngs-announcement closable
+                    [class.cursor-pointer]="announcementValue.targetUrl"
+                    [variant]="variant()"
+                    (click)="redirectToTarget()"
+                    (closed)="onAnnouncementClosed()">
+    <div [innerHTML]="announcementValue.content | safeHtml"></div>
+  </ngs-announcement>
+}
+<header class="flex justify-between bg-background border-b border-b-border items-center h-16 lg:h-16 gap-3 lg:gap-10 px-4 lg:px-6">
+  <div class="flex items-center flex-1 gap-3 lg:gap-10">
+    <button (click)="openMobileMenu()" class="lg:hidden p-2 -ms-2" aria-label="Open menu">
+      <ngs-icon name="fluent:line-horizontal-3-24-regular"/>
+    </button>
+    <a routerLink="/" class="font-bold text-lg flex-none">
+      <app-logo/>
+    </a>
+    <div class="hidden md:block w-full max-w-72">
+      <app-assistant-search/>
+    </div>
+  </div>
+  <div class="flex items-center gap-2 lg:gap-3">
+    <div class="md:hidden">
+       <button ngsIconButton (click)="openSearch()">
+          <ngs-icon name="fluent:search-24-regular"/>
+       </button>
+    </div>
+    <div class="flex items-center justify-end gap-2 lg:gap-3">
+      <div class="hidden min-[891px]:flex items-center gap-2 lg:gap-3">
+        @if (profile()) {
+          @if (monetizationCreditsEnabled()) {
+            <button ngsButton *can="'read'; subject: 'Credits'">
+              {{ profile().credits }} {{ 'header.credits' | transloco }}
+            </button>
+          }
+
+          <a *can="'read'; subject: 'AdminPanel'" routerLink="/admin" ngsButton="tonal" class="flex-none">
+            <ngs-icon name="fluent:shield-checkmark-24-regular"/>
+            <span class="hidden lg:inline ms-2">{{ 'header.menu.adminPanel' | transloco }}</span>
+          </a>
+          <button ngsButton="filled" [ngsMenuTriggerFor]="createMenu"
+                  [attr.aria-label]="'header.create' | transloco">
+            <ngs-icon name="fluent:add-24-regular"/>
+            <span class="hidden sm:inline">{{ 'header.create' | transloco }}</span>
+          </button>
+          <ngs-menu #createMenu="ngsMenu">
+            @if (contentAllowThreads()) {
+              <button ngs-menu-item (click)="createThread()">{{ 'header.header.thread' | transloco }}</button>
+            }
+            @if (contentAllowPublications()) {
+              <button ngs-menu-item (click)="createPublication()">{{ 'header.header.publication' | transloco }}</button>
+            }
+            @if (contentAllowTutorials()) {
+              <button ngs-menu-item (click)="createTutorial()">{{ 'header.header.tutorial' | transloco }}</button>
+            }
+          </ngs-menu>
+
+          <ngs-divider vertical fixedHeight class="ms-3"/>
+        }
+
+        <div class="flex items-center gap-2">
+          <ngs-color-scheme-switcher [ngsTooltip]="'header.colorTheme' | transloco"
+                                     ngsSoundEffect
+                                     (colorSchemeChanged)="onColorSchemeChanged($event)">
+            <ngs-icon name="fluent:weather-sunny-24-regular" *ngsColorSchemeLight/>
+            <ngs-icon name="fluent:weather-moon-24-regular" *ngsColorSchemeDark/>
+          </ngs-color-scheme-switcher>
+
+          @if (profile()) {
+            <a routerLink="/studio/notifications"
+               ngsIconButton
+               [ngsTooltip]="'header.notifications' | transloco">
+              @if (unreadNotificationsCount() > 0) {
+                <span [ngsBadge]="unreadNotificationsCount()">
+                <ngs-icon name="fluent:alert-24-regular"/>
+              </span>
+              } @else {
+                <ngs-icon name="fluent:alert-24-regular"/>
+              }
+            </a>
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        @if (!profile()) {
+          <div class="hidden min-[891px]:flex items-center gap-2">
+            <a routerLink="/login" ngsButton>{{ 'header.login' | transloco }}</a>
+            @if (isRegistrationEnabled()) {
+              <a routerLink="/register" ngsButton="outlined">{{ 'header.register' | transloco }}</a>
+            }
+          </div>
+        }
+
+        <div class="min-[891px]:hidden p-2 w-max">
+          <button ngsIconButton (click)="openActions()" aria-label="More actions">
+            <ngs-icon name="fluent:more-horizontal-24-regular"/>
+          </button>
+        </div>
+
+        @if (profile()) {
+          <ngs-dicebear [key]="profile().id"
+                        [image]="profile().avatarUrl | imageProxy: '100x100,sc,q90'"
+                        [clickable]="true"
+                        [ngsMenuTriggerFor]="accountMenu"
+                        [ngsTooltip]="'header.account' | transloco"
+                        class="size-10 ms-1"/>
+          <ngs-menu xPosition="before" #accountMenu="ngsMenu">
+            <div class="flex items-center px-4 pb-2 pt-2 gap-3 min-w-[200px]">
+              <ngs-dicebear [image]="profile().avatarUrl | imageProxy: '100x100,sc,q90'"
+                            [key]="profile().id" class="size-12"/>
+              <div class="-mt-0.5">
+                <div class="flex items-center gap-2">
+                  {{ profile().name }}
+                </div>
+                <div class="text-xs text-gray-500 mt-0.5 dark:text-gray-400">{{ profile().email }}</div>
+              </div>
+            </div>
+            <ngs-menu-divider/>
+            <a [routerLink]="['/user', profile().username]" ngs-menu-item>
+              <ngs-icon name="fluent:person-24-regular"/>
+              <span>{{ 'header.menu.profile' | transloco }}</span>
+            </a>
+            <a routerLink="/studio" ngs-menu-item>
+              <ngs-icon name="fluent:design-ideas-24-regular"/>
+              <span>{{ 'header.menu.studio' | transloco }}</span>
+            </a>
+            <a ngs-menu-item (click)="logout()">
+              <ngs-icon name="fluent:arrow-exit-24-regular"/>
+              <span>{{ 'header.menu.logout' | transloco }}</span>
+            </a>
+          </ngs-menu>
+        }
+      </div>
+    </div>
+  </div>
+</header>

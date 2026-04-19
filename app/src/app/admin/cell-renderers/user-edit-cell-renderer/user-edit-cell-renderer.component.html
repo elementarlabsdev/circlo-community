@@ -1,0 +1,9 @@
+<a [routerLink]="['/admin/users', element().id, 'edit']"
+   class="h-full w-full hover:underline underline-offset-1 flex gap-2.5 items-center">
+
+  @if (element().avatarUrl) {
+    <ngs-dicebear [image]="element().avatarUrl | imageProxy:'100x100,sc,q70'" class="size-9"/>
+  }
+
+  {{ fieldData() }}
+</a>

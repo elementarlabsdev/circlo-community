@@ -1,0 +1,78 @@
+<ngs-dialog-content class="p-6">
+  <div class="flex flex-col gap-6 w-full">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold">Actions</h2>
+      <button (click)="close()" class="p-2">
+        <ngs-icon name="fluent:dismiss-24-regular"/>
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      @if (profile()) {
+        @if (monetizationCreditsEnabled()) {
+          <button ngsButton *can="'read'; subject: 'Credits'" class="justify-start">
+            <ngs-icon name="fluent:money-24-regular" class="me-2"/>
+            {{ profile().credits }} {{ 'header.credits' | transloco }}
+          </button>
+        }
+
+        <a *can="'read'; subject: 'AdminPanel'" routerLink="/admin" (click)="close()" ngsButton="tonal" class="justify-start">
+          <ngs-icon name="fluent:shield-checkmark-24-regular" class="me-2"/>
+          <span>{{ 'header.menu.adminPanel' | transloco }}</span>
+        </a>
+
+        <div class="flex flex-col gap-2">
+          <p class="text-sm font-semibold text-neutral-500 px-2">{{ 'header.create' | transloco }}</p>
+          @if (contentAllowThreads()) {
+            <button ngsButton="outlined" (click)="createThread()" class="justify-start">
+              <ngs-icon name="fluent:add-24-regular" class="me-2"/>
+              Thread
+            </button>
+          }
+          @if (contentAllowPublications()) {
+            <button ngsButton="outlined" (click)="createPublication()" class="justify-start">
+              <ngs-icon name="fluent:add-24-regular" class="me-2"/>
+              Publication
+            </button>
+          }
+          @if (contentAllowTutorials()) {
+            <button ngsButton="outlined" (click)="createTutorial()" class="justify-start">
+              <ngs-icon name="fluent:add-24-regular" class="me-2"/>
+              Tutorial
+            </button>
+          }
+        </div>
+
+        <ngs-divider/>
+
+        <div class="flex items-center justify-between px-2">
+          <span class="text-sm font-semibold text-neutral-500">{{ 'header.colorTheme' | transloco }}</span>
+          <ngs-color-scheme-switcher ngsSoundEffect (colorSchemeChanged)="onColorSchemeChanged($event)">
+            <ngs-icon name="fluent:weather-sunny-24-regular" *ngsColorSchemeLight/>
+            <ngs-icon name="fluent:weather-moon-24-regular" *ngsColorSchemeDark/>
+          </ngs-color-scheme-switcher>
+        </div>
+
+        <a routerLink="/studio/notifications" (click)="close()" ngsButton="outlined" class="justify-start">
+          <ngs-icon name="fluent:alert-24-regular" class="me-2"/>
+          {{ 'header.notifications' | transloco }}
+          @if (unreadNotificationsCount() > 0) {
+            <span
+              class="ms-auto bg-primary text-on-primary text-[10px] px-1.5 py-0.5 rounded-full">{{ unreadNotificationsCount() }}</span>
+          }
+        </a>
+      } @else {
+        <a routerLink="/login" (click)="close()" ngsButton="filled" class="justify-start">
+          <ngs-icon name="fluent:person-24-regular" class="me-2"/>
+          {{ 'header.login' | transloco }}
+        </a>
+        @if (isRegistrationEnabled()) {
+          <a routerLink="/register" (click)="close()" ngsButton="outlined" class="justify-start">
+            <ngs-icon name="fluent:person-add-24-regular" class="me-2"/>
+            {{ 'header.register' | transloco }}
+          </a>
+        }
+      }
+    </div>
+  </div>
+</ngs-dialog-content>

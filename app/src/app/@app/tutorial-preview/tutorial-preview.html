@@ -1,0 +1,74 @@
+<div class="border border-border rounded-3xl bg-surface-container-lowest overflow-hidden">
+  @if (tutorial().featuredImageUrl) {
+    <a [routerLink]="getUrl()"
+       class="hidden md:flex items-center justify-center bg-surface-container h-[360px] relative overflow-hidden">
+      <img [alt]="tutorial().title" class="bg-cover lazyload"
+           [attr.data-src]="tutorial().featuredImageUrl | imageProxy:'740x361'">
+    </a>
+  }
+
+  <div class="px-9 pt-9 pb-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        @if (channel) {
+          <ngs-dicebear class="size-7"
+                        [key]="channel.id"
+                        [image]="channel.logoUrl | imageProxy: '60x60,sc,q80'"/>
+          <span class="text-sm text-neutral-500">{{ 'in' | transloco }}</span>
+          <a [routerLink]="['/channel', channel.slug]"
+             class="text-sm hover:text-primary hover:underline underline-offset-1">{{ channel.name }}</a>
+          <span class="text-sm text-neutral-500">{{ 'by' | transloco }}</span>
+          <ngs-dicebear class="size-7"
+                        [key]="tutorial().author.id"
+                        [image]="tutorial().author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+          <a [routerLink]="['/user', tutorial().author.username]"
+             class="text-sm hover:text-primary hover:underline underline-offset-1">{{ tutorial().author.name }}</a>
+        } @else {
+          <ngs-dicebear class="size-7"
+                        [key]="tutorial().author.id"
+                        [image]="tutorial().author.avatarUrl | imageProxy: '60x60,sc,q80'"/>
+          <a [routerLink]="['/user', tutorial().author.username]"
+             class="text-sm hover:text-primary hover:underline underline-offset-1">{{ tutorial().author.name }}</a>
+        }
+      </div>
+      <div class="text-xs">
+        @if (tutorial().estimatedTime.minutes === 0) {
+          {{ 'readingTime.less-than-a-minute-read' | transloco }}
+        } @else if (tutorial().estimatedTime.minutes != null) {
+          {{ tutorial().estimatedTime.minutes }} {{ 'readingTimeInMinutes' | transloco:{ count: tutorial().estimatedTime.minutes } }} {{ 'read' | transloco }}
+        }
+      </div>
+    </div>
+    <a [routerLink]="getUrl()"
+       class="text-xl md:text-2xl lg:text-3xl lg:leading-[46px] font-extrabold block hover:text-primary mt-4">{{ tutorial().title }}</a>
+    <div class="hidden md:flex items-center justify-between mt-4">
+      <div class="flex items-center gap-3 relative -start-2">
+        <a [routerLink]="getUrl()" fragment="comments"
+           class="flex items-center gap-1.5 ps-2 pe-3 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg" ngsRipple>
+          <ngs-icon name="fluent:chat-24-regular"/>
+          <span class="text-xs">
+            <app-comments-count [count]="tutorial().commentsCount"/>
+          </span>
+        </a>
+        @if (tutorial().reactionsCount > 0) {
+          <app-reaction-list [reactions]="reactions()" />
+        }
+      </div>
+      <div class="flex items-center gap-3 relative -end-2">
+        <div class="text-xs">{{ tutorial().publishedAt | timeAgo }}</div>
+        <ngs-divider vertical/>
+        <div class="text-xs">
+          <app-views-count [count]="tutorial().viewsCount"/>
+        </div>
+        <ngs-divider vertical/>
+        <app-bookmark-button targetType="tutorial" [targetId]="tutorial().id"/>
+        @if (canDelete()) {
+          <ngs-divider vertical/>
+          <button (click)="delete()" class="text-xs text-red-500 hover:underline">
+            {{ 'delete' | transloco }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

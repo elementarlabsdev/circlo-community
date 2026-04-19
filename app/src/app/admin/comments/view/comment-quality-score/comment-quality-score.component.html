@@ -1,0 +1,45 @@
+@if (score() !== null) {
+  <div class="flex flex-col gap-6">
+    <div class="flex items-center gap-3">
+      <div
+        class="size-5 rounded-full shrink-0 border-2 border-white shadow-sm"
+        [style.background-color]="indicatorColor()"
+      ></div>
+      <div class="flex items-center gap-3 leading-tight">
+        <span class="text-lg font-bold">{{ score() | number: '1.0-0' }}%</span>
+        <span class="text-sm text-neutral-500 font-medium">{{ description() }}</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="bg-neutral-50 p-3 rounded-2xl">
+        <span class="text-xs text-neutral-500 uppercase tracking-wider font-bold block mb-1">Sentiment</span>
+        <span class="text-base font-semibold">{{ qualityScore()?.sentimentScore | number: '1.0-0' }}%</span>
+      </div>
+      <div class="bg-neutral-50 p-3 rounded-2xl">
+        <span class="text-xs text-neutral-500 uppercase tracking-wider font-bold block mb-1">Toxicity</span>
+        <span class="text-base font-semibold">{{ qualityScore()?.toxicityScore | number: '1.0-0' }}%</span>
+      </div>
+      <div class="bg-neutral-50 p-3 rounded-2xl">
+        <span class="text-xs text-neutral-500 uppercase tracking-wider font-bold block mb-1">Spam</span>
+        <span class="text-base font-semibold">{{ qualityScore()?.spamScore | number: '1.0-0' }}%</span>
+      </div>
+      <div class="bg-neutral-50 p-3 rounded-2xl">
+        <span class="text-xs text-neutral-500 uppercase tracking-wider font-bold block mb-1">AI Generated</span>
+        <span class="text-base font-semibold">{{ qualityScore()?.aiGeneratedScore | number: '1.0-0' }}%</span>
+      </div>
+      <div class="bg-neutral-50 p-3 rounded-2xl">
+        <span class="text-xs text-neutral-500 uppercase tracking-wider font-bold block mb-1">Coherence</span>
+        <span class="text-base font-semibold">{{ qualityScore()?.coherenceScore | number: '1.0-0' }}%</span>
+      </div>
+      <div class="bg-neutral-50 p-3 rounded-2xl">
+        <span class="text-xs text-neutral-500 uppercase tracking-wider font-bold block mb-1">Readability</span>
+        <span class="text-base font-semibold">{{ qualityScore()?.readabilityScore | number: '1.0-0' }}%</span>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="p-8 text-center bg-neutral-50 rounded-2xl border border-dashed border-neutral-300">
+    <span class="text-neutral-500 italic">No quality data available for this comment.</span>
+  </div>
+}

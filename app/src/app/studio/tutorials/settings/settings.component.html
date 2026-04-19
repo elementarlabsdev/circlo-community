@@ -1,0 +1,210 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="px-6 h-16 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'studio.tutorials.setting-heading' | transloco }}</h1>
+        <button ngsButton="filled" (click)="save()"
+                [loading]="saving()"
+                [disabled]="form.invalid">{{ 'save' | transloco }}
+        </button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-12" [formGroup]="form">
+          <div class="mb-10 lg:w-7/12">
+            @if (tutorial().featuredImageUrl) {
+              <div
+                class="bg-surface-container-low mb-7 overflow-hidden rounded-2xl relative flex items-center justify-center p-4 min-h-20">
+                <div class="absolute end-3 top-3">
+                  @if (featuredImageUploading()) {
+                    <div class="text-xs bg-neutral-950 text-white rounded-full
+                                  py-2 px-4 border-2 border-white">{{ 'uploading' | transloco }}...
+                    </div>
+                  } @else {
+                    <button ngsButton="tonal" (click)="deleteFeaturedImage()">
+                      <ngs-icon name="fluent:delete-24-regular"/>
+                      {{ 'delete' | transloco }}
+                    </button>
+                  }
+                </div>
+                <img [src]="tutorial().featuredImageUrl | imageProxy:'x500'" alt="" class="max-w-full max-h-[500px]">
+              </div>
+            } @else {
+              <ngs-upload-container>
+                <ngs-upload-area ngsUploadTrigger accept="image/*"
+                                 (fileSelected)="onFeatureImageSelected($event)">
+                  <ngs-icon name="fluent:attach-24-regular" ngsUploadAreaIcon/>
+                  <ng-container ngsUploadAreaMainState>
+                    Drag & drop
+                    <button class="text-primary cursor-pointer">or choose image</button>
+                    to upload
+                  </ng-container>
+                  <ng-container ngsUploadAreaDropState>
+                    Drop image here
+                  </ng-container>
+                  <ng-container ngsUploadAreaInvalidState>
+                    Invalid files to drop, images accept only.
+                  </ng-container>
+                </ngs-upload-area>
+                <ngs-upload-allowed-types>Images only are allowed to upload</ngs-upload-allowed-types>
+                <ngs-upload-max-file-size>Max size per file: 2MB</ngs-upload-max-file-size>
+              </ngs-upload-container>
+            }
+          </div>
+          <div class="lg:w-7/12">
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'slug' | transloco }}</ngs-label>
+              <input type="text" ngsInput formControlName="slug">
+            </ngs-form-field>
+            <ngs-form-field class="w-full">
+              <ngs-label>Channel</ngs-label>
+              <input type="text"
+                     ngsInput
+                     [formControl]="channelSearchControl"
+                     [ngsAutocomplete]="channelsAutocomplete">
+              @if (form.value.channelId) {
+                <button ngsIconButton ngsSuffix type="button" (click)="clearChannel()" aria-label="Clear channel">
+                  <ngs-icon name="fluent:dismiss-24-regular"/>
+                </button>
+              }
+              <ngs-autocomplete #channelsAutocomplete="ngsAutocomplete"
+                                [displayWith]="displayChannel"
+                                (optionSelected)="channelSelected($event)">
+                @for (c of filteredChannels(); track c.id) {
+                  <ngs-option [value]="c">{{ c.name }}</ngs-option>
+                }
+              </ngs-autocomplete>
+            </ngs-form-field>
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'topics' | transloco }}</ngs-label>
+              <ngs-chip-grid #chipGrid>
+                @for (topic of tutorial()!.topics; track topic.id || topic.name) {
+                  <ngs-chip-row (removed)="removeTopic(topic)">
+                    {{ topic.name }}
+                    <button ngsChipRemove>
+                      <ngs-icon name="fluent:dismiss-24-regular"/>
+                    </button>
+                  </ngs-chip-row>
+                }
+              </ngs-chip-grid>
+              <input [placeholder]="'newTopic' | transloco"
+                     #topicInput
+                     maxlength="30"
+                     [formControl]="topicNameControl"
+                     [ngsChipInputFor]="chipGrid"
+                     [ngsAutocomplete]="topicsAutocomplete"
+                     [ngsChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (chipInputTokenEnd)="addTopic($event)">
+              <ngs-autocomplete #topicsAutocomplete="ngsAutocomplete"
+                                [displayWith]="displayTopic"
+                                (optionSelected)="topicSelected($event)">
+                @for (topic of filteredTopics(); track topic) {
+                  <ngs-option [value]="topic" [disabled]="tutorial()!.topics.length >= 6">
+                    {{ topic.name }}
+                  </ngs-option>
+                }
+              </ngs-autocomplete>
+              <ngs-hint>{{ 'maxTopics' | transloco }}</ngs-hint>
+            </ngs-form-field>
+            <ngs-checkbox-group class="mt-5">
+              <ngs-checkbox formControlName="pinned">{{ 'pinTutorial' | transloco }}</ngs-checkbox>
+              <ngs-checkbox formControlName="discussionEnabled">{{ 'enableCommentsOnThisPublication' | transloco }}
+              </ngs-checkbox>
+            </ngs-checkbox-group>
+            <div class="mt-8 border border-border rounded-3xl px-5 pb-5 pt-3">
+              <h6 class="flex items-center justify-between">
+                What you will learn
+                <button ngsButton type="button" (click)="addLearningPoint()">
+                  <ngs-icon name="fluent:add-24-regular"/>
+                  Add point
+                </button>
+              </h6>
+              <div class="flex flex-col gap-3 mt-4"
+                   cdkDropList
+                   (cdkDropListDropped)="dropLearningPoint($event)">
+                @for (ctrl of whatYouWillLearn.controls; track ctrl; let i = $index) {
+                  <div class="flex items-center gap-3" cdkDrag>
+                    <button ngsIconButton cdkDragHandle aria-label="Drag handle">
+                      <ngs-icon name="fluent:re-order-dots-vertical-24-regular"/>
+                    </button>
+                    <ngs-form-field class="grow what-you-will-learn-point" subscriptHiddenIfEmpty>
+                      <ngs-label>Point</ngs-label>
+                      <input ngsInput [formControl]="whatYouWillLearn.at(i)"
+                             placeholder="Describe the skill or outcome">
+                    </ngs-form-field>
+                    <button ngsIconButton type="button" (click)="removeLearningPoint(i)" aria-label="Remove point">
+                      <ngs-icon name="fluent:delete-24-regular"/>
+                    </button>
+                    <ng-template cdkDragPlaceholder>
+                      <div class="h-12 rounded-xl border-2 border-dashed border-default"></div>
+                    </ng-template>
+                  </div>
+                } @empty {
+                  <div class="text-sm text-neutral-600">
+                    No points yet — click "Add point" to create the first one.
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="mt-8">
+              <h6>{{ 'license.title' | transloco }}</h6>
+              <ul class="bg-surface-container text-xs leading-relaxed p-4 flex flex-col gap-2 rounded-2xl mt-4">
+                @for (rule of licenseRules; track rule) {
+                  <li class="flex gap-2">
+                    @if (rule.icon) {
+                      <img [src]="rule.icon" alt="" class="size-4 relative top-0.5">
+                    }
+                    {{ rule.name | transloco }}
+                  </li>
+                }
+              </ul>
+              <div class="mt-5">
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'license.type' | transloco }}</ngs-label>
+                  <ngs-select formControlName="licenseTypeId">
+                    @for (license of licenseTypes(); track license.id) {
+                      @if (license.children.length > 0) {
+                        <ngs-optgroup [label]="license.name | transloco">
+                          @for (child of license.children; track child.id) {
+                            <ngs-option [value]="child.id">{{ child.name | transloco }}</ngs-option>
+                          }
+                        </ngs-optgroup>
+                      } @else {
+                        <ngs-option [value]="license.id">{{ license.name | transloco }}</ngs-option>
+                      }
+                    }
+                  </ngs-select>
+                </ngs-form-field>
+              </div>
+            </div>
+            <div class="mt-8">
+              <h6 class="flex items-center justify-between">
+                {{ 'seoAndSettings' | transloco }}
+                <button ngsButton>Fill with AI</button>
+              </h6>
+              <div class="space-y-6 mt-4">
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'metaTitle' | transloco }}</ngs-label>
+                  <input ngsInput formControlName="metaTitle">
+                  <ngs-hint>
+                    {{ 'metaTitleHint' | transloco }}.
+                  </ngs-hint>
+                </ngs-form-field>
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'metaDescription' | transloco }}</ngs-label>
+                  <textarea ngsInput formControlName="metaDescription" rows="3" ngsTextareaAutoSize></textarea>
+                  <ngs-hint>
+                    {{ 'metaDescriptionHint' | transloco }}.
+                  </ngs-hint>
+                </ngs-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-12">{{ 'loading' | transloco }}...</div>
+}

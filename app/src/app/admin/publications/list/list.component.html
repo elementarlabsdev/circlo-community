@@ -1,0 +1,29 @@
+<ngs-panel>
+  <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+    <div class="flex h-full items-center justify-between">
+      <div class="flex items-center gap-5">
+        <h1 class="font-bold">{{ 'admin.publications.title' | transloco }}</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <!--          <button ngsButton="filled" ngsRipple>-->
+        <!--            <ngs-icon name="fluent:add-24-regular"/> Add Widget-->
+        <!--          </button>-->
+      </div>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-data-view
+      #dataView
+      [columnDefs]="columnDefs"
+      [cellRenderers]="cellRenderers"
+      [withPagination]="true"
+      [datasource]="datasource"
+      rowModelType="serverSide"
+      autoHeight
+      withSelection
+      withColumnSettings
+      class="absolute inset-0"
+      emptyFilterResultsIcon="fluent:textbox-24-regular"
+      [emptyFilterResultsText]="'admin.publications.noPublications' | transloco"/>
+  </ngs-panel-content>
+</ngs-panel>

@@ -1,0 +1,7 @@
+:host {
+  .expansion-panel {
+    &.ngs-expanded {
+      background: var(--color-surface-container-lowest);
+    }
+  }
+}

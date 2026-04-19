@@ -1,0 +1,23 @@
+@if (loaded()) {
+  <ngs-card class="h-full !bg-surface-container-lowest">
+    <ngs-card-content>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="tracking-tight font-semibold">Publications</h3>
+          <div class="pt-0 flex items-center mt-3 gap-3">
+            <div class="text-3xl font-semibold flex gap-1">
+              {{ data().publishedPublicationsCount }}
+              @if (data().draftPublicationsCount > 0) {
+                <span>/</span>
+                <div class="text-neutral-500">{{ data().draftPublicationsCount }}</div>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="bg-blue-50 rounded-xl size-20 flex items-center justify-center text-blue-500">
+          <ngs-icon name="fluent:textbox-24-regular" class="size-7"/>
+        </div>
+      </div>
+    </ngs-card-content>
+  </ngs-card>
+}

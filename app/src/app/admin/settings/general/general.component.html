@@ -1,0 +1,46 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'admin.settings.general-settings-heading' | transloco }}</h1>
+        <button ngsButton="filled" (click)="save()">{{ 'common.save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-6 lg:p-12">
+          <form [formGroup]="form" class="xl:w-8/12 mb-5">
+            <div class="space-y-5">
+              <div>
+                <h3 class="font-bold text-lg">{{ 'admin.settings.general.communitySettings' | transloco }}</h3>
+                <div class="text-sm mt-1 text-neutral-500">{{ 'admin.settings.general.communitySettingsDesc' | transloco }}</div>
+              </div>
+
+              <ngs-form-field class="w-full mt-2">
+                <ngs-label>{{ 'admin.settings.general.siteName' | transloco }}</ngs-label>
+                <input type="text" ngsInput formControlName="siteName">
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.settings.general.siteTitle' | transloco }}</ngs-label>
+                <input type="text" ngsInput formControlName="siteTitle">
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.settings.general.description' | transloco }}</ngs-label>
+                <textarea ngsInput formControlName="metaDescription" ngsTextareaAutoSize></textarea>
+                <ngs-hint>
+                  {{ 'admin.settings.general.descriptionHint' | transloco }}
+                </ngs-hint>
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.settings.general.copyright' | transloco }}</ngs-label>
+                <input type="text" ngsInput formControlName="copyright">
+              </ngs-form-field>
+            </div>
+          </form>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6 xl:p-12">{{ 'common.loading' | transloco }}</div>
+}

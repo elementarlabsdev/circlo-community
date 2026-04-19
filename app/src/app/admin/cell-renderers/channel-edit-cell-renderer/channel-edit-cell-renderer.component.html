@@ -1,0 +1,9 @@
+<a [routerLink]="['/channel', element().slug]" target="_blank"
+   class="h-full w-full hover:underline underline-offset-1 flex gap-2.5 items-center">
+
+  @if (element().logoUrl) {
+    <ngs-dicebear [image]="element().logoUrl | imageProxy:'100x100,sc,q70'" class="size-9"/>
+  }
+
+  {{ fieldData() }}
+</a>

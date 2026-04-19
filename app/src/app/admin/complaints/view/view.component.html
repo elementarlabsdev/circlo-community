@@ -1,0 +1,51 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-4 pe-6 border-b border-b-border">
+      <div class="flex h-full items-center gap-2 justify-between">
+        <div class="flex items-center gap-2">
+          <button ngsIconButton (click)="backToList()">
+            <ngs-icon name="fluent:arrow-left-24-regular"/>
+          </button>
+          <h1 class="font-bold">{{ 'admin.complaints.view.actions' | transloco }}</h1>
+        </div>
+        <div></div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <div class="p-10">
+        <h1 class="text-2xl font-semibold">{{ complaint().name || ('admin.complaints.view.title' | transloco) }}</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <div><strong>ID:</strong> {{ complaint().id }}</div>
+            <div><strong>{{ 'admin.complaints.view.created' | transloco }}:</strong> {{ complaint().createdAt | date:'medium' }}</div>
+            <div><strong>{{ 'admin.complaints.view.updated' | transloco }}:</strong> {{ complaint().updatedAt | date:'medium' }}</div>
+          </div>
+          <div class="space-y-2">
+            <div><strong>{{ 'admin.complaints.view.targetType' | transloco }}:</strong> {{ complaint().targetType }}</div>
+            <div><strong>{{ 'admin.complaints.view.targetId' | transloco }}:</strong> {{ complaint().targetId }}</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <div><strong>{{ 'admin.complaints.view.reporter' | transloco }}:</strong> {{ complaint().reporter?.name }} <span class="text-gray-500">({{ complaint().reporter?.email }})</span></div>
+          </div>
+          <div class="space-y-2">
+            <div><strong>{{ 'admin.complaints.view.reason' | transloco }}:</strong> {{ complaint().reason?.name || complaint().reason?.code }}</div>
+            <div><strong>{{ 'admin.complaints.view.status' | transloco }}:</strong> {{ complaint().status?.name || complaint().status?.code }}</div>
+          </div>
+        </div>
+
+        <div>
+          <strong>{{ 'admin.complaints.view.details' | transloco }}:</strong>
+          <div class="whitespace-pre-line p-3 bg-gray-50 rounded border border-gray-100 min-h-[40px]">
+            {{ complaint().details || '—' }}
+          </div>
+        </div>
+      </div>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6">{{ 'common.loading' | transloco }}</div>
+}

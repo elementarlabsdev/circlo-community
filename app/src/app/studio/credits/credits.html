@@ -1,0 +1,76 @@
+<div class="page p-12 max-w-5xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">{{ 'studio.credits.title' | transloco }}</h2>
+  </div>
+
+  @if (paymentStatus() === 'success') {
+    <ngs-alert variant="success" class="mb-6">
+      {{ 'studio.credits.payment_success' | transloco }}
+    </ngs-alert>
+  }
+
+  @if (paymentStatus() === 'processing') {
+    <ngs-alert variant="info" class="mb-6">
+      <div class="flex items-center gap-2">
+        <ngs-icon name="fluent:spinner-ios-20-regular" class="animate-spin" />
+        <span>{{ 'studio.credits.payment_processing' | transloco }}</span>
+      </div>
+    </ngs-alert>
+  }
+
+  @if (paymentStatus() === 'cancel') {
+    <ngs-alert variant="warning" class="mb-6">
+      {{ 'studio.credits.payment_cancel' | transloco }}
+    </ngs-alert>
+  }
+
+  @if (!isStripeConfigured()) {
+    <ngs-alert variant="danger" class="mb-6">
+      {{ 'studio.credits.stripe_not_configured' | transloco }}
+    </ngs-alert>
+  }
+
+  <ngs-card class="mb-12">
+    <ngs-card-header>
+      <ngs-card-title>{{ 'studio.credits.buy_title' | transloco }}</ngs-card-title>
+    </ngs-card-header>
+    <ngs-card-content>
+      <p class="text-gray-600 mb-6">{{ 'studio.credits.buy_description' | transloco }}</p>
+
+      <div class="flex flex-col md:flex-row items-center gap-4 max-w-md">
+        <div class="w-48">
+          <ngs-form-field subscriptHiddenIfEmpty>
+            <ngs-label>{{ 'studio.credits.amount_label' | transloco }}</ngs-label>
+            <input ngsInput
+                   type="number"
+                   [formControl]="amount"
+                   placeholder="Enter amount in USD" />
+            <span ngsTextSuffix>USD</span>
+          </ngs-form-field>
+        </div>
+        <button ngsButton="filled"
+                (click)="buyCredits()"
+                [disabled]="!isStripeConfigured() || amount.invalid">
+          {{ 'studio.credits.buy_now' | transloco }}
+        </button>
+      </div>
+    </ngs-card-content>
+  </ngs-card>
+
+  <section class="transactions">
+    <h3 class="text-xl font-semibold mb-4">{{ 'studio.credits.transactions_title' | transloco }}</h3>
+
+    <ngs-data-view
+      #datagridRef
+      [columnDefs]="columnDefs"
+      [cellRenderers]="cellRenderers"
+      [withPagination]="true"
+      [datasource]="datasource"
+      rowModelType="serverSide"
+      [pageSizeOptions]="[20, 50, 100]"
+      [pageSize]="20"
+      class="mt-4 h-[600px] border border-border rounded-2xl overflow-hidden"
+      emptyFilterResultsIcon="fluent:number-symbol-24-regular"
+      [emptyFilterResultsText]="'studio.credits.no_transactions' | transloco"/>
+  </section>
+</div>

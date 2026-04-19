@@ -1,0 +1,4 @@
+<a [routerLink]="['/user', element().username]" target="_blank" class="block h-full flex items-center gap-3">
+  <ngs-dicebear [key]="element().id" [image]="element().avatarUrl | imageProxy: '100x100,sc,q90'" class="size-9"/>
+  {{ fieldData() }}
+</a>

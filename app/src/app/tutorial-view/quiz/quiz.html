@@ -1,0 +1,134 @@
+@if (loaded()) {
+  <div class="p-10">
+    <div class="shadow-sm rounded-2xl bg-surface-container-lowest overflow-hidden p-8 max-w-[820px] mx-auto">
+      @if (!finished()) {
+        <div>
+          <div class="pt-2 px-1 pb-4">
+            <div class="text-xs text-neutral-600 mb-2">Question {{ currentIndex() + 1 }} of {{ total() }}</div>
+            <ngs-progress-bar [value]="progress()" mode="determinate"></ngs-progress-bar>
+          </div>
+
+          <div>
+            <h2 class="text-4xl mt-3 mb-7">{{ question()?.text }}</h2>
+            @if (question()?.type === 'multiple') {
+              <div class="text-neutral-500 text-sm mb-3">Select all that apply.</div>
+            }
+          </div>
+
+          @if (question()?.type !== 'open') {
+            <!-- Multiple choice (checkboxes) -->
+            @if (question()?.type === 'multiple') {
+              <div class="flex flex-col gap-4 mt-2">
+                @for (opt of question()?.options; track i; let i = $index) {
+                  <label
+                      [ngClass]="{
+                      'bg-primary-100 border-primary': isChecked(i) && !checked(),
+                      'bg-[#e8f5e9] border-[#2e7d32]': checked() && isOptionCorrect(i),
+                      'bg-[#ffebee] border-[#c62828]': checked() && isOptionIncorrectSelected(i)
+                    }"
+                      class="flex items-center gap-2 border border-border hover:border-primary rounded-2xl py-3 px-3 cursor-pointer"
+                  >
+                    <ngs-checkbox
+                        (change)="toggleMultiple(i)"
+                        [checked]="isChecked(i)"
+                        [disabled]="checked()"
+                    ></ngs-checkbox>
+                    <div class="font-semibold">{{ opt?.text ?? opt }}</div>
+                  </label>
+                }
+              </div>
+            } @else if (question()?.type === 'single') {
+              <div class="flex flex-col gap-2 mt-2">
+                <ngs-radio-group (change)="selectSingle($any($event.value))"
+                                 [disabled]="checked()" [value]="selectedSingleIndex()" class="flex flex-col gap-4">
+                  @for (opt of question()?.options; track i; let i = $index) {
+                    <label
+                        [ngClass]="{
+                        'bg-primary-100 border-primary': isChecked(i) && !checked(),
+                        'bg-[#e8f5e9] border-[#2e7d32]': checked() && isOptionCorrect(i),
+                        'bg-[#ffebee] border-[#c62828]': checked() && isOptionIncorrectSelected(i)
+                      }"
+                        class="flex items-center gap-2 border border-border hover:border-primary rounded-2xl py-3 px-3 cursor-pointer"
+                    >
+                      <ngs-radio-button [disabled]="checked()" [value]="i"></ngs-radio-button>
+                      <div class="font-semibold">{{ opt?.text ?? opt }}</div>
+                    </label>
+                  }
+                </ngs-radio-group>
+              </div>
+            }
+          }
+
+          @if (checked()) {
+            <div [ngClass]="{ 'text-emerald-600': isAnswerCorrect(), 'text-red-600': !isAnswerCorrect() }"
+                 class="mt-5 text-tiny font-semibold">
+              {{ isAnswerCorrect() ? 'Correct!' : 'Incorrect. Review the highlighted answers.' }}
+            </div>
+          }
+
+          <div class="flex justify-between mt-6">
+            <button (click)="prev()" [disabled]="currentIndex()===0" ngsButton>Previous</button>
+            @if (!checked()) {
+              <button (click)="check()" [disabled]="!canCheck()" color="primary" ngsButton="tonal">
+                Check
+              </button>
+            } @else {
+              <button (click)="next()" [disabled]="!canGoNext()" color="primary" ngsButton="tonal">
+                {{ currentIndex() + 1 < total() ? 'Next Question' : 'Finish' }}
+              </button>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- Summary View -->
+        <div>
+        <h3 class="text-xl font-semibold mb-2">Summary Overview</h3>
+        <div class="text-sm text-neutral-600 mb-5">You answered {{ correctCount() }} out of {{ total() }} questions
+          correctly.
+        </div>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="rounded-2xl p-6 border border-border text-center">
+              <div class="text-3xl font-bold">{{ scorePercent() }}%</div>
+              <div class="text-xs text-neutral-500">Overall Score</div>
+            </div>
+            <div class="rounded-2xl p-6 border border-border text-center">
+              <div class="text-3xl font-bold">{{ correctCount() }}</div>
+              <div class="text-xs text-neutral-500">Correct Answers</div>
+            </div>
+            <div class="rounded-2xl p-6 border border-border text-center">
+              <div class="text-3xl font-bold">{{ incorrectCount() }}</div>
+              <div class="text-xs text-neutral-500">Incorrect Answers</div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="flex items-center justify-between mt-6 max-w-[820px] mx-auto">
+    @if (previousItem()) {
+      <a [routerLink]="['/tutorial', tutorial()!.slug, previousItem().type, previousItem().slug]" ngsButton="outlined" class="gap-2">
+        <ngs-icon name="fluent:arrow-left-24-regular"/>
+        Previous
+      </a>
+    } @else {
+      <button ngsButton="outlined" class="gap-2" disabled>
+        <ngs-icon name="fluent:arrow-left-24-regular"/>
+        Previous
+      </button>
+    }
+
+    @if (nextItem()) {
+      <a [routerLink]="['/tutorial', tutorial()!.slug, nextItem().type, nextItem().slug]" ngsButton="filled" class="gap-2">
+        Next
+        <ngs-icon name="fluent:arrow-right-24-regular"/>
+      </a>
+    } @else {
+      <button ngsButton="filled" class="gap-2" disabled>
+        Next
+        <ngs-icon name="fluent:arrow-right-24-regular"/>
+      </button>
+    }
+  </div>
+} @else {
+  <div class="p-10">Loading...</div>
+}

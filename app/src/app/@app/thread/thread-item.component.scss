@@ -1,0 +1,9 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+
+  .has-reaction {
+    color: theme(--color-red-500);
+  }
+}

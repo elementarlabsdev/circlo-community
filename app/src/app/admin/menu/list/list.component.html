@@ -1,0 +1,27 @@
+<ngs-panel>
+  <ngs-panel-header autoHeight>
+    <ngs-toolbar class="h-16 px-6 border-b border-b-border">
+      <ngs-toolbar-title>{{ 'admin.menus.title' | transloco }}</ngs-toolbar-title>
+      <ngs-toolbar-spacer/>
+      <button ngsButton="filled" (click)="createNew()">
+        <ngs-icon name="fluent:add-24-regular"/>
+        {{ 'admin.menus.newMenu' | transloco }}
+      </button>
+    </ngs-toolbar>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-data-view
+      #datagridRef
+      [columnDefs]="columnDefs"
+      [cellRenderers]="cellRenderers"
+      [withPagination]="true"
+      [datasource]="datasource"
+      rowModelType="serverSide"
+      autoHeight
+      withSelection
+      withColumnSettings
+      class="absolute inset-0"
+      emptyFilterResultsIcon="fluent:compass-northwest-24-regular"
+      [emptyFilterResultsText]="'admin.menus.noMenus' | transloco"/>
+  </ngs-panel-content>
+</ngs-panel>

@@ -1,0 +1,17 @@
+<a routerLink="/" class="text-2xl font-bold absolute top-7 start-7 z-1">
+  <app-logo/>
+</a>
+<div class="form-container min-h-screen flex flex-col justify-center items-center p-5">
+  <ngs-card appearance="filled">
+    <div class="p-12">
+      <h1 class="text-center text-3xl font-bold whitespace-nowrap">
+        <span>{{ 'email.verifiedTitle' | transloco }}</span>
+      </h1>
+      <p class="mt-3 text-center text-neutral-600 text-sm">
+        {{ 'email.verified.text1' | transloco }}
+        <a routerLink="/login" class="text-primary font-bold hover:underline">{{ 'login.login' | transloco }}</a>
+        {{ 'email.verified.text2' | transloco }}
+      </p>
+    </div>
+  </ngs-card>
+</div>

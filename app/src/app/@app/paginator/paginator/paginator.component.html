@@ -1,0 +1,5 @@
+<a [routerLink]="[route(), prevPageNumber()]" ngsButton="outlined"
+   [disabled]="pageNumber() === 1" (click)="setPage(prevPageNumber())">{{ 'paginator.previous' | transloco }}</a>
+<div>{{ pageNumber() }} of {{ totalPages() }}</div>
+<a [routerLink]="[route(), nextPageNumber()]" ngsButton="filled"
+   [disabled]="pageNumber() === totalPages()" (click)="setPage(nextPageNumber())">{{ 'paginator.next' | transloco }}</a>

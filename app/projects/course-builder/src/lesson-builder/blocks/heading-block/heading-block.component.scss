@@ -1,0 +1,25 @@
+@reference 'tailwindcss';
+
+:host {
+  font-weight: 600;
+
+  .level-1 {
+    font-size: theme(--text-4xl);
+  }
+
+  .level-2 {
+    font-size: theme(--text-3xl);
+  }
+
+  .level-3 {
+    font-size: theme(--text-2xl);
+  }
+
+  .level-4 {
+    font-size: theme(--text-xl);
+  }
+
+  .level-5 {
+    font-size: theme(--text-lg);
+  }
+}

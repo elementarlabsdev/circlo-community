@@ -1,0 +1,8 @@
+:host {
+  display: block;
+  min-height: 100vh;
+
+  ngs-divider {
+    --ngs-divider-text-bg: var(--color-surface-container-lowest);
+  }
+}

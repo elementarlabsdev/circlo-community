@@ -1,0 +1,19 @@
+<h2 ngs-dialog-title>{{ 'admin.settings.mail.mailchimp.title' | transloco }}</h2>
+<ngs-dialog-content>
+  <form [formGroup]="form">
+    <div class="space-y-3 mt-2">
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.mail.mailchimp.apiKey' | transloco }}</ngs-label>
+        <input ngsInput type="text" formControlName="apiKey" [placeholder]="'admin.settings.mail.mailchimp.apiKeyPlaceholder' | transloco">
+        <ngs-hint>{{ 'admin.settings.mail.mailchimp.apiKeyHint' | transloco }}</ngs-hint>
+      </ngs-form-field>
+      <div class="mt-4">
+        <ngs-slide-toggle formControlName="isEnabled">{{ 'captchaProvider.isEnabled' | transloco }}</ngs-slide-toggle>
+      </div>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton type="button" (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button ngsButton="filled" color="primary" type="button" [disabled]="form.invalid" (click)="apply()">{{ 'common.apply' | transloco }}</button>
+</ngs-dialog-actions>

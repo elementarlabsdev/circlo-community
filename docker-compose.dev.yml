@@ -1,0 +1,13 @@
+services:
+  imageproxy:
+    ports:
+      - "8080:8080"
+  database:
+    ports:
+      - "5432:5432"
+  redis:
+    ports:
+      - "6379:6379"
+  cap:
+    ports:
+      - "3001:3001"

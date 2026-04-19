@@ -1,0 +1,53 @@
+import { Component, inject } from '@angular/core';
+import {
+  DIALOG_DATA,
+  DialogActions,
+  DialogContent,
+  DialogRef,
+  DialogTitle,
+} from '@ngstarter/components/dialog';
+import { Input } from '@ngstarter/components/input';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormField, Label } from '@ngstarter/components/form-field';
+import { Button } from '@ngstarter/components/button';
+import { TranslocoModule } from '@jsverse/transloco';
+import { Icon } from '@ngstarter/components/icon';
+
+@Component({
+  selector: 'app-local-captcha',
+  standalone: true,
+  imports: [
+    Button,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormField,
+    Input,
+    Label,
+    ReactiveFormsModule,
+    TranslocoModule,
+    Icon,
+  ],
+  templateUrl: './local-captcha.component.html',
+})
+export class LocalCaptchaComponent {
+  protected _dialogRef = inject(DialogRef);
+  protected _data = inject<any>(DIALOG_DATA);
+  private _formBuilder = inject(FormBuilder);
+
+  form = this._formBuilder.group({
+    siteKey: [this._data.siteKey],
+    secretKey: [this._data.secretKey],
+  });
+
+  cancel() {
+    this._dialogRef.close();
+  }
+
+  apply() {
+    this._dialogRef.close({
+      formData: this.form.value,
+      isConfigured: true,
+    });
+  }
+}

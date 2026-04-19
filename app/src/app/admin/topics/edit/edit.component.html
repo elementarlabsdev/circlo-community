@@ -1,0 +1,76 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 border-b border-b-border">
+      <div class="h-full flex items-center gap-5 justify-between px-6">
+        <div class="flex items-center gap-5">
+          <div class="font-bold">{{ 'admin.topics.edit.title' | transloco }}</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a routerLink="/admin/topics" ngsButton>{{ 'common.cancel' | transloco }}</a>
+          <button ngsButton="filled" type="button" [disabled]="saving || form.invalid" (click)="save()">
+            {{ 'common.save' | transloco }}
+          </button>
+        </div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content class="overflow-y-auto p-10">
+      <form [formGroup]="form" class="w-1/2">
+        <div class="flex items-center gap-6">
+          <ngs-dicebear [key]="topic.id" [image]="topic.logoUrl | imageProxy:'100x100,sc'" class="size-28"/>
+          <div>
+            <p class="text-tiny mb-3">
+              {{ 'admin.channels.edit.logoRecommend' | transloco }}
+            </p>
+            <div class="flex items-center gap-3">
+              <button ngsButton="filled" ngsUploadTrigger accept="image/*" (fileSelected)="onLogoSelect($event)">
+                {{ 'admin.media.list.upload' | transloco }}
+              </button>
+              @if (topic.logoUrl) {
+                <button ngsButton="outlined" (click)="deleteLogo()">
+                  {{ 'admin.media.list.delete' | transloco }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+        <ngs-form-field class="w-full mt-10">
+          <ngs-label>{{ 'admin.users.edit.name' | transloco }}</ngs-label>
+          <input ngsInput formControlName="name">
+          <ngs-hint>
+            {{ 'admin.channels.edit.nameHint' | transloco }}
+          </ngs-hint>
+        </ngs-form-field>
+        <ngs-form-field class="w-full mt-6">
+          <ngs-label>{{ 'admin.settings.general.description' | transloco }}</ngs-label>
+          <textarea ngsInput formControlName="description" rows="3" ngsTextareaAutoSize></textarea>
+          <ngs-hint>
+            {{ 'admin.topics.edit.descriptionHint' | transloco }}
+          </ngs-hint>
+        </ngs-form-field>
+        <ngs-form-field class="w-full mt-9">
+          <ngs-label>{{ 'admin.channels.edit.alias' | transloco }}</ngs-label>
+          <input type="text" ngsInput formControlName="slug">
+          <ngs-hint>{{ siteUrl }}/topic/{{ form.get('slug')?.value }}</ngs-hint>
+          @if (form.get('slug')?.errors?.['slug']) {
+            <ngs-error>{{ 'admin.topics.edit.aliasError' | transloco }}</ngs-error>
+          }
+          @if (form.get('slug')?.errors?.['uniqueSlug']) {
+            <ngs-error>{{ 'admin.topics.edit.aliasTaken' | transloco }}</ngs-error>
+          }
+        </ngs-form-field>
+        <ngs-form-field class="w-full mt-6">
+          <ngs-label>{{ 'admin.settings.general.siteTitle' | transloco }}</ngs-label>
+          <input ngsInput formControlName="metaTitle">
+        </ngs-form-field>
+        <ngs-form-field class="w-full mt-6">
+          <ngs-label>{{ 'admin.settings.general.description' | transloco }} (Meta)</ngs-label>
+          <textarea ngsInput formControlName="metaDescription" ngsTextareaAutoSize></textarea>
+        </ngs-form-field>
+      </form>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="px-12 py-10">
+    {{ 'common.loading' | transloco }}
+  </div>
+}

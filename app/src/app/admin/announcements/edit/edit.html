@@ -1,0 +1,120 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 border-b border-b-border">
+      <div class="h-full flex items-center gap-5 justify-between px-5">
+        <div class="flex items-center gap-5">
+          <div class="font-bold">{{ 'announcements.editAnnouncement' | transloco }}</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a routerLink="/admin/announcements" ngsButton>{{ 'common.cancel' | transloco }}</a>
+          <button ngsButton="filled" type="button" [disabled]="saving() || form.invalid" (click)="submit()">{{ 'common.save' | transloco }}</button>
+        </div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="flex p-10 flex-col gap-4 xl:w-6/12">
+          <ngs-form-field>
+            <ngs-label>{{ 'announcements.name' | transloco }}</ngs-label>
+            <input ngsInput formControlName="name" />
+            @if (form.get('name')?.invalid) {
+              <ngs-error>{{ 'announcements.nameRequired' | transloco }}</ngs-error>
+            }
+          </ngs-form-field>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'announcements.contentHtmlSupported' | transloco }}</ngs-label>
+            <textarea ngsInput formControlName="content" rows="5"></textarea>
+            @if (form.get('content')?.invalid) {
+              <ngs-error>{{ 'announcements.contentRequired' | transloco }}</ngs-error>
+            }
+          </ngs-form-field>
+
+          <div class="flex gap-4">
+            <ngs-form-field class="flex-1">
+              <ngs-label>{{ 'announcements.type' | transloco }}</ngs-label>
+              <ngs-select formControlName="typeType">
+                @for (t of types(); track t.id) {
+                  <ngs-option [value]="t.type">{{ t.name }}</ngs-option>
+                }
+              </ngs-select>
+            </ngs-form-field>
+
+            <ngs-form-field class="flex-1">
+              <ngs-label>{{ 'announcements.status' | transloco }}</ngs-label>
+              <ngs-select formControlName="statusType">
+                @for (s of statuses(); track s.id) {
+                  <ngs-option [value]="s.type">{{ s.name }}</ngs-option>
+                }
+              </ngs-select>
+            </ngs-form-field>
+          </div>
+
+          <div class="flex gap-4">
+            <ngs-form-field class="flex-1">
+              <ngs-label>{{ 'announcements.priority' | transloco }}</ngs-label>
+              <input ngsInput type="number" formControlName="priority" />
+            </ngs-form-field>
+
+            <div class="flex-1 flex items-center">
+              <ngs-checkbox formControlName="dismissable">{{ 'announcements.dismissable' | transloco }}</ngs-checkbox>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <ngs-form-field>
+              <ngs-label>{{ 'announcements.startAtDate' | transloco }}</ngs-label>
+              <input ngsInput [ngsDatepicker]="startAtPicker" formControlName="startAt">
+              <ngs-datepicker-toggle ngsSuffix [for]="startAtPicker"></ngs-datepicker-toggle>
+              <ngs-datepicker #startAtPicker></ngs-datepicker>
+            </ngs-form-field>
+
+            <ngs-form-field>
+              <ngs-label>{{ 'announcements.startAtTime' | transloco }}</ngs-label>
+              <input ngsInput [ngsTimepicker]="startAtTimepicker" formControlName="startAt">
+              <ngs-timepicker-toggle ngsSuffix [for]="startAtTimepicker"></ngs-timepicker-toggle>
+              <ngs-timepicker #startAtTimepicker interval="15min"></ngs-timepicker>
+            </ngs-form-field>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <ngs-form-field>
+              <ngs-label>{{ 'announcements.endAtDateOptional' | transloco }}</ngs-label>
+              <input ngsInput [ngsDatepicker]="endAtPicker" formControlName="endAt">
+              <ngs-datepicker-toggle ngsSuffix [for]="endAtPicker"></ngs-datepicker-toggle>
+              <ngs-datepicker #endAtPicker></ngs-datepicker>
+            </ngs-form-field>
+
+            <ngs-form-field>
+              <ngs-label>{{ 'announcements.endAtTimeOptional' | transloco }}</ngs-label>
+              <input ngsInput [ngsTimepicker]="endAtTimepicker" formControlName="endAt">
+              <ngs-timepicker-toggle ngsSuffix [for]="endAtTimepicker"></ngs-timepicker-toggle>
+              <ngs-timepicker #endAtTimepicker interval="15min"></ngs-timepicker>
+            </ngs-form-field>
+          </div>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'announcements.targetUrlOptional' | transloco }}</ngs-label>
+            <input ngsInput formControlName="targetUrl" />
+          </ngs-form-field>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'announcements.actionTextOptional' | transloco }}</ngs-label>
+            <input ngsInput formControlName="actionText" />
+          </ngs-form-field>
+
+          <div class="flex gap-4">
+            <div class="flex-1 flex items-center">
+              <ngs-checkbox formControlName="dismissable">{{ 'announcements.dismissable' | transloco }}</ngs-checkbox>
+            </div>
+            <div class="flex-1 flex items-center">
+              <ngs-checkbox formControlName="requireManualDismiss">{{ 'announcements.requireManualDismiss' | transloco }}</ngs-checkbox>
+            </div>
+          </div>
+        </form>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">{{ 'common.loading' | transloco }}</div>
+}

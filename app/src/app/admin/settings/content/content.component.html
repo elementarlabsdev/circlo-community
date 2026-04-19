@@ -1,0 +1,48 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'admin.settings.content-heading' | transloco }}</h1>
+        <button ngsButton="filled" (click)="save()">{{ 'common.save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-6 xl:p-12">
+          <p class="mb-6 text-secondary">{{ 'admin.settings.content.description' | transloco }}</p>
+          <form [formGroup]="form" class="xl:w-6/12 flex flex-col gap-5 mb-4">
+            <ngs-checkbox formControlName="contentAllowThreads">
+              {{ 'admin.settings.content.allowThreads' | transloco }}
+            </ngs-checkbox>
+            <ngs-checkbox formControlName="contentAllowPublications">
+              {{ 'admin.settings.content.allowPublications' | transloco }}
+            </ngs-checkbox>
+            <ngs-checkbox formControlName="contentAllowTutorials">
+              {{ 'admin.settings.content.allowTutorials' | transloco }}
+            </ngs-checkbox>
+            <ngs-checkbox formControlName="contentAllowCourses">
+              {{ 'admin.settings.content.allowCourses' | transloco }}
+            </ngs-checkbox>
+
+            <ngs-form-field class="mt-4">
+              <ngs-label>{{ 'admin.settings.content.maxDraftPublicationsPerUser' | transloco }}</ngs-label>
+              <input ngsInput type="number" formControlName="maxDraftPublicationsPerUser">
+            </ngs-form-field>
+
+            <ngs-form-field>
+              <ngs-label>{{ 'admin.settings.content.maxDraftTutorialsPerUser' | transloco }}</ngs-label>
+              <input ngsInput type="number" formControlName="maxDraftTutorialsPerUser">
+            </ngs-form-field>
+
+            <ngs-form-field>
+              <ngs-label>{{ 'admin.settings.content.newDraftVersionCreationInterval' | transloco }}</ngs-label>
+              <input ngsInput type="number" formControlName="newDraftVersionCreationInterval">
+            </ngs-form-field>
+          </form>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6 xl:p-12">{{ 'common.loading' | transloco }}</div>
+}

@@ -1,0 +1,41 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <div class="flex flex-col">
+          <h1 class="font-bold">{{ 'admin.settings.stripe-heading' | transloco }}</h1>
+          <p class="text-xs text-secondary">{{ 'admin.monetization.stripe-description' | transloco }}</p>
+        </div>
+        <button ngsButton="filled" (click)="save()">{{ 'common.save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-10">
+          <form [formGroup]="form" class="xl:w-6/12">
+            <div class="flex flex-col gap-4">
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.monetization.stripe.publishableKey' | transloco }}</ngs-label>
+                <input type="text" ngsInput formControlName="stripePublishableKey">
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.monetization.stripe.secretKey' | transloco }}</ngs-label>
+                <input type="text" ngsInput formControlName="stripeSecretKey">
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.monetization.stripe.appFee' | transloco }}</ngs-label>
+                <input type="number" ngsInput formControlName="stripeApplicationFeeAmount">
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'admin.monetization.stripe.webhookSecret' | transloco }}</ngs-label>
+                <input type="text" ngsInput formControlName="stripeWebhookSecret">
+              </ngs-form-field>
+            </div>
+          </form>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">{{ 'common.loading' | transloco }}</div>
+}

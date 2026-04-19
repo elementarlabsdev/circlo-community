@@ -1,0 +1,108 @@
+<ngs-panel>
+  <ngs-panel-header autoHeight>
+    <ngs-toolbar class="h-16 ps-4 pe-6 border-b border-b-border">
+      <button ngsIconButton (click)="back()">
+        <ngs-icon name="fluent:arrow-left-24-regular"/>
+      </button>
+      <ngs-toolbar-title>{{ 'admin.comments.viewTitle' | transloco }}</ngs-toolbar-title>
+      <ngs-toolbar-spacer/>
+      <button ngsButton [routerLink]="['/admin/comments', commentId, 'edit']">
+        <ngs-icon name="fluent:edit-24-regular" class="me-2"/>
+        {{ 'common.edit' | transloco }}
+      </button>
+    </ngs-toolbar>
+  </ngs-panel-header>
+
+  <ngs-panel-content>
+    <div class="flex flex-col gap-6 p-6">
+      @if (loading()) {
+        <div class="flex justify-center p-12">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      } @else if (comment()) {
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 flex flex-col gap-6">
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.comments.content' | transloco }}</h3>
+              <div class="prose prose-sm max-w-none"
+                   [innerHTML]="comment()?.htmlContent || comment()?.textContent"></div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.comments.quality' | transloco }}</h3>
+              <admin-comment-quality-score [qualityScore]="comment()?.qualityScore"/>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.comments.details' | transloco }}</h3>
+              <div class="flex flex-col gap-4">
+                <div class="flex flex-col">
+                  <span
+                    class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.author' | transloco }}</span>
+                  <span class="font-medium text-sm">{{ comment()?.author?.username || 'Anonymous' }}</span>
+                </div>
+                <ngs-divider/>
+                <div class="flex flex-col">
+                  <span
+                    class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.created' | transloco }}</span>
+                  <span class="font-medium text-sm">{{ comment()?.createdAt | date: 'medium' }}</span>
+                </div>
+                <ngs-divider/>
+                @if (comment()?.publication) {
+                  <div class="flex flex-col">
+                    <span
+                      class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.publication' | transloco }}</span>
+                    <a [routerLink]="['/publication', comment()?.publication?.slug]"
+                       class="font-medium text-sm text-primary hover:underline cursor-pointer" target="target">
+                      {{ comment()?.publication?.title }}
+                    </a>
+                  </div>
+                } @else if (comment()?.lesson) {
+                  <div class="flex flex-col">
+                    <span
+                      class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.lesson' | transloco }}</span>
+                    <a [routerLink]="['/tutorial/lesson', comment()?.lesson.slug]"
+                       class="font-medium text-sm text-primary hover:underline cursor-pointer" target="target">
+                      {{ comment()?.lesson?.title || comment()?.lesson?.name }}
+                    </a>
+                  </div>
+                }
+                <ngs-divider/>
+                <div class="flex flex-col">
+                  <span
+                    class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.status' | transloco }}</span>
+                  <div class="flex items-center gap-2 mt-1">
+                    @if (comment()?.isHidden) {
+                      <span
+                        class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-100 text-red-700">Hidden</span>
+                    } @else {
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-green-100 text-green-700">Visible</span>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.comments.statistics' | transloco }}</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1 items-center p-4 bg-neutral-50 rounded-2xl">
+                  <span class="text-2xl font-bold">{{ comment()?.reactionsCount || 0 }}</span>
+                  <span
+                    class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.reactions' | transloco }}</span>
+                </div>
+                <div class="flex flex-col gap-1 items-center p-4 bg-neutral-50 rounded-2xl">
+                  <span class="text-2xl font-bold">{{ comment()?.repliesCount || 0 }}</span>
+                  <span
+                    class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.comments.replies' | transloco }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </ngs-panel-content>
+</ngs-panel>

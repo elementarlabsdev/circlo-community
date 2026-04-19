@@ -1,0 +1,26 @@
+@if (allowThreads()) {
+  <app-thread-add class="mx-auto mb-8 lg:w-[740px]"/>
+}
+<main class="lg:w-[740px] mx-auto flex flex-col gap-10">
+  @if (loaded()) {
+    <app-feed-items [items]="items()" [reactions]="reactions" (deleted)="onItemDeleted($event)"/>
+
+    @if (items().length > 0) {
+      @if (pagination().totalPages > 1) {
+        <ngs-paginator route="/feed/page"
+                       [totalItems]="pagination().totalItems"
+                       [pageSize]="pagination().pageSize"
+                       [pageNumber]="pageNumber"
+                       (pageChanged)="onPageChanged($event)"/>
+      }
+    } @else {
+      <div class="text-sm text-center">{{ 'thereAreNoPublications' | transloco }}.</div>
+    }
+  } @else {
+    <div class="space-y-10">
+      @for (skeletonItem of skeleton; track skeletonItem) {
+        <app-publication-skeleton/>
+      }
+    </div>
+  }
+</main>

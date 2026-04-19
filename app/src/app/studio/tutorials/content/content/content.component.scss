@@ -1,0 +1,26 @@
+/* Drag & drop placeholder styling for Angular CDK */
+.tutorial-items {
+  /* Explicit template-based placeholder block */
+  .drag-placeholder {
+    height: 56px; /* approximates item height */
+    border: 2px dashed var(--ngs-color-border-default, #cbd5e1);
+    border-radius: 1rem; /* ngsches rounded-2xl */
+    background: transparent;
+  }
+}
+
+/* NOTE: CDK creates elements without component's encapsulation attribute.
+   Use ::ng-deep to pierce and style runtime CDK elements. */
+:host ::ng-deep .tutorial-items {
+  .cdk-drag-placeholder {
+    background: transparent;
+    border: 2px dashed var(--ngs-color-border-default, #cbd5e1);
+    border-radius: 1rem;
+    box-sizing: border-box;
+  }
+
+  .cdk-drag-preview {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 1rem;
+  }
+}

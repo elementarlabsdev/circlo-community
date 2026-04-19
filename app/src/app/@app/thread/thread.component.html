@@ -1,0 +1,7 @@
+<app-thread-item
+  [thread]="thread()"
+  [reactions]="reactions()"
+  [depth]="depth()"
+  (deleted)="deleted.emit($event)"
+  (replyAdded)="replyAdded.emit()"
+/>

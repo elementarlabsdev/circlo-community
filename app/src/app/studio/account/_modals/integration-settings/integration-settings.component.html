@@ -1,0 +1,18 @@
+<ngs-block-loader [loading]="saving()"/>
+<div ngs-dialog-title>{{ data.integration.name }}</div>
+<ngs-dialog-content>
+  <div>
+    <ngs-form-renderer #formRenderer
+                       [config]="data.integration.form"
+                       [initialValue]="data.integration.settings"
+                       class="w-120 mt-2"/>
+  </div>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">Cancel</button>
+  <button type="submit" ngsButton="filled"
+          [disabled]="!formRenderer.isValid"
+          (click)="save()">
+    Save
+  </button>
+</ngs-dialog-actions>

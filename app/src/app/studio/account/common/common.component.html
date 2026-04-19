@@ -1,0 +1,16 @@
+<ngs-panel>
+  <ngs-panel-sidebar class="w-[280px] border-e border-e-border">
+    <ngs-scrollbar-area [absolute]="true">
+      <div class="px-5 py-6">
+        <ngs-navigation [activeKey]="activeLinkId">
+          @for (navItem of navItems; track navItem) {
+            <a [routerLink]="navItem.link" ngs-navigation-item [key]="navItem.link">{{ navItem.name | transloco }}</a>
+          }
+        </ngs-navigation>
+      </div>
+    </ngs-scrollbar-area>
+  </ngs-panel-sidebar>
+  <ngs-panel-content>
+    <router-outlet/>
+  </ngs-panel-content>
+</ngs-panel>

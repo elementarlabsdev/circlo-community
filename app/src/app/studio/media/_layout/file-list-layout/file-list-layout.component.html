@@ -1,0 +1,14 @@
+<ngs-data-view
+  #datagridRef
+  [columnDefs]="columnDefs"
+  [cellRenderers]="cellRenderers"
+  [withPagination]="true"
+  [datasource]="datasource"
+  autoHeight
+  withSelection
+  rowModelType="serverSide"
+  rowSelection="multiple"
+  class="absolute inset-0"
+  emptyFilterResultsIcon="fluent:image-24-regular"
+  emptyFilterResultsText="There are no files yet."
+  (rowSelectionChanged)="onFilesChecked($event)"/>

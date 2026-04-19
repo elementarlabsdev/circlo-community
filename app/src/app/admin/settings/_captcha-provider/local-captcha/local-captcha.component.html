@@ -1,0 +1,25 @@
+<h2 ngs-dialog-title>{{ 'captchaProvider.local.title' | transloco }}</h2>
+<ngs-dialog-content>
+  <form [formGroup]="form" class="flex flex-col gap-4 py-4">
+    <ngs-form-field appearance="outline">
+      <ngs-label>{{ 'captchaProvider.local.siteKey' | transloco }}</ngs-label>
+      <input ngsInput formControlName="siteKey" />
+    </ngs-form-field>
+    <ngs-form-field appearance="outline">
+      <ngs-label>{{ 'captchaProvider.local.secretKey' | transloco }}</ngs-label>
+      <input ngsInput formControlName="secretKey" />
+    </ngs-form-field>
+  </form>
+  @if (_data.adminPanelUrl) {
+    <div>
+      <a [href]="_data.adminPanelUrl" target="_blank" class="text-primary hover:underline flex items-center gap-1">
+        {{ 'captchaProvider.local.getKeys' | transloco }}
+        <ngs-icon name="fluent:open-24-regular"/>
+      </a>
+    </div>
+  }
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button ngsButton="filled" color="primary" [disabled]="form.invalid" (click)="apply()">{{ 'common.apply' | transloco }}</button>
+</ngs-dialog-actions>

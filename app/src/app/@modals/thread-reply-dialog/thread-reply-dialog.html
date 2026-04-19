@@ -1,0 +1,13 @@
+<h2 ngsDialogTitle>Reply to thread</h2>
+<div ngsDialogContent>
+  <app-thread-item
+    [thread]="data.thread"
+    [reactions]="data.thread.reactions || []"
+    class="block mb-6"
+  />
+
+  <app-thread-add class="!w-full mb-6"
+                  [parentId]="data.parentId"
+                  (itemAdded)="onSent()"
+                  (canceled)="onCancel()"/>
+</div>

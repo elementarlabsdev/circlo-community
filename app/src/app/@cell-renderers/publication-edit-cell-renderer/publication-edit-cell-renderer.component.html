@@ -1,0 +1,11 @@
+@if (element() | can: Action.Update) {
+  <a [routerLink]="['/studio/publications/edit', element().hash]" ngsButton target="_blank">
+    <ngs-icon name="fluent:edit-24-regular"/>Edit
+  </a>
+  <button ngsIconButton ngsTooltip="Unpublish" (click)="unpublish()">
+    <ngs-icon name="fluent:prohibited-24-regular"/>
+  </button>
+  <button ngsIconButton ngsTooltip="Delete" (click)="delete()">
+    <ngs-icon name="fluent:delete-24-regular"/>
+  </button>
+}

@@ -1,0 +1,41 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'admin.monetization.paid-account' | transloco }}</h1>
+        <button ngsButton="filled" (click)="save()" [disabled]="!stripeConfigured()">{{ 'common.save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-10">
+          @if (!stripeConfigured()) {
+            <div class="mb-8">
+              <ngs-alert variant="warning">
+                {{ 'admin.monetization.stripe-not-configured' | transloco }}
+              </ngs-alert>
+            </div>
+          }
+
+          <div class="mb-6 leading-relaxed">
+            {{ 'admin.monetization.paid-account-description' | transloco }}
+          </div>
+
+          <form [formGroup]="form" class="xl:w-6/12 flex flex-col gap-4" [class.opacity-50]="!stripeConfigured()" [class.pointer-events-none]="!stripeConfigured()">
+            <ngs-slide-toggle formControlName="monetizationPaidAccountEnabled">
+              {{ 'admin.monetization.enable-paid-account' | transloco }}
+            </ngs-slide-toggle>
+
+            <ngs-form-field>
+              <ngs-label>{{ 'admin.monetization.paid-account-price' | transloco }}</ngs-label>
+              <span ngsTextSuffix>$ USD</span>
+              <input ngsInput type="number" formControlName="monetizationPaidAccountPrice" />
+            </ngs-form-field>
+          </form>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">{{ 'common.loading' | transloco }}</div>
+}

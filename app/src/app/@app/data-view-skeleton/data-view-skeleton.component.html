@@ -1,0 +1,43 @@
+<ngs-skeleton class="gap-10 h-full">
+  <div class="h-full w-full overflow-hidden">
+    <div class="h-20 border-b border-b-default flex items-center justify-between gap-6 px-7">
+      <ngs-skeleton class="w-96"/>
+      <div class="flex gap-6">
+        <ngs-skeleton class="w-48"/>
+        <ngs-skeleton class="w-24"/>
+      </div>
+    </div>
+    <div class="flex flex-col gap-6 p-7">
+      <div class="w-full grid gap-6 grid-cols-4">
+        <div class="col-span-1">
+          <ngs-skeleton class="w-8/12"/>
+        </div>
+        <div class="col-span-1">
+          <ngs-skeleton class="w-8/12"/>
+        </div>
+        <div class="col-span-1">
+          <ngs-skeleton class="w-8/12"/>
+        </div>
+        <div class="col-span-1">
+          <ngs-skeleton class="w-8/12"/>
+        </div>
+      </div>
+      @for (row of rowsRepeatCount(); track row) {
+        <div class="w-full grid gap-6 grid-cols-4 items-center border border-border h-14 rounded-2xl p-4">
+          <div class="col-span-1">
+            <ngs-skeleton class="w-full"/>
+          </div>
+          <div class="col-span-1">
+            <ngs-skeleton class="w-full"/>
+          </div>
+          <div class="col-span-1">
+            <ngs-skeleton class="w-full"/>
+          </div>
+          <div class="col-span-1">
+            <ngs-skeleton class="w-full"/>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</ngs-skeleton>

@@ -1,0 +1,112 @@
+<ngs-panel>
+  <ngs-panel-content>
+    <div #lessonAreaContainer class="absolute inset-0 overflow-y-auto">
+      <div class="min-h-full flex flex-col p-6">
+        <div class="bg-surface-container-lowest grow h-full rounded-3xl relative"
+             cdkDropList
+             [cdkDropListData]="lessonBlocks()"
+             (cdkDropListDropped)="onCdkDrop($event)"
+             dndDropzone
+             (dndDrop)="onDndDrop($event)"
+             (dndDragover)="onDragOverContainer($event)">
+          @if (isLessonEmpty() && dndPlaceholder().index == -1) {
+            <div class="text-neutral-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              Drag blocks from the panel on the right to start.
+            </div>
+          }
+
+          <div class="h-1 bg-primary opacity-0 [&.is-active]:opacity-100"
+               [class.is-active]="isLessonEmpty() && dndPlaceholder().index === 0"
+               (dragover)="onDragOverPlaceholder($event)"></div>
+
+          <div class="flex flex-col py-2 blocks-container">
+            @for (block of lessonBlocks(); track block.id; let i = $index) {
+              <div class="h-1 my-2 bg-primary-100 dark:bg-neutral-variant-900 [&.is-active]:bg-primary block-divider"
+                   [class.is-active]="dndPlaceholder().index === i"
+                   (dragover)="onDragOverPlaceholder($event)">
+              </div>
+              <div
+                ngsFocusWithin
+                tabindex="0"
+                cdkDragLockAxis="y"
+                cdkDrag
+                [cdkDragData]="block"
+                (cdkDragStarted)="onCdkDragStarted()"
+                (cdkDragEnded)="onCdkDragEnded()"
+                (cdkDragMoved)="onCdkDragMoved($event)"
+                class="pt-2 px-5 pb-2 [&.is-active]:bg-primary-50 relative lb-block"
+                [class.is-active]="activeBlock() && activeBlock()!.id === block.id"
+                (dragover)="onDragOverItem($event, i)"
+              >
+                <button ngsButton ngsRipple
+                        class="!bg-surface-container shadow-sm hover:text-scrim active:text-primary drag-handle">
+                  <ngs-icon name="drag_indicator" class="cursor-move" cdkDragHandle/>
+                </button>
+                <div class="grow relative">
+                  @if (isDragging()) {
+                    <div class="absolute inset-0 z-1"></div>
+                  }
+                  <ng-container
+                    [appLessonBlockHost]="block.component"
+                    [componentInputs]="{ block: block, builder: builder }"
+                    (activate)="onComponentActivate($event)"/>
+                </div>
+                <div class="bg-surface-container rounded-full px-1.5 py-1.5 text-center
+                            handle flex gap-1 controls items-center shadow-sm
+                            absolute -bottom-1 end-0">
+                  <button class="w-max hover:text-scrim active:text-primary leading-0"
+                          (click)="settings(block)">
+                    <ngs-icon name="fluent:settings-24-regular" class="cursor-pointer !text-[20px] !size-[20px]"/>
+                  </button>
+                  <button class="w-max hover:text-red-500 leading-0">
+                    <ngs-icon name="fluent:delete-24-regular" class="cursor-pointer !text-[20px] !size-[20px]"
+                              (click)="delete(block, i)"/>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="h-1 bg-primary opacity-0 [&.is-active]:opacity-100 my-2 block-divider"
+               [class.is-active]="dndPlaceholder().index === lessonBlocks().length && !isLessonEmpty()"
+               (dragover)="onDragOverPlaceholder($event)"></div>
+        </div>
+      </div>
+    </div>
+  </ngs-panel-content>
+  <ngs-panel-aside class="w-[340px] relative border-s border-s-surface-container">
+    @if (activeBlock()) {
+      <ngs-panel class="bg-surface-container-low px-4">
+        <ngs-panel-header class="border-b border-b-default">
+          <div class="flex items-center gap-2 relative h-full">
+            <ngs-icon name="fluent:settings-24-regular"/>
+            {{ activeBlock()!.type }}
+            <div class="absolute right-0">
+              <button ngsButton (click)="closeSettings()">
+                <ngs-icon name="fluent:dismiss-24-regular"/>
+              </button>
+            </div>
+          </div>
+        </ngs-panel-header>
+        <ngs-panel-content>
+          <ng-container [ngComponentOutlet]="settingsComponent"
+                        [ngComponentOutletInputs]="{ block: activeBlock(), settingsChanged }"/>
+        </ngs-panel-content>
+      </ngs-panel>
+    } @else {
+      <ngs-scrollbar-area>
+        <div class="space-y-2 py-6 px-7">
+          @for (block of availableBlocks; track block.type) {
+            <div [dndDraggable]="block"
+                 dndEffectAllowed="copy"
+                 (dragstart)="onDragStart()"
+                 (dragend)="onDragEnd($event)"
+                 class="flex items-center p-3 bg-surface-container-lowest rounded-lg shadow-md cursor-grab hover:shadow-lg transition-shadow">
+              <ngs-icon [name]="block.icon" class="mr-3 text-neutral-600"/>
+              <span class="font-medium">{{ block.name }}</span>
+            </div>
+          }
+        </div>
+      </ngs-scrollbar-area>
+    }
+  </ngs-panel-aside>
+</ngs-panel>

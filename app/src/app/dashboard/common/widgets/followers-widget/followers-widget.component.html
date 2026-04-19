@@ -1,0 +1,19 @@
+@if (loaded()) {
+  <ngs-card class="h-full !bg-surface-container-lowest">
+    <ngs-card-content>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="tracking-tight text-sm font-semibold">Followers</h3>
+          <div class="pt-0 flex items-center mt-3 gap-3">
+            <div class="text-3xl font-semibold flex gap-1">
+              {{ data().followersCount }}
+            </div>
+          </div>
+        </div>
+        <div class="bg-teal-50 rounded-xl size-20 flex items-center justify-center text-teal-500">
+          <ngs-icon name="fluent:person-24-regular" class="size-7"/>
+        </div>
+      </div>
+    </ngs-card-content>
+  </ngs-card>
+}

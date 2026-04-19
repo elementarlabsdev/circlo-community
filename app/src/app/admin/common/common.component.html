@@ -1,0 +1,121 @@
+<ngs-layout root>
+  <ngs-layout-topbar>
+    @if (announcement(); as announcementValue) {
+      <ngs-announcement closable
+                        [class.cursor-pointer]="announcementValue.targetUrl"
+                        [variant]="variant()"
+                        (click)="redirectToTarget()"
+                        (closed)="onAnnouncementClosed()">
+        <div [innerHTML]="announcementValue.content | safeHtml"></div>
+      </ngs-announcement>
+    }
+  </ngs-layout-topbar>
+  <ngs-layout-content>
+    <ngs-sidenav-container autosize autoFocus hasBackdrop="false">
+      <ngs-sidenav #sidenav
+                   [(opened)]="opened"
+                   [mode]="sidebarExpanded() ? 'side' : 'over'"
+                   [collapsed]="!sidebarExpanded()"
+                   class="border-e border-e-border">
+        <app-sidebar/>
+      </ngs-sidenav>
+      <ngs-sidenav-content>
+        <ngs-panel>
+          <ngs-panel-header autoHeight>
+            <ngs-toolbar class="h-16 border-b border-b-border ps-4 pe-6">
+              <button ngsIconButton (click)="sidenav.toggle()">
+                <ngs-icon name="fluent:navigation-24-regular"/>
+              </button>
+              <div class="hidden md:block">
+                <ngs-breadcrumbs-global>
+                  <ng-template ngsBreadcrumbItemIconDef let-breadcrumb>
+                    @if (breadcrumb.iconName) {
+                      <ngs-icon [name]="breadcrumb.iconName" class="size-5 me-0.5"/>
+                    }
+                  </ng-template>
+                  <ng-template ngsBreadcrumbItemNameDef let-breadcrumb>
+                    @if (breadcrumb.name) {
+                      {{ breadcrumb.name | transloco }}
+                    }
+                  </ng-template>
+                </ngs-breadcrumbs-global>
+              </div>
+              <ngs-toolbar-spacer/>
+              <div class="flex items-center gap-3">
+                @if (monetizationCreditsEnabled()) {
+                  <a routerLink="/studio/credits" ngsButton hideTextOnMobile>
+                    <span class="text-primary">{{ profile().credits }} {{ 'header.credits' | transloco }}</span>
+                  </a>
+                }
+                <button ngsButton="filled"
+                        [ngsMenuTriggerFor]="createMenu"
+                        [attr.aria-label]="'header.create' | transloco" hideTextOnMobile>
+                  <ngs-icon name="fluent:add-24-regular"/>
+                  <span>{{ 'header.create' | transloco }}</span>
+                </button>
+                <ngs-divider vertical fixedHeight class="ms-3"/>
+                <div class="flex items-center gap-1">
+                  <ngs-color-scheme-switcher [ngsTooltip]="'header.colorTheme' | transloco"
+                                             ngsSoundEffect
+                                             (colorSchemeChanged)="onColorSchemeChanged($event)">
+                    <ngs-icon name="fluent:weather-sunny-24-regular" *ngsColorSchemeLight/>
+                    <ngs-icon name="fluent:weather-moon-24-regular" *ngsColorSchemeDark/>
+                  </ngs-color-scheme-switcher>
+                  <a routerLink="/studio/notifications" ngsIconButton
+                     [ngsTooltip]="'header.notifications' | transloco">
+                    @if (unreadNotificationsCount() > 0) {
+                      <ngs-icon name="fluent:alert-24-regular" [ngsBadge]="unreadNotificationsCount()"/>
+                    } @else {
+                      <ngs-icon name="fluent:alert-24-regular"/>
+                    }
+                  </a>
+                  <ngs-dicebear [key]="profile().id"
+                                [image]="profile().avatarUrl | imageProxy: '100x100,sc,q90'"
+                                [clickable]="true"
+                                [ngsMenuTriggerFor]="accountMenu"
+                                [ngsTooltip]="'header.account' | transloco"
+                                class="size-10 ms-2"/>
+                </div>
+                <ngs-menu #createMenu="ngsMenu">
+                  @if (contentAllowThreads()) {
+                    <button ngs-menu-item (click)="createThread()">{{ 'admin.common.create.thread' | transloco }}</button>
+                  }
+                  @if (contentAllowPublications()) {
+                    <button ngs-menu-item (click)="createPublication()">{{ 'admin.common.create.publication' | transloco }}</button>
+                  }
+                  @if (contentAllowTutorials()) {
+                    <button ngs-menu-item (click)="createTutorial()">{{ 'admin.common.create.tutorial' | transloco }}</button>
+                  }
+                </ngs-menu>
+                <ngs-menu xPosition="before" #accountMenu="ngsMenu">
+                  <div class="flex items-center px-4 pb-2 pt-2 gap-3 min-w-[200px]">
+                    <ngs-dicebear [image]="profile().avatarUrl | imageProxy: '100x100,sc,q90'"
+                                  [key]="profile().id" class="size-12"/>
+                    <div class="-mt-0.5">
+                      <div class="flex items-center gap-2">
+                        {{ profile().name }}
+                      </div>
+                      <div class="text-xs text-gray-500 mt-0.5 dark:text-gray-400">{{ profile().email }}</div>
+                    </div>
+                  </div>
+                  <ngs-menu-divider/>
+                  <a routerLink="/studio" ngs-menu-item>
+                    <ngs-icon name="fluent:design-ideas-24-regular"/>
+                    {{ 'header.menu.studio' | transloco }}
+                  </a>
+                  <a ngs-menu-item (click)="logout()">
+                    <ngs-icon name="fluent:arrow-exit-24-regular"/>
+                    {{ 'header.menu.logout' | transloco }}
+                  </a>
+                </ngs-menu>
+              </div>
+            </ngs-toolbar>
+          </ngs-panel-header>
+          <ngs-panel-content>
+            <router-outlet/>
+          </ngs-panel-content>
+        </ngs-panel>
+      </ngs-sidenav-content>
+    </ngs-sidenav-container>
+  </ngs-layout-content>
+</ngs-layout>

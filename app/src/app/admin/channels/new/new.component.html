@@ -1,0 +1,192 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 border-b border-b-border">
+      <div class="h-full flex items-center gap-5 justify-between px-6">
+        <div class="flex items-center gap-5">
+          <div class="font-bold">{{ 'admin.channels.edit.createTitle' | transloco }}</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a routerLink="/admin/channels" ngsButton>{{ 'common.cancel' | transloco }}</a>
+          <button ngsButton="filled" type="button" [disabled]="saving || form.invalid" (click)="save()">
+            {{ 'table.createNew' | transloco }}
+          </button>
+        </div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content class="overflow-y-auto p-12">
+      <form [formGroup]="form" class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+        <div class="col-span-1">
+          @if (form.value.logoUrl) {
+            <img [src]="form.value.logoUrl | imageProxy:'200x,sc'" class="max-h-28 mb-5 rounded-lg border"/>
+          }
+
+          <div class="flex items-center gap-6">
+            <div>
+              <p class="text-tiny mb-3 text-on-surface-variant">
+                {{ 'admin.channels.edit.logoRecommend' | transloco }}
+              </p>
+              <div class="flex items-center gap-3">
+                <button ngsButton="filled" ngsUploadTrigger accept="image/*" (fileSelected)="onLogoSelect($event)">
+                  {{ 'studio.channels.edit.uploadLogo' | transloco }}
+                </button>
+                @if (form.value.logoUrl) {
+                  <button ngsButton="outlined" (click)="deleteLogo()">
+                    {{ 'delete' | transloco }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+          <ngs-form-field class="w-full mt-9">
+            <ngs-label>{{ 'admin.channels.edit.name' | transloco }}</ngs-label>
+            <input ngsInput formControlName="name">
+            <ngs-hint>
+              {{ 'admin.channels.edit.nameHint' | transloco }}
+            </ngs-hint>
+          </ngs-form-field>
+          <ngs-form-field class="w-full mt-6">
+            <ngs-label>{{ 'admin.channels.edit.description' | transloco }}</ngs-label>
+            <textarea ngsInput formControlName="description" rows="3" ngsTextareaAutoSize></textarea>
+            <ngs-hint>
+              {{ 'admin.channels.edit.descriptionHint' | transloco }}
+            </ngs-hint>
+          </ngs-form-field>
+          <ngs-form-field class="w-full mt-9">
+            <ngs-label>{{ 'studio.channels.edit.slug' | transloco }}</ngs-label>
+            <input type="text" ngsInput formControlName="slug">
+            <ngs-hint>{{ siteUrl }}/channel/{{ form.get('slug')?.value }}</ngs-hint>
+            @if (form.get('slug')?.hasError('slug')) {
+              <ngs-error>{{ 'studio.channels.edit.slugError' | transloco }}</ngs-error>
+            }
+            @if (form.get('slug')?.hasError('uniqueSlug')) {
+              <ngs-error>{{ 'studio.channels.edit.slugTaken' | transloco }}</ngs-error>
+            }
+          </ngs-form-field>
+
+          <ngs-form-field class="w-full mt-6">
+            <ngs-label>{{ 'admin.settings.general.metaTitle' | transloco }}</ngs-label>
+            <input ngsInput formControlName="metaTitle">
+          </ngs-form-field>
+          <ngs-form-field class="w-full mt-6">
+            <ngs-label>{{ 'admin.settings.general.metaDescription' | transloco }} (Meta)</ngs-label>
+            <textarea ngsInput formControlName="metaDescription" ngsTextareaAutoSize></textarea>
+          </ngs-form-field>
+
+          <div class="mt-9 p-6 rounded-2xl bg-surface-container-low">
+            <h3 class="font-bold mb-4">{{ 'admin.channels.edit.accessSettings' | transloco }}</h3>
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'admin.channels.edit.visibility' | transloco }}</ngs-label>
+              <ngs-select formControlName="visibilityId">
+                @for (v of visibilities(); track v.id) {
+                  <ngs-option [value]="v.id">{{ v.name | transloco }}</ngs-option>
+                }
+              </ngs-select>
+            </ngs-form-field>
+
+            @if (!isPublicVisibility()) {
+              <ngs-form-field class="w-full mt-6">
+                <ngs-label>{{ 'admin.channels.edit.accessType' | transloco }}</ngs-label>
+                <ngs-select formControlName="accessType">
+                  @for (at of accessTypes(); track at.type) {
+                    <ngs-option [value]="at.type">{{ at.name | transloco }}</ngs-option>
+                  }
+                </ngs-select>
+                <ngs-hint>
+                  @switch (form.get('accessType')?.value) {
+                    @case ('subscribers') { {{ 'admin.channels.edit.accessTypeSubscribersHint' | transloco }} }
+                  }
+                </ngs-hint>
+              </ngs-form-field>
+            }
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="p-6 rounded-2xl bg-surface-container-low">
+            <h3 class="font-bold mb-4">{{ 'studio.channels.edit.rules' | transloco }}</h3>
+            @if (rules.length > 0) {
+              <ngs-accordion class="mb-6">
+                @for (rule of rules; track rule; let index = $index) {
+                  <ngs-expansion-panel class="expansion-panel ngs-elevation-z0 border border-border mb-2">
+                    <ngs-expansion-panel-header>
+                      <ngs-expansion-panel-title class="items-center">
+                        <div class="flex items-center grow">
+                          <div class="text-sm flex h-full items-center grow font-semibold">
+                            <span class="inline-block w-5">{{ index + 1 }}.</span>
+                            {{ rule.name }}
+                          </div>
+                          <button ngsIconButton (click)="editRule($event, rule, index)">
+                            <ngs-icon name="fluent:edit-24-regular"/>
+                          </button>
+                          <button ngsIconButton (click)="deleteRule($event, index)">
+                            <ngs-icon name="fluent:delete-24-regular"/>
+                          </button>
+                        </div>
+                      </ngs-expansion-panel-title>
+                    </ngs-expansion-panel-header>
+                    <p class="text-tiny">{{ rule.description }}</p>
+                  </ngs-expansion-panel>
+                }
+              </ngs-accordion>
+            } @else {
+              <div class="text-sm mb-5 text-on-surface-variant">{{ 'admin.channels.edit.noRules' | transloco }}</div>
+            }
+            <button type="button" ngsButton="outlined" (click)="addRule()">{{ 'admin.channels.edit.addRule' | transloco }}</button>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-container-low mt-6">
+            <h3 class="font-bold mb-4">{{ 'admin.channels.owner' | transloco }}</h3>
+            <div class="flex flex-col gap-3 mb-4">
+              @if (selectedOwner) {
+                <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container">
+                  <div class="flex items-center gap-3">
+                    @if (selectedOwner.avatarUrl) {
+                      <img [src]="selectedOwner.avatarUrl | imageProxy:'40x,sc'" class="w-10 h-10 rounded-full" />
+                    }
+                    @if (!selectedOwner.avatarUrl) {
+                      <ngs-dicebear [image]="selectedOwner.avatarUrl | imageProxy:'40x,sc'" class="size-10"/>
+                    }
+                    <div>
+                      <div class="font-medium">{{ selectedOwner.name }}</div>
+                      <div class="text-tiny text-on-surface-variant">{{ selectedOwner.username }}</div>
+                    </div>
+                  </div>
+                </div>
+              } @else {
+                <div class="text-sm text-on-surface-variant">{{ 'admin.channels.edit.noOwner' | transloco }}</div>
+              }
+            </div>
+            <button type="button" ngsButton="outlined" (click)="selectOwner()">{{ 'admin.channels.selectOwner' | transloco }}</button>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-container-low mt-6">
+            <h3 class="font-bold mb-4">{{ 'admin.channels.moderators' | transloco }}</h3>
+            <div class="flex flex-col gap-3 mb-4">
+              @for (moderator of selectedModerators; track moderator.id) {
+                <div class="flex items-center justify-between p-3 rounded-lg bg-surface-container">
+                  <div class="flex items-center gap-3">
+                    @if (moderator.avatarUrl) {
+                      <img [src]="moderator.avatarUrl | imageProxy:'40x,sc'" class="w-10 h-10 rounded-full" />
+                    }
+                    @if (!moderator.avatarUrl) {
+                      <ngs-dicebear [image]="moderator.avatarUrl | imageProxy:'40x,sc'" class="size-10"/>
+                    }
+                    <div>
+                      <div class="font-medium">{{ moderator.name }}</div>
+                      <div class="text-tiny text-on-surface-variant">{{ moderator.username }}</div>
+                    </div>
+                  </div>
+                  <button ngsIconButton (click)="removeModerator(moderator)">
+                    <ngs-icon name="fluent:delete-24-regular"/>
+                  </button>
+                </div>
+              } @empty {
+                <div class="text-sm text-on-surface-variant">{{ 'admin.channels.edit.noModerators' | transloco }}</div>
+              }
+            </div>
+            <button type="button" ngsButton="outlined" (click)="selectModerators()">{{ 'admin.channels.selectModerators' | transloco }}</button>
+          </div>
+        </div>
+      </form>
+    </ngs-panel-content>
+  </ngs-panel>
+}

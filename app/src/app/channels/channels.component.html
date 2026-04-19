@@ -1,0 +1,31 @@
+<div class="lg:w-[740px] mx-auto">
+  <h1 class="text-3xl font-extrabold">{{ 'channels.title' | transloco }}</h1>
+
+  @if (loaded()) {
+    @if (channels().length > 0) {
+      <main class="mt-10 space-y-10">
+        @for (channel of channels(); track channel) {
+          <app-channel [channel]="channel"/>
+        }
+      </main>
+    } @else {
+      <div class="text-sm text-center my-20">{{ 'channels.noChannels' | transloco }}.</div>
+    }
+
+    @if (pagination().totalPages > 1) {
+      <div class="w-3/12 mx-auto">
+        <ngs-paginator route="/channels/page"
+                       [totalItems]="pagination().totalItems"
+                       [pageSize]="pagination().pageSize"
+                       [pageNumber]="pageNumber"
+                       (pageChanged)="onPageChanged($event)"/>
+      </div>
+    }
+  } @else {
+    <div class="space-y-10 mt-10">
+      @for (loadingChannel of loadingChannels; track loadingChannel) {
+        <app-channel-skeleton/>
+      }
+    </div>
+  }
+</div>

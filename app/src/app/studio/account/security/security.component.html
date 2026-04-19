@@ -1,0 +1,86 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'myProfile.heading.security' | transloco }}</h1>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-12" [formGroup]="form">
+          <div class="space-y-11">
+            <div class="relative group">
+              <div class="flex items-center justify-between gap-14">
+                <div class="flex items-center justify-between grow gap-4 text-sm">
+                  <div>
+                    <div>{{ 'studio.security.emailAddress' | transloco }}</div>
+                    <div class="mt-2 text-neutral-500">{{ 'studio.security.emailHint' | transloco }}.</div>
+                  </div>
+                  <div class="flex flex-col items-end">
+                    <div>{{ form.get('email')?.value }}</div>
+                  </div>
+                </div>
+                <button ngsButton="outlined" (click)="changeEmail()">{{ 'change' | transloco }}</button>
+              </div>
+            </div>
+            <ngs-divider/>
+            <div class="relative group">
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>
+                  <div>{{ 'studio.security.password' | transloco }}</div>
+                  <div class="mt-2 text-neutral-500">{{ 'studio.security.passwordHint' | transloco }}.</div>
+                </div>
+                <button ngsButton="outlined" (click)="changePassword()">{{ 'change' | transloco }}</button>
+              </div>
+            </div>
+<!--            <ngs-divider/>-->
+<!--            <div class="relative group">-->
+<!--              <div class="flex items-center justify-between gap-14 text-sm">-->
+<!--                <div>-->
+<!--                  <div>{{ 'studio.security.2stepVerification' | transloco }}</div>-->
+<!--                  <div class="mt-2 text-neutral-500">{{ 'studio.security.2stepVerificationHint' | transloco }}.</div>-->
+<!--                </div>-->
+<!--                @if (form.get('mfaConfigured')?.value) {-->
+<!--                  <ngs-slide-toggle formControlName="mfaEnabled"/>-->
+<!--                } @else {-->
+<!--                  <button ngsButton="outlined" (click)="setup2stepVerification()">{{ 'studio.security.2stepVerificationSetup' | transloco }}</button>-->
+<!--                }-->
+<!--              </div>-->
+<!--            </div>-->
+
+            @if (oauthProviders().length > 0) {
+              <ngs-divider/>
+              <div class="space-y-4">
+                <div class="text-sm font-medium">{{ 'studio.security.connectedAccounts' | transloco }}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  @for (provider of oauthProviders(); track provider.id) {
+                    <ngs-card appearance="outlined">
+                      <ngs-card-header class="px-3">
+                        <ngs-icon [name]="'logos:' + (provider.type === 'x' ? 'twitter' : provider.type)" class="w-[50px]"/>
+                      </ngs-card-header>
+                      <ngs-card-content class="p-4">
+                        <div class="flex items-center gap-3">
+                          <div class="overflow-hidden">
+                            <div class="text-sm font-medium truncate">{{ provider.username }}</div>
+                            <div class="text-xs text-neutral-500 capitalize">{{ provider.type }}</div>
+                          </div>
+                        </div>
+                      </ngs-card-content>
+                      <ngs-card-actions>
+                        <button ngsButton="outlined" (click)="disconnect(provider.id)">{{ 'disconnect' | transloco }}</button>
+                      </ngs-card-actions>
+                    </ngs-card>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-12">
+    Loading...
+  </div>
+}

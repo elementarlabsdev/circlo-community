@@ -1,0 +1,19 @@
+@if (!loaded() && !loadingError()) {
+  <div class="p-6">Loading…</div>
+} @else if (loadingError()) {
+  <div class="p-6 text-red-600">{{ loadingError() }}</div>
+} @else if (rootComment()) {
+  <div class="p-4 md:p-6 lg:p-8 max-w-4xl mx-auto space-y-6">
+    <h1 class="text-2xl font-bold mb-8">Discussion ({{ nestedRepliesCount() }})</h1>
+    <app-comment
+      [comment]="rootComment()"
+      [threadCommentsDepth]="threadCommentsDepth()"
+      [depth]="rootComment().depth + 2"
+      [targetType]="targetType()"
+      [targetId]="targetId()"
+      (replyAdded)="onReplyAdded()"
+    />
+  </div>
+} @else {
+  <div class="p-6">No discussion found.</div>
+}

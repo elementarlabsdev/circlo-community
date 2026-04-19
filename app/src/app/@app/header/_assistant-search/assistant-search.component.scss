@@ -1,0 +1,11 @@
+@reference 'tailwindcss';
+
+:host {
+  ngs-form-field {
+    --ngs-form-field-container-min-height: 40px;
+    --ngs-form-field-infix-min-height: 40px;
+    --ngs-form-field-border-color: var(--color-muted);
+    --ngs-form-field-border-radius: --spacing(4);
+    --ngs-form-field-padding-x: --spacing(2);
+  }
+}

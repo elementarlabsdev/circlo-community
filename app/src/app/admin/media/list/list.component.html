@@ -1,0 +1,103 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header autoHeight>
+      <ngs-toolbar class="h-16 px-6 border-b border-b-border">
+        <ngs-toolbar-title>{{ 'myProfile.heading.media' | transloco }}</ngs-toolbar-title>
+        @if (selectedFiles.length === 0) {
+          <!--            <ngs-chip-listbox>-->
+            <!--              <ngs-chip-option>Recent</ngs-chip-option>-->
+            <!--              <ngs-chip-option>Starred</ngs-chip-option>-->
+            <!--            </ngs-chip-listbox>-->
+        } @else {
+          <div class="flex gap-3">
+            <button ngsButton="outlined" (click)="downloadSelected()"
+                    [loading]="downloadingZip()">
+              <ngs-icon name="fluent:arrow-download-24-regular"/>Download
+            </button>
+            <button ngsButton="outlined" (click)="deleteSelected()" [disabled]="downloadingZip() || deleting()">
+              <ngs-icon name="fluent:delete-24-regular"/>Delete
+            </button>
+            <button ngsIconButton [ngsMenuTriggerFor]="fileOptionsMenu" [disabled]="downloadingZip()">
+              <ngs-icon name="fluent:more-vertical-24-regular"/>
+            </button>
+          </div>
+        }
+        <ngs-toolbar-spacer/>
+        @if (selectedFiles.length > 0) {
+          <span class="text-xs font-medium">{{ selectedFiles.length }} selected</span>
+        }
+
+        <ngs-segmented [formControl]="settingsForm.controls.mediaView">
+          <ngs-segmented-button value="grid" (click)="saveMediaView()">
+            <ngs-icon name="fluent:grid-24-regular" ngsSegmentedIcon/>
+            <span>Grid</span>
+          </ngs-segmented-button>
+          <ngs-segmented-button value="list" (click)="saveMediaView()">
+            <ngs-icon name="fluent:list-24-regular" ngsSegmentedIcon/>
+            <span>List</span>
+          </ngs-segmented-button>
+        </ngs-segmented>
+        <button ngsButton="filled" ngsRipple ngsUploadTrigger multiple
+                (fileSelected)="fileSelected($event)">
+          <ngs-icon name="fluent:arrow-upload-24-regular"/> Upload
+        </button>
+      </ngs-toolbar>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      @switch (settingsForm.get('mediaView')?.value) {
+        @case ('grid') {
+          @defer {
+            <ngs-scrollbar-area>
+              <app-file-grid-layout #gridLayout [files]="files()"
+                                    [starredIds]="starredIds"
+                                    (fileSelected)="onGridFilesChecked($event)"
+                                    (requestDelete)="deleteOne($event)"/>
+            </ngs-scrollbar-area>
+          } @placeholder (minimum 500ms) {
+            <div class="p-6">
+              Loading...
+            </div>
+          }
+        }
+        @case ('list') {
+          @defer {
+            <app-file-list-layout #listLayout (filesChecked)="onTableFilesChecked($event)"/>
+          } @placeholder (minimum 500ms) {
+            <div class="p-6">
+              Loading...
+            </div>
+          }
+        }
+      }
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6">
+    Loading...
+  </div>
+}
+
+<ngs-menu #fileOptionsMenu="ngsMenu">
+  @if (selectedFiles.length === 1) {
+    <button ngs-menu-item (click)="showInfoOfSelected()">
+      <ngs-icon name="fluent:info-24-regular"/>File Info
+    </button>
+    <button ngs-menu-item (click)="copyLinkOfSelected()">
+      <ngs-icon name="fluent:link-24-regular"/>Copy Link
+    </button>
+    <button ngs-menu-item (click)="downloadSelected()" [disabled]="downloadingZip()">
+      <ngs-icon name="fluent:arrow-download-24-regular"/>Download ZIP
+    </button>
+    <ngs-menu-divider/>
+    <button ngs-menu-item (click)="deleteSelected()" [disabled]="deleting()">
+      <ngs-icon name="fluent:delete-24-regular"/>Delete
+    </button>
+  } @else if (selectedFiles.length > 1) {
+    <button ngs-menu-item (click)="downloadSelected()">
+      <ngs-icon name="fluent:arrow-download-24-regular"/>Download
+    </button>
+    <button ngs-menu-item (click)="deleteSelected()" [disabled]="deleting()">
+      <ngs-icon name="fluent:delete-24-regular"/>Delete
+    </button>
+  }
+</ngs-menu>

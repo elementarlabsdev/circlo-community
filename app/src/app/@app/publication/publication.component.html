@@ -1,0 +1,75 @@
+<div class="border border-border rounded-3xl bg-surface-container-lowest overflow-hidden">
+  @if (publication().featuredImageUrl) {
+    <a [routerLink]="['/publication', publication().slug]"
+       class="hidden md:flex items-center justify-center bg-surface-container h-[360px] relative overflow-hidden">
+      <img [alt]="publication().title" class="bg-cover lazyload"
+           [attr.data-src]="publication().featuredImageUrl | imageProxy:'740x361'">
+    </a>
+  }
+
+  <div class="px-9 pt-9 pb-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        @if (channel) {
+          <ngs-dicebear class="size-7"
+                        [key]="channel.id"
+                        [image]="channel.logoUrl | imageProxy: '60x60,sc,q80'"/>
+          <span class="text-sm text-neutral-500">{{ 'in' | transloco }}</span>
+          <a [routerLink]="['/channel', channel.slug]"
+             class="text-sm hover:text-primary hover:underline underline-offset-1 font-medium">{{ channel.name }}</a>
+
+          @if (channel.accessType === 'subscribers') {
+            <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold uppercase tracking-wider">
+              <ngs-icon name="fluent:people-community-16-regular" class="size-3"/>
+              {{ 'subscribersOnly' | transloco }}
+            </div>
+          }
+
+          <span class="text-sm text-neutral-500">{{ 'by' | transloco }}</span>
+          <ngs-dicebear class="size-7"
+                        [key]="publication().author.id"
+                        [image]="publication().author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+          <a [routerLink]="['/user', publication().author.username]"
+             class="text-sm hover:text-primary hover:underline underline-offset-1">{{ publication().author.name }}</a>
+        } @else {
+          <ngs-dicebear class="size-7"
+                        [key]="publication().author.id"
+                        [image]="publication().author.avatarUrl | imageProxy: '60x60,sc,q80'"/>
+          <a [routerLink]="['/user', publication().author.username]"
+             class="text-sm hover:text-primary hover:underline underline-offset-1">{{ publication().author.name }}</a>
+        }
+      </div>
+      <div class="text-xs">
+        <app-reading-time [readingTime]="publication().readingTime"/>
+      </div>
+    </div>
+    <a [routerLink]="['/publication', publication().slug]"
+       class="text-xl md:text-2xl lg:text-3xl lg:leading-[46px] font-extrabold block hover:text-primary mt-4">{{ publication().title }}</a>
+    <div class="hidden md:flex items-center justify-between mt-4">
+      <div class="flex items-center gap-3 relative -start-2">
+        <a ngsButton [routerLink]="['/publication', publication().slug]" fragment="comments">
+          <ngs-icon name="fluent:chat-24-regular"/>
+          <app-comments-count [count]="publication().commentsCount"/>
+        </a>
+        @if (publication().reactionsCount > 0) {
+          <app-reaction-list [reactions]="reactions()" />
+        }
+      </div>
+      <div class="flex items-center gap-3 relative -end-2">
+        <div class="text-xs">{{ publication().publishedAt | timeAgo }}</div>
+        <ngs-divider vertical/>
+        <div class="text-xs">
+          <app-views-count [count]="publication().viewsCount"/>
+        </div>
+        <ngs-divider vertical/>
+        <app-bookmark-button targetType="publication" [targetId]="publication().id"/>
+<!--        @if (canDelete()) {-->
+<!--          <ngs-divider vertical/>-->
+<!--          <button (click)="delete()" class="text-xs text-red-500 hover:underline">-->
+<!--            {{ 'delete' | transloco }}-->
+<!--          </button>-->
+<!--        }-->
+      </div>
+    </div>
+  </div>
+</div>

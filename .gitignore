@@ -1,0 +1,17 @@
+data
+!data/.gitkeep
+.DS_Store
+.env
+letsencrypt/*
+certbot
+node_modules
+.idea
+.git
+.github
+.vscode
+dist
+npm-debug.log
+.angular/cache
+.junie
+output.txt
+.output.txt

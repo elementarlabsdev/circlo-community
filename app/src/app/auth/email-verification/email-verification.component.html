@@ -1,0 +1,54 @@
+<a routerLink="/" class="text-2xl font-bold absolute top-7 start-7 z-1">
+  <app-logo/>
+</a>
+<div class="form-container min-h-screen flex flex-col justify-center items-center p-5">
+  <ngs-card appearance="filled">
+    <div class="p-12">
+      <h1 class="text-center text-3xl font-bold whitespace-nowrap">{{ 'email.verification.title' | transloco }}</h1>
+      <p class="mt-2 text-center text-neutral-500 text-sm">
+        {{ 'email.verification.sentCodeTo' | transloco }}
+        <span class="text-primary">{{ email }}</span>.
+      </p>
+      <div class="w-[420px]">
+        @if (showError()) {
+          <div class="rounded-xl bg-red-100 p-5 mt-6 text-sm">
+            {{ 'email.verification.errorWrongCode' | transloco }}
+          </div>
+        }
+        <form class="flex flex-col pt-8" [formGroup]="form" (submit)="check()">
+          <ngs-pin-input placeholder="⚬" length="6" formControlName="code"/>
+
+          @if (isRecaptcha()) {
+            <div class="mt-4 text-[10px] text-neutral-500 leading-tight">
+              {{ 'registration.protectedByRecaptcha' | transloco }}
+              <a href="https://policies.google.com/privacy" target="_blank" class="underline">Privacy Policy</a>
+              {{ 'registration.and' | transloco }}
+              <a href="https://policies.google.com/terms" target="_blank" class="underline">Terms of Service</a>
+              {{ 'registration.apply' | transloco }}
+            </div>
+          }
+
+          <button type="submit" ngsButton="filled" fullWidth
+                  class="!h-12 mt-8" [disabled]="form.invalid || loading()">{{ 'email.verification.continue' | transloco }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </ngs-card>
+  <div class="py-7 text-center flex items-center justify-between w-[420px]">
+    <a routerLink="/login"
+       class="whitespace-nowrap flex gap-1 text-xs font-medium text-neutral-500 dark:text-neutral-300
+              hover:text-primary dark:hover:text-accent inline-flex items-center">
+      <ngs-icon name="fluent:arrow-left-24-regular"/>
+      {{ 'forgotPassword.backToLoginPage' | transloco }}
+    </a>
+    <p class="whitespace-nowrap text-xs">
+      <span class="inline-block ms-4 me-2 text-neutral-600 dark:text-neutral-400">{{ 'email.verification.didntReceiveEmail' | transloco }}</span>
+      <button type="button" class="underline-offset-4 font-semibold text-neutral-800 dark:text-neutral-300 hover:text-primary
+                         underline hover:text-accent dark:hover:text-accent cursor-pointer"
+              (click)="resendCode()">
+        {{ 'email.verification.clickToResend' | transloco }}
+      </button>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="grow w-[890px] mx-auto py-10 min-h-full">
+  @if (page) {
+    <ngs-breadcrumbs class="mb-8">
+      <a routerLink="/" ngs-breadcrumb-item>Home</a>
+      <ngs-breadcrumb-separator>/</ngs-breadcrumb-separator>
+      <ngs-breadcrumb-item>Pages</ngs-breadcrumb-item>
+    </ngs-breadcrumbs>
+    <main class="border border-border rounded-3xl">
+      @if (page.featuredImageUrl) {
+        <div class="flex items-center justify-center h-[430px] max-h-[430px] overflow-hidden bg-surface-container">
+          <img [src]="page.featuredImageUrl | imageProxy:'x600,q80'" alt="" class="bg-cover">
+        </div>
+      }
+      <div class="p-14">
+        <h1 class="text-5xl font-extrabold leading-tight">{{ page.title }}</h1>
+        <article class="prose-sm lg:prose lg:max-w-full mt-12 dark:prose-invert space-y-8">
+          <app-blocks-content [blocksContent]="page.blocksContent"/>
+        </article>
+      </div>
+    </main>
+  }
+</div>

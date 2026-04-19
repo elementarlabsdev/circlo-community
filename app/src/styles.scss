@@ -1,0 +1,18 @@
+@use "@ngstarter/components/styles/themes/default";
+
+ngs-chip {
+  &[appearance="draft"] {
+    background: var(--color-surface-container);
+    color: var(--color-on-surface);
+  }
+
+  &[appearance="scheduled"] {
+    background: theme(--color-amber-100);
+    color: theme(--color-amber-700);
+  }
+
+  &[appearance="published"] {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+}

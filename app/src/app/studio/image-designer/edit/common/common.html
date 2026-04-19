@@ -1,0 +1,39 @@
+@if (loaded()) {
+  <ngs-layout root>
+    <ngs-layout-header>
+      <div class="h-15 w-full px-6 border-b border-b-border flex items-center justify-between">
+        <div class="flex items-center gap-2 -ms-2">
+          <a routerLink="/studio/image-designer" ngsIconButton [ngsTooltip]="'backToImageDesigner' | transloco">
+            <ngs-icon name="fluent:arrow-left-24-regular"/>
+          </a>
+          <div class="flex items-center gap-4">
+            <h1 class="font-bold text-on-primary-fixed">{{ imageDesign().name }}</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <div class="text-xs text-neutral-700 dark:text-neutral-500">
+            @if (saving()) {
+              {{ 'studio.saving' | transloco }}...
+            } @else {
+              @if (imageDesign().updatedAt) {
+                {{ 'studio.lastUpdate' | transloco }} {{ (imageDesign().updatedAt || '') | timeAgo }}
+              }
+            }
+          </div>
+          <button ngsButton="filled" (click)="saveResultImageUrl()">Save Preview</button>
+          <button ngsButton="filled" (click)="downloadImageDesign()">Download</button>
+        </div>
+      </div>
+    </ngs-layout-header>
+    <ngs-layout-content>
+      <ngs-image-designer [snapshot]="snapshot()"
+                          [imageSize]="imageSize()"
+                          [assetsDataSource]="assetsDataSource"
+                          [showDownloadButton]="false"
+                          [uploadFn]="uploadFn()"
+                          (snapshotChanged)="onSnapshotChanged($event)"/>
+    </ngs-layout-content>
+  </ngs-layout>
+} @else {
+  <div class="p-10">Loading...</div>
+}

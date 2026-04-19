@@ -1,0 +1,156 @@
+<ngs-panel [formGroup]="form">
+  <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+    <div class="flex h-full items-center justify-between">
+      <h1 class="font-bold">{{ 'admin.settings.cookie-consent.heading' | transloco }}</h1>
+      <button ngsButton="filled" (click)="save()">{{ 'admin.settings.cookie-consent.save' | transloco }}</button>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-scrollbar-area>
+      <div class="p-6 xl:p-12 xl:w-8/12 space-y-8">
+        <section class="space-y-5">
+          <div class="flex items-center gap-3 pb-2">
+            <h3 class="text-xl text-m3-on-surface font-normal">{{ 'admin.settings.cookie-consent.banner-content' | transloco }}</h3>
+          </div>
+          <div class="space-y-5">
+            <ngs-form-field>
+              <ngs-label>{{ 'admin.settings.cookie-consent.banner-title' | transloco }}</ngs-label>
+              <input ngsInput
+                     [placeholder]="'admin.settings.cookie-consent.banner-title-placeholder' | transloco"
+                     type="text"
+                     formControlName="bannerTitle"/>
+            </ngs-form-field>
+
+            <ngs-form-field>
+              <ngs-label>{{ 'admin.settings.cookie-consent.message-text' | transloco }}</ngs-label>
+              <textarea ngsInput
+                        ngsTextareaAutoSize
+                        [placeholder]="'admin.settings.cookie-consent.message-text-placeholder' | transloco"
+                        formControlName="messageText"></textarea>
+              <ngs-hint align="end">{{ form.get('messageText')?.value?.length || 0 }}/300</ngs-hint>
+            </ngs-form-field>
+
+            <div class="grid grid-cols-2 gap-4">
+              <ngs-form-field>
+                <ngs-label>{{ 'admin.settings.cookie-consent.accept-label' | transloco }}</ngs-label>
+                <input ngsInput type="text" formControlName="acceptLabel"/>
+              </ngs-form-field>
+              <ngs-form-field>
+                <ngs-label>{{ 'admin.settings.cookie-consent.decline-label' | transloco }}</ngs-label>
+                <input ngsInput type="text" formControlName="declineLabel"/>
+              </ngs-form-field>
+            </div>
+          </div>
+        </section>
+        <section class="space-y-5 pt-4">
+          <div class="flex items-center justify-between pb-2">
+            <h3 class="text-xl text-m3-on-surface font-normal">{{ 'admin.settings.cookie-consent.manage-preferences' | transloco }}</h3>
+            <button ngsButton="outlined" (click)="addCategory()">
+              <ngs-icon name="fluent:add-24-regular"/>
+              {{ 'admin.settings.cookie-consent.add-category' | transloco }}
+            </button>
+          </div>
+          <ngs-accordion formArrayName="categories">
+            @for (category of categories.controls; track category; let i = $index) {
+              <ngs-expansion-panel [formGroupName]="i">
+                <ngs-expansion-panel-header>
+                  <ngs-expansion-panel-title>
+                    <div class="flex items-center justify-between w-full">
+                      <span class="text-base font-medium text-m3-on-surface">{{ category.get('name')?.value }}</span>
+                      <div class="flex items-center gap-3">
+                        @if (category.get('isMandatory')?.value) {
+                          <span class="text-xs font-medium text-m3-primary">{{ 'admin.settings.cookie-consent.always-active' | transloco }}</span>
+                        } @else {
+                          <ngs-slide-toggle [checked]="false" (click)="$event.stopPropagation()"></ngs-slide-toggle>
+                        }
+                      </div>
+                    </div>
+                  </ngs-expansion-panel-title>
+                </ngs-expansion-panel-header>
+
+                <div class="pt-5 space-y-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <ngs-form-field class="w-full">
+                      <ngs-label>{{ 'admin.settings.cookie-consent.category-name' | transloco }}</ngs-label>
+                      <input ngsInput type="text" formControlName="name"/>
+                    </ngs-form-field>
+                    <ngs-form-field class="w-full">
+                      <ngs-label>{{ 'admin.settings.cookie-consent.short-description' | transloco }}</ngs-label>
+                      <input ngsInput type="text" formControlName="shortDescription"/>
+                    </ngs-form-field>
+                  </div>
+                  <ngs-form-field class="w-full">
+                    <ngs-label>{{ 'admin.settings.cookie-consent.detailed-description' | transloco }}</ngs-label>
+                    <textarea ngsInput class="min-h-[120px]" formControlName="detailedDescription"></textarea>
+                  </ngs-form-field>
+                  <div class="flex items-center justify-between pt-2">
+                    <div class="flex items-center gap-4">
+                      <ngs-slide-toggle formControlName="isMandatory"></ngs-slide-toggle>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-medium text-m3-on-surface">{{ 'admin.settings.cookie-consent.mandatory-category' | transloco }}</span>
+                        <span class="text-xs text-m3-on-surface-variant">{{ 'admin.settings.cookie-consent.mandatory-category-hint' | transloco }}</span>
+                      </div>
+                    </div>
+                    <button ngsButton (click)="removeCategory(i)">
+                      <ngs-icon name="fluent:delete-24-regular"/>
+                      {{ 'admin.settings.cookie-consent.remove' | transloco }}
+                    </button>
+                  </div>
+                </div>
+              </ngs-expansion-panel>
+            }
+          </ngs-accordion>
+        </section>
+        <section class="space-y-5 pt-4 border-t border-t-border">
+          <div class="flex items-center gap-3 pb-2">
+            <h3 class="text-xl text-m3-on-surface font-normal">{{ 'admin.settings.cookie-consent.position' | transloco }}</h3>
+          </div>
+          <div class="max-w-md">
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'admin.settings.cookie-consent.banner-position' | transloco }}</ngs-label>
+              <ngs-select formControlName="position">
+                <ngs-option value="bottom-full">
+                  {{ 'admin.settings.cookie-consent.position-bottom-full' | transloco }}
+                </ngs-option>
+                <ngs-option value="bottom-left">
+                  {{ 'admin.settings.cookie-consent.position-bottom-left' | transloco }}
+                </ngs-option>
+                <ngs-option value="bottom-center">
+                  {{ 'admin.settings.cookie-consent.position-bottom-center' | transloco }}
+                </ngs-option>
+                <ngs-option value="bottom-right">
+                  {{ 'admin.settings.cookie-consent.position-bottom-right' | transloco }}
+                </ngs-option>
+              </ngs-select>
+            </ngs-form-field>
+          </div>
+        </section>
+        <section class="space-y-5 pt-4 border-t border-t-border">
+          <div class="flex items-center gap-3 pb-2">
+            <h3 class="text-xl text-m3-on-surface font-normal">{{ 'admin.settings.cookie-consent.behavior' | transloco }}</h3>
+          </div>
+          <div class="space-y-6">
+            <div class="flex items-center justify-between">
+              <div class="space-y-0.5">
+                <label class="text-base font-normal text-m3-on-surface">{{ 'admin.settings.cookie-consent.close-on-overlay-click' | transloco }}</label>
+                <p class="text-xs text-m3-on-surface-variant">{{ 'admin.settings.cookie-consent.close-on-overlay-click-hint' | transloco }}</p>
+              </div>
+              <ngs-slide-toggle formControlName="closeOnOverlayClick"></ngs-slide-toggle>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="space-y-0.5">
+                <label class="text-base font-normal text-m3-on-surface">{{ 'admin.settings.cookie-consent.auto-close-timer' | transloco }}</label>
+                <p class="text-xs text-m3-on-surface-variant">{{ 'admin.settings.cookie-consent.auto-close-timer-hint' | transloco }}</p>
+              </div>
+              <ngs-slide-toggle formControlName="autoCloseTimer"></ngs-slide-toggle>
+            </div>
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'admin.settings.cookie-consent.delay' | transloco }}</ngs-label>
+              <input ngsInput type="number" formControlName="delay"/>
+            </ngs-form-field>
+          </div>
+        </section>
+      </div>
+    </ngs-scrollbar-area>
+  </ngs-panel-content>
+</ngs-panel>

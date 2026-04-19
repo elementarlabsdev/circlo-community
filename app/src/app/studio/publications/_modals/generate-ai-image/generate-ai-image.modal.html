@@ -1,0 +1,35 @@
+<ngs-block-loader [loading]="!loaded()"/>
+<h2 ngs-dialog-title>Generate cover image with AI</h2>
+<ngs-dialog-content>
+  @if (error()) {
+    <ngs-alert variant="negative">{{ error() }}</ngs-alert>
+  } @else {
+    <ngs-radio-group [value]="currentProvider()?.type">
+      @for (provider of providers(); track provider.type) {
+        <ngs-radio-button [value]="currentProvider().type">{{ provider.name }}</ngs-radio-button>
+      }
+    </ngs-radio-group>
+    <div class="grid grid-cols-1 gap-4 mt-5">
+      @for (previewImage of previewImages(); track previewImage) {
+        <div class="col-span-1">
+          <ngs-card appearance="outlined"
+                    ngsCardOverlayContainer
+                    class="overflow-hidden h-[500px] relative" >
+            @if (previewImage.loaded) {
+              <img [src]="previewImage.src" alt="" class="h-full">
+            }
+
+            <ngs-card-overlay withBlur [disabled]="!previewImage.loaded">
+              <button ngsButton="filled" (click)="selectImage(previewImage)">Select Image</button>
+            </ngs-card-overlay>
+            <ngs-block-loader [loading]="!previewImage.loaded"/>
+          </ngs-card>
+        </div>
+      }
+    </div>
+  }
+</ngs-dialog-content>
+<ngs-dialog-actions>
+  <button ngsButton (click)="cancel()">Cancel</button>
+  <button ngsButton="outlined" [disabled]="!loaded()" (click)="refresh()">Refresh</button>
+</ngs-dialog-actions>

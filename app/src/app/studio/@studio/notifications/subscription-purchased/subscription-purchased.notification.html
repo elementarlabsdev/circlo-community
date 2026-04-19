@@ -1,0 +1,9 @@
+<ngs-notification [isUnread]="isUnread()">
+  <div ngsNotificationAvatar class="flex items-center justify-center bg-blue-100 text-blue-600 rounded-full w-10 h-10">
+    <ngs-icon name="fluent:person-star-24-regular"/>
+  </div>
+  <ngs-notification-message>
+    {{ notification().message }}
+  </ngs-notification-message>
+  <ngs-notification-time>{{ notification().createdAt | timeAgo }}</ngs-notification-time>
+</ngs-notification>

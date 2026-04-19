@@ -1,0 +1,25 @@
+<main class="space-y-10 lg:w-[740px] mx-auto">
+  @if (loaded()) {
+    @if (publications().length > 0) {
+      @for (publication of publications(); track publication) {
+        <app-publication [publication]="publication" [reactions]="reactions[publication.id]"/>
+      }
+
+      @if (pagination().totalPages > 1) {
+        <ngs-paginator route="/publications/page"
+                       [totalItems]="pagination().totalItems"
+                       [pageSize]="pagination().pageSize"
+                       [pageNumber]="pageNumber"
+                       (pageChanged)="onPageChanged($event)"/>
+      }
+    } @else {
+      <div class="text-sm text-center">{{ 'thereAreNoPublications' | transloco }}.</div>
+    }
+  } @else {
+    <div class="space-y-10">
+      @for (skeletonItem of skeleton; track skeletonItem) {
+        <app-publication-skeleton/>
+      }
+    </div>
+  }
+</main>

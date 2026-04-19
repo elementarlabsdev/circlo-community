@@ -1,0 +1,56 @@
+<div class="p-12">
+  @if (loaded()) {
+    <div class="grid grid-cols-12 gap-20">
+      <div class="col-span-4">
+        <div class="sticky top-12 flex flex-col gap-5">
+          <h5 class="font-bold">{{ 'admin.layout.edit.widgets' | transloco }}</h5>
+          @for (widget of widgets(); track widget) {
+            <div class="border border-border rounded-2xl p-3 cursor-move select-none hover:bg-surface-container-low"
+                 [dndDraggable]="widget">
+              {{ widget.name }}
+            </div>
+          }
+        </div>
+      </div>
+      <div class="col-span-8">
+        <h5 class="font-bold mb-4">{{ 'admin.layout.edit.slots' | transloco }}</h5>
+        <div class="grid grid-cols-2 gap-6">
+          @for (layoutSlot of layout().layoutSlots; track layoutSlot) {
+            <ngs-card appearance="outlined" class="relative">
+              <h3 ngs-card-title class="py-2 px-4">{{ layoutSlot.name }}</h3>
+              <ngs-card-content class="p-4">
+                <div class="border border-dashed border-default min-h-32 rounded-2xl"
+                     cdkDropList (cdkDropListDropped)="drop($event, layoutSlot.layoutWidgets, layoutSlot.id)"
+                     dndDropzone (dndDrop)="onDrop($event, layoutSlot)">
+                  @if (layoutSlot.layoutWidgets.length > 0) {
+                    <div class="p-3 flex flex-col gap-3">
+                      @for (layoutWidget of layoutSlot.layoutWidgets; track layoutWidget; let index = $index) {
+                        <div class="bg-surface-container-lowest flex items-center justify-between
+                                border border-border rounded-2xl ps-1 py-1 pe-1 w-full overflow-hidden" cdkDrag>
+                          <div class="flex items-center">
+                            <button ngsIconButton cdkDragHandle><ngs-icon name="fluent:list-24-regular"/></button>
+                            {{ layoutWidget.name }}
+                          </div>
+                          <div class="flex items-center">
+                            <button ngsIconButton><ngs-icon name="fluent:settings-24-regular"/></button>
+                            <button ngsIconButton (click)="deleteLayoutWidget(layoutSlot.layoutWidgets, index, layoutSlot.id)"><ngs-icon name="fluent:delete-24-regular"/></button>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <div class="flex items-center justify-center h-full min-h-32">
+                      <div class="text-sm text-neutral-600">{{ 'admin.layout.edit.dropHere' | transloco }}</div>
+                    </div>
+                  }
+                </div>
+              </ngs-card-content>
+            </ngs-card>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    {{ 'common.loading' | transloco }}
+  }
+</div>

@@ -1,0 +1,147 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="border-b border-b-border">
+      <div class="h-full flex items-center gap-2 px-6">
+        @if (loaded()) {
+          <a [routerLink]="tutorialUrl" ngsIconButton [ngsTooltip]="'backToTutorial' | transloco" class="-ms-3">
+            <ngs-icon name="fluent:arrow-left-24-regular"/>
+          </a>
+          <h1 class="font-bold text-on-primary-fixed">
+            {{ quiz().sectionItem.section.name }} / <span class="text-primary">{{ quiz().name }}</span>
+          </h1>
+        } @else {
+          Loading...
+        }
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="w-[800px] mx-auto p-10">
+          <!-- Title -->
+          <ngs-form-field class="w-full mb-6">
+            <ngs-label>Quiz title (optional)</ngs-label>
+            <input ngsInput [formControl]="form.controls.title" placeholder="Untitled quiz"/>
+          </ngs-form-field>
+
+          <!-- Questions list -->
+          <div class="flex flex-col gap-6">
+            @for (q of questions.controls; track q; let i = $index) {
+              <ngs-card>
+                <ngs-card-header>
+                  <ngs-card-title>Question {{ i + 1 }}</ngs-card-title>
+                  <ngs-card-aside>
+                    <button ngsIconButton (click)="moveQuestionUp(i)" [disabled]="i === 0"
+                            aria-label="Move question up">
+                      <ngs-icon name="fluent:arrow-up-24-regular"/>
+                    </button>
+                    <button ngsIconButton (click)="moveQuestionDown(i)" [disabled]="i === questions.length - 1"
+                            aria-label="Move question down">
+                      <ngs-icon name="fluent:arrow-down-24-regular"/>
+                    </button>
+                    <button ngsIconButton (click)="removeQuestion(i)" aria-label="Delete question">
+                      <ngs-icon name="fluent:delete-24-regular"/>
+                    </button>
+                  </ngs-card-aside>
+                </ngs-card-header>
+                <ngs-card-content>
+                  <ngs-form-field class="w-full mb-4 mt-5">
+                    <ngs-label>Enter your question</ngs-label>
+                    <input ngsInput [formControl]="$any(q.get('text'))"/>
+                  </ngs-form-field>
+
+                  <!-- Multiple choice / Single -->
+                  @if (q.get('type')?.value === 'single') {
+                    <div>
+                      <div class="flex flex-col gap-3 mb-5">
+                        @for (opt of $any(q.get('options')).controls; track opt; let oi = $index) {
+                          <div class="flex items-center gap-5">
+                            <ngs-radio-button [value]="$any(q.get('correct'))?.value"
+                                              name="correct"
+                                              (change)="selectSingle(i, oi)"></ngs-radio-button>
+                            <ngs-form-field class="grow" subscriptHiddenIfEmpty>
+                              <input ngsInput [formControl]="$any(opt)" placeholder="Option"/>
+                            </ngs-form-field>
+                            <button ngsIconButton (click)="removeOption(i, oi)" aria-label="Delete option">
+                              <ngs-icon name="fluent:delete-24-regular"/>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                      <button ngsButton (click)="addOption(i)">
+                        <ngs-icon name="fluent:add-24-regular"/>
+                        Add Option
+                      </button>
+                    </div>
+                  }
+
+                  <!-- Checkboxes -->
+                  @if (q.get('type')?.value === 'multiple') {
+                    <div>
+                      <div class="flex flex-col gap-3 mb-5">
+                        @for (opt of $any(q.get('options')).controls; track opt; let oi = $index) {
+                          <div class="flex items-center gap-5">
+                            <ngs-checkbox [checked]="$any(q.get('correct'))?.value?.includes(oi)"
+                                          (change)="toggleMultiple(i, oi, $event.checked)"></ngs-checkbox>
+                            <ngs-form-field class="grow" subscriptHiddenIfEmpty>
+                              <input ngsInput [formControl]="$any(opt)" placeholder="Option"/>
+                            </ngs-form-field>
+                            <button ngsIconButton (click)="removeOption(i, oi)"
+                                    aria-label="Delete option">
+                              <ngs-icon name="fluent:delete-24-regular"/>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                      <button ngsButton (click)="addOption(i)">
+                        <ngs-icon name="fluent:add-24-regular"/>
+                        Add Option
+                      </button>
+                    </div>
+                  }
+
+                  <!-- Open ended -->
+                  @if (q.get('type')?.value === 'open') {
+                    <ngs-form-field class="w-full">
+                      <ngs-label>Answer (Open-Ended)</ngs-label>
+                      <textarea ngsInput rows="3" placeholder="Student's answer will be written here..."
+                                disabled></textarea>
+                    </ngs-form-field>
+                  }
+                </ngs-card-content>
+              </ngs-card>
+            }
+
+            <!-- Add block -->
+            <div class="px-10 py-8 border border-border border-dashed rounded-3xl">
+              <div class="text-center">
+                <div class="font-semibold mb-5">Add a new question</div>
+                <div class="flex items-center justify-center gap-5">
+                  <button ngsRipple class="bg-surface-container-low h-32 w-36 rounded-2xl p-4 cursor-pointer
+                              flex items-center justify-center gap-3 flex-col hover:bg-surface-container text-sm font-semibold"
+                          (click)="addQuestion('single')">
+                    <ngs-icon name="fluent:location-24-regular" class="!size-[32px] !text-[32px]"/>
+                    Multiple Choice
+                  </button>
+                  <button ngsRipple class="bg-surface-container-low h-32 w-36 rounded-2xl p-4 cursor-pointer
+                              flex items-center justify-center gap-3 flex-col hover:bg-surface-container text-sm font-semibold"
+                          (click)="addQuestion('multiple')">
+                    <ngs-icon name="fluent:checkbox-checked-24-regular" class="!size-[32px] !text-[32px]"/>
+                    Checkboxes
+                  </button>
+                  <!--                  <button ngsRipple class="bg-surface-container-low size-32 rounded-2xl p-4 cursor-pointer-->
+                  <!--                              flex items-center justify-center gap-3 flex-col hover:bg-surface-container"-->
+                  <!--                          (click)="addQuestion('open')">-->
+                  <!--                    <ngs-icon name="fluent:text-field-24-regular"/>-->
+                  <!--                    Open-Ended-->
+                  <!--                  </button>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">Loading...</div>
+}

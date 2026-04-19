@@ -1,0 +1,23 @@
+<div ngs-dialog-title>{{ 'admin.settings.mail.sendgrid.title' | transloco }}</div>
+<ngs-dialog-content>
+  <form [formGroup]="form">
+    <div class="space-y-3 mt-2">
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.mail.sendgrid.apiKey' | transloco }}</ngs-label>
+        <input type="text" ngsInput formControlName="apiKey">
+        <ngs-hint>
+          {{ 'admin.settings.mail.sendgrid.apiKeyHint' | transloco }} <a href="https://app.sendgrid.com/settings/api_keys" target="_blank">{{ 'admin.settings.mail.sendgrid.settings' | transloco }}</a>
+        </ngs-hint>
+      </ngs-form-field>
+      <div class="mt-4">
+        <ngs-slide-toggle formControlName="isEnabled">{{ 'captchaProvider.isEnabled' | transloco }}</ngs-slide-toggle>
+      </div>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button type="submit" ngsButton="filled" color="primary" [disabled]="form.invalid" (click)="apply()">
+    {{ 'common.apply' | transloco }}
+  </button>
+</ngs-dialog-actions>

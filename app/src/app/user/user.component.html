@@ -1,0 +1,107 @@
+@if (loaded()) {
+  <div class="lg:w-[1120px] mx-auto pt-10 px-6 lg:px-0">
+    <ngs-breadcrumbs lastItemAsLink>
+      <a routerLink="/" ngs-breadcrumb-item>{{ 'breadcrumbs.home' | transloco }}</a>
+      <ngs-breadcrumb-separator>/</ngs-breadcrumb-separator>
+      <ngs-breadcrumb-item>{{ 'breadcrumbs.users' | transloco }}</ngs-breadcrumb-item>
+    </ngs-breadcrumbs>
+    <h1 class="text-3xl font-extrabold mt-2 mb-10">
+      {{ user.name }}
+    </h1>
+  </div>
+  <div class="grow lg:grid lg:grid-cols-[740px_380px] lg:w-[1120px] px-6 lg:px-0 mx-auto gap-10">
+    <main class="lg:w-[740px] mx-auto flex flex-col gap-10 pb-10">
+      @if (allowThreads()) {
+        <app-thread-add class="w-full mx-auto lg:w-[740px]"/>
+      }
+
+      @if (items().length > 0) {
+        <app-feed-items [items]="items()" [reactions]="reactions"/>
+
+        @if (pagination().totalPages > 1) {
+          <ngs-paginator route="/feed/page"
+                         [totalItems]="pagination().totalItems"
+                         [pageSize]="pagination().pageSize"
+                         [pageNumber]="pageNumber"
+                         (pageChanged)="onPageChanged($event)"/>
+        }
+      } @else {
+        <div class="text-sm text-center">{{ 'thereAreNoPublications' | transloco }}.</div>
+      }
+    </main>
+    <aside class="pb-10 flex flex-col gap-10">
+      <div class="sticky top-25">
+        <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col gap-5">
+          <ngs-dicebear [key]="user.id"
+                        [image]="user.avatarUrl | imageProxy:'200x200,sc,q90'" class="size-32"/>
+          <div>
+            <div class="font-medium">{{ user.name }}</div>
+            <div class="text-sm text-neutral-700 dark:text-neutral-500 mt-2 items-center flex gap-4">
+              <app-user-followers-count [count]="user.followersCount"/>
+              @if (allowPublications()) {
+                <ngs-divider vertical/>
+                <app-publications-count [count]="user.publicationsCount"/>
+              }
+              @if (allowTutorials()) {
+                <ngs-divider vertical/>
+                <app-tutorials-count [count]="user.tutorialsCount"/>
+              }
+            </div>
+
+            <!--          @if (user.description) {-->
+            <!--            <div class="text-sm leading-relaxed mt-4">{{ user.description }}</div>-->
+            <!--          }-->
+
+            <div class="mt-6">
+              <app-subscription [targetId]="user.id" targetType="user"/>
+            </div>
+          </div>
+        </div>
+
+        @if (donationLinks().length > 0) {
+          <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col gap-5">
+            <h3 class="text-sm font-bold">Donate</h3>
+            <ul class="flex flex-col gap-2">
+              @for (donationLink of donationLinks(); track donationLink.id) {
+                <li>
+                  <a [href]="donationLink.url" target="_blank" class="link">{{ donationLink.url }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </aside>
+  </div>
+} @else {
+  <div class="lg:max-w-[1120px] mx-auto pt-10">
+    <ngs-skeleton>
+      <div class="px-6 lg:px-0">
+        <div class="flex gap-2">
+          <ngs-skeleton class="w-40 h-4"/>
+          <span class="relative text-neutral-500 -top-1">/</span>
+          <ngs-skeleton class="w-48 h-4"/>
+        </div>
+        <div class="text-3xl font-extrabold mt-2 flex items-center gap-4 mt-8">
+          <ngs-skeleton class="w-60"/>
+        </div>
+      </div>
+    </ngs-skeleton>
+  </div>
+  <div class="grow px-6 lg:px-0 lg:grid lg:grid-cols-[740px_380px] lg:w-[1120px] mx-auto gap-10 lg:min-h-full">
+    <div class="py-10">
+      <ngs-skeleton>
+        <div class="space-y-10">
+          @for (skeletonItem of skeleton; track skeletonItem) {
+            <app-publication-skeleton/>
+          }
+        </div>
+      </ngs-skeleton>
+    </div>
+    <aside class="py-10">
+      <ngs-skeleton>
+        <ngs-skeleton class="rounded-2xl h-72"/>
+      </ngs-skeleton>
+    </aside>
+  </div>
+}

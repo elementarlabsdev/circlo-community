@@ -1,0 +1,70 @@
+<ngs-panel>
+  <ngs-panel-header autoHeight>
+    <ngs-toolbar class="h-16 ps-4 pe-6 border-b border-b-border">
+      <button ngsIconButton (click)="back()">
+        <ngs-icon name="fluent:arrow-left-24-regular" />
+      </button>
+      <ngs-toolbar-title>{{ 'admin.threads.viewTitle' | transloco }}</ngs-toolbar-title>
+      <ngs-toolbar-spacer />
+      <button ngsButton [routerLink]="['/admin/threads', threadId, 'edit']">
+        <ngs-icon name="fluent:edit-24-regular" class="me-2" />
+        {{ 'common.edit' | transloco }}
+      </button>
+    </ngs-toolbar>
+  </ngs-panel-header>
+
+  <ngs-panel-content>
+    <div class="flex flex-col gap-6 p-12">
+      @if (loading()) {
+        <div class="flex justify-center p-12">
+          {{ 'loading' | transloco }}...
+        </div>
+      } @else if (thread()) {
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div class="lg:col-span-2 flex flex-col gap-6">
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.threads.content' | transloco }}</h3>
+              <div class="prose prose-sm max-w-none break-words"
+                   [innerHTML]="thread()?.htmlContent | safeHtml"></div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.threads.quality' | transloco }}</h3>
+              <admin-comment-quality-score [qualityScore]="thread()?.qualityScore" />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.threads.details' | transloco }}</h3>
+              <div class="flex flex-col gap-4">
+                <div class="flex flex-col">
+                  <span class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.threads.author' | transloco }}</span>
+                  <span class="font-medium text-sm">{{ thread()?.author?.username || 'Anonymous' }}</span>
+                </div>
+                <ngs-divider />
+                <div class="flex flex-col">
+                  <span class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.threads.created' | transloco }}</span>
+                  <span class="font-medium text-sm">{{ thread()?.createdAt | date: 'medium' }}</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold mb-4">{{ 'admin.threads.statistics' | transloco }}</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1 items-center p-4 bg-neutral-50 rounded-2xl">
+                  <span class="text-2xl font-bold">{{ thread()?.reactionsCount || 0 }}</span>
+                  <span class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.threads.reactions' | transloco }}</span>
+                </div>
+                <div class="flex flex-col gap-1 items-center p-4 bg-neutral-50 rounded-2xl">
+                  <span class="text-2xl font-bold">{{ thread()?.repliesCount || 0 }}</span>
+                  <span class="text-xs text-neutral-500 uppercase font-bold">{{ 'admin.threads.replies' | transloco }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </ngs-panel-content>
+</ngs-panel>

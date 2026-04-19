@@ -1,0 +1,189 @@
+@if (loaded()) {
+<main class="w-full max-w-[1400px] mx-auto px-4 py-8">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-8">
+      <h1 class="text-3xl md:text-4xl font-extrabold leading-tight text-on-surface mb-3">
+        {{ tutorial()!.title }}
+      </h1>
+      <p class="text-on-surface-variant max-w-3xl">
+        {{ tutorial()!.description }}
+      </p>
+
+      <div class="flex items-center justify-between gap-3 mt-6">
+        <div class="flex items-center gap-2 text-sm">
+          @if (tutorial()!.channel) {
+            <div class="relative me-3">
+              <ngs-dicebear class="size-11"
+                            [key]="tutorial()!.author.id"
+                            [image]="tutorial()!.author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+              <div class="absolute -bottom-0.5 -end-3 w-max">
+                <ngs-dicebear class="size-8 border-2 border-surface-container-lowest"
+                              [key]="tutorial()!.channel!.id"
+                              [image]="tutorial()!.channel!.logoUrl | imageProxy: '100x100,sc,q90'"/>
+              </div>
+            </div>
+            <span class="text-neutral-500">{{ 'publishedIn' | transloco }}</span>
+            <a [routerLink]="['/channel', tutorial()!.channel!.slug]"
+               class="hover:text-primary hover:underline underline-offset-1">{{ tutorial()!.channel!.name }}</a>
+            <span class="text-neutral-500">{{ 'by' | transloco }}</span>
+            <a [routerLink]="['/user', tutorial()!.author.username]"
+               class="hover:text-primary hover:underline underline-offset-1">{{ tutorial()!.author.name }}</a>
+          } @else {
+<!--            <ngs-dicebear class="size-9"-->
+<!--                          [key]="tutorial()!.author.id"-->
+<!--                          [image]="tutorial()!.author.avatarUrl | imageProxy: '100x100,sc,q90'"/>-->
+<!--            <a [routerLink]="['/user', tutorial()!.author.username]"-->
+<!--               class="hover:text-primary hover:underline underline-offset-1">{{ tutorial()!.author.name }}</a>-->
+          }
+        </div>
+<!--        <app-subscription [targetId]="tutorial()!.author.id" targetType="user"/>-->
+      </div>
+
+      @if (tutorial()!.whatYouWillLearn.length) {
+        <section class="mt-8">
+          <h2 class="text-lg font-semibold mb-3">{{ 'tutorial.whatYouWillLearn' | transloco }}</h2>
+          <ul class="space-y-3">
+            @for (item of tutorial()!.whatYouWillLearn; track $index) {
+              <li class="flex items-start gap-3">
+                <ngs-icon class="mt-0.5 text-primary-500" aria-hidden="true" name="fluent:checkmark-circle-24-regular"/>
+                <span class="text-on-surface-variant mt-0.5">{{ item }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      <section class="mt-8">
+        <h2 class="text-lg font-semibold mb-3">{{ 'tutorial.content' | transloco }}</h2>
+
+        <div class="mt-6">
+          <ngs-accordion multi>
+            @for (section of tutorial()!.sections; track section.id; let i = $index) {
+              <ngs-expansion-panel [expanded]="i===0" class="!mb-4 !shadow-sm !rounded-2xl !bg-surface-container-lowest">
+                <ngs-expansion-panel-header>
+                  <div class="flex items-center justify-between w-full">
+                    <div class="font-medium">{{ i + 1 }}. {{ section.name }}</div>
+                    <div class="text-sm text-on-surface-variant pe-4">{{ section.items?.length || 0 }} {{ 'tutorial.lessons' | transloco }}</div>
+                  </div>
+                </ngs-expansion-panel-header>
+
+                <ul class="divide-y divide-surface-container">
+                  @for (item of section.items; track item.id) {
+                    <li class="py-3">
+                      @if (item.type==='lesson' && item.lesson) {
+                        <a class="flex items-center justify-between hover:bg-surface-container/50 rounded-md px-2 py-2"
+                           [routerLink]="['/tutorial', tutorial()!.slug, 'lesson', item.lesson.slug]">
+                          <div class="flex items-center gap-3">
+                            <ngs-icon class="text-primary-500" aria-hidden="true" name="fluent:book-24-regular"/>
+                            <span>{{ item.lesson.name }}</span>
+                          </div>
+                          <div class="flex items-center gap-1">
+                            <div class="text-xs text-on-surface-variant">{{ 'tutorial.lesson' | transloco }}</div>
+                            @if (item.lesson.readingTime) {
+                              <div class="text-xs whitespace-nowrap">
+                                <app-reading-time [readingTime]="item.lesson.readingTime"/>
+                              </div>
+                            }
+                          </div>
+                        </a>
+                      }
+
+                      @if (item.type==='quiz' && item.quiz) {
+                        <a class="flex items-center justify-between hover:bg-surface-container/50 rounded-md px-2 py-2"
+                           [routerLink]="['/tutorial', tutorial()!.slug, 'quiz', item.quiz.slug]">
+                          <div class="flex items-center gap-3">
+                            <ngs-icon class="text-primary-500" aria-hidden="true" name="fluent:question-circle-24-regular"/>
+                            <span>{{ item.quiz.name }}</span>
+                          </div>
+                          <div class="text-xs text-on-surface-variant">{{ 'tutorial.quiz' | transloco }}</div>
+                        </a>
+                      }
+                    </li>
+                  }
+                </ul>
+              </ngs-expansion-panel>
+            }
+          </ngs-accordion>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="lg:col-span-4">
+      <div class="sticky top-22 flex flex-col gap-8">
+        <div class="bg-surface-container-low rounded-3xl p-8 ">
+          <div class="flex flex-col gap-3">
+            <a [routerLink]="getUrl()" ngsButton="filled" class="w-full">
+              <ngs-icon class="me-2" aria-hidden="true" name="fluent:play-circle-24-regular"/>
+              {{ 'tutorial.view' | transloco }}
+            </a>
+          </div>
+          <div class="space-y-3 text-sm mt-5">
+            <div class="flex items-center gap-3">
+              <ngs-icon aria-hidden="true" name="fluent:clock-24-regular"/>
+              <span>
+              @if (tutorial()!.estimatedTime.minutes) {
+                {{ tutorial()!.estimatedTime.minutes }} {{ 'tutorial.minOfContent' | transloco }}
+              } @else {
+                {{ 'tutorial.lessThanAMinute' | transloco }}
+              }
+            </span>
+            </div>
+
+            @if (tutorial()!.topics.length > 0) {
+              <div class="font-bold text-sm mt-3">{{ 'tutorial.topics' | transloco }}</div>
+              <nav class="flex items-center flex-wrap gap-2.5 text-tiny relative">
+                @for (topic of tutorial()!.topics; track topic) {
+                  <a [routerLink]="['/topic', topic.slug]"
+                     class="px-2 py-1 border hover:bg-neutral-100 rounded-lg hover:text-neutral-900 text-xs">{{ topic.name }}</a>
+                }
+              </nav>
+            }
+
+            <!--          <div class="flex items-center gap-3">-->
+            <!--            <ngs-icon aria-hidden="true">insights</ngs-icon>-->
+            <!--            <span>Intermediate difficulty</span>-->
+            <!--          </div>-->
+            <!--          <div class="flex items-center gap-3">-->
+            <!--            <ngs-icon aria-hidden="true">verified</ngs-icon>-->
+            <!--            <span>Certificate of completion</span>-->
+            <!--          </div>-->
+            <!--          <div class="flex items-center gap-3">-->
+            <!--            <ngs-icon aria-hidden="true">all_inclusive</ngs-icon>-->
+            <!--            <span>Lifetime access</span>-->
+            <!--          </div>-->
+          </div>
+        </div>
+        <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col gap-5">
+          <ngs-dicebear [key]="tutorial()!.author.id"
+                        [image]="tutorial()!.author.avatarUrl | imageProxy:'200x200,sc,q90'" class="size-32"/>
+          <div>
+            <div class="font-medium">{{ tutorial()!.author.name }}</div>
+            <div class="text-sm text-neutral-700 dark:text-neutral-500 mt-2 items-center flex gap-4">
+              <app-followers-count [count]="tutorial()!.author.followersCount"/>
+              @if (allowPublications()) {
+                <ngs-divider vertical/>
+                <app-publications-count [count]="tutorial()!.author.publicationsCount"/>
+              }
+              @if (allowTutorials()) {
+                <ngs-divider vertical/>
+                <app-tutorials-count [count]="tutorial()!.author.tutorialsCount"/>
+              }
+            </div>
+
+            @if (tutorial()!.author.description) {
+              <div class="text-sm leading-relaxed mt-4">{{ tutorial()!.author.description }}</div>
+            }
+
+            <div class="mt-6">
+              <app-subscription [targetId]="tutorial()!.author.id" targetType="user"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+} @else {
+  <div class="container mx-auto px-4 py-16 text-center text-on-surface-variant">{{ 'common.loading' | transloco }}</div>
+}

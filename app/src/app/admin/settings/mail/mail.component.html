@@ -1,0 +1,104 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'admin.settings.mail' | transloco }}</h1>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-6 xl:p-12">
+          <form [formGroup]="form" class="xl:w-8/12 mb-10">
+            <div class="space-y-5">
+              <div>
+                <h3 class="font-bold text-lg">{{ 'admin.settings.general.mailSettings' | transloco }}</h3>
+                <div class="text-sm mt-1 text-neutral-500">{{ 'admin.settings.general.mailSettingsDesc' | transloco }}</div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-5 mt-7">
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'admin.settings.general.mailDomain' | transloco }}</ngs-label>
+                  <input type="text" ngsInput formControlName="mailDomain">
+                  <ngs-hint>{{ 'admin.settings.general.mailDomainHint' | transloco }}</ngs-hint>
+                </ngs-form-field>
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'admin.settings.general.mailFrom' | transloco }}</ngs-label>
+                  <input type="text" ngsInput formControlName="mailFrom">
+                </ngs-form-field>
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'admin.settings.general.systemEmail' | transloco }}</ngs-label>
+                  <input type="email" ngsInput formControlName="systemEmail">
+                  <ngs-hint>
+                    {{ 'admin.settings.general.systemEmailHint' | transloco }}
+                  </ngs-hint>
+                </ngs-form-field>
+                <ngs-form-field class="w-full">
+                  <ngs-label>{{ 'admin.settings.general.supportEmail' | transloco }}</ngs-label>
+                  <input type="email" ngsInput formControlName="supportEmail">
+                  <ngs-hint>
+                    {{ 'admin.settings.general.supportEmailHint' | transloco }}
+                  </ngs-hint>
+                </ngs-form-field>
+              </div>
+            </div>
+            <div class="mt-8">
+              <button ngsButton="filled" (click)="save()">{{ 'common.save' | transloco }}</button>
+            </div>
+          </form>
+
+          <ngs-divider class="mb-10"/>
+
+          <div class="mb-5">
+            <div class="mb-10 flex items-center justify-between gap-4">
+              <div>
+                <h3 class="font-bold text-lg">{{ 'admin.settings.mail.providers' | transloco }}</h3>
+                <div class="text-sm mt-1 text-neutral-500">{{ 'admin.settings.mail.providersDesc' | transloco }}</div>
+              </div>
+            </div>
+
+            @if (!hasDefault()) {
+              <ngs-alert variant="danger" class="mb-7">
+                {{ 'admin.settings.mail.noDefaultAlert' | transloco }}
+              </ngs-alert>
+            }
+
+            <div class="mt-2">
+              <div class="flex gap-6 flex-wrap">
+                @for (item of mailProviders(); track item.type) {
+                  <ngs-card class="rounded-2xl w-full xl:w-60 [&.is-default]:outline-3 [&.is-default]:outline-primary"
+                            [class.is-default]="item.isDefault">
+                    <ngs-card-title class="pt-3 px-4">{{ item.name }}</ngs-card-title>
+                    <ngs-card-content>
+                      <div class="flex pt-3 flex-col gap-2 text-sm w-full">
+                        <div>
+                          <span class="text-neutral-500">{{ 'isConfigured' | transloco }}:</span>
+                          <span class="ml-1">@if (item.isConfigured) { {{ 'common.yes' | transloco }} } @else { {{ 'common.no' | transloco }} }</span>
+                        </div>
+                        <div>
+                          <span class="text-neutral-500">{{ 'isEnabled' | transloco }}:</span>
+                          <span class="ml-1">@if (item.isEnabled) { {{ 'common.yes' | transloco }} } @else { {{ 'common.no' | transloco }} }</span>
+                        </div>
+                      </div>
+                    </ngs-card-content>
+                    <ngs-card-actions>
+                      <div class="flex gap-2 pt-2 pb-1.5 px-2 w-full">
+                        <button ngsButton="outlined"
+                                [disabled]="!item.isEnabled || item.isDefault"
+                                (click)="setDefaultProvider(item)" class="text-nowrap grow">{{ 'admin.settings.fileStorage.setAsDefault' | transloco }}</button>
+                        @if (item.type !== 'none') {
+                          <button ngsIconButton (click)="configure(item, $event)"><ngs-icon name="fluent:settings-24-regular"/></button>
+                        }
+                      </div>
+                    </ngs-card-actions>
+                  </ngs-card>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6 xl:p-12">{{ 'common.loading' | transloco }}</div>
+}

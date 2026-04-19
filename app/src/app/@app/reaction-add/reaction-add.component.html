@@ -1,0 +1,19 @@
+<div class="flex items-center gap-1 p-3 rounded-2xl shadow-lg bg-surface-container-lowest m-3">
+  @for (item of list(); track item) {
+    <app-login-guard [ngsTooltip]="item.reaction.name">
+      <button ngsRipple
+              class="flex flex-col items-center gap-2 justify-center
+                  border border-border border-transparent
+                  [&.has-reaction]:bg-surface-container-low
+                  [&.has-reaction]:border-neutral-300
+                  cursor-pointer py-2 px-4 rounded-xl hover:bg-surface-container-low"
+           [class.has-reaction]="item.hasReaction"
+           (click)="toggleReaction(item)">
+        <div>
+          <img [src]="item.reaction.iconUrl" alt="" class="h-7">
+        </div>
+        <div class="text-sm">{{ item.totalCount }}</div>
+      </button>
+    </app-login-guard>
+  }
+</div>

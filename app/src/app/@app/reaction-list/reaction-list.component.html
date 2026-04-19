@@ -1,0 +1,26 @@
+@if (size() === 'small') {
+  @if (activeReactions.length > 0) {
+    <div class="flex items-center gap-6">
+      @for (reactionItem of activeReactions; track reactionItem) {
+        <div class="w-max relative">
+          <img [src]="reactionItem.reaction.iconUrl" [alt]="reactionItem.reaction.name" class="h-5" width="20" height="20">
+          <span class="text-2xs absolute -bottom-1 -end-1.5">{{ reactionItem.totalCount }}</span>
+        </div>
+      }
+    </div>
+  }
+} @else if (size() === 'large') {
+  @if (activeReactions.length > 0) {
+    <div class="flex items-center gap-6">
+      @for (reactionItem of activeReactions; track reactionItem) {
+        <div class="w-max relative flex items-center gap-2">
+          <img [src]="reactionItem.reaction.iconUrl"
+               [alt]="reactionItem.reaction.name"
+               class="h-6"
+               width="24" height="24">
+          <span class="text-sm">{{ reactionItem.totalCount }}</span>
+        </div>
+      }
+    </div>
+  }
+}

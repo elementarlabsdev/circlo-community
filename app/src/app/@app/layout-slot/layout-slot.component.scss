@@ -1,0 +1,9 @@
+@reference 'tailwindcss';
+
+:host {
+  display: contents;
+
+  &:empty {
+    display: none;
+  }
+}

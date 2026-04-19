@@ -1,0 +1,31 @@
+<div ngs-dialog-title>{{ 'admin.settings.mail.amazon.title' | transloco }}</div>
+<ngs-dialog-content>
+  <form [formGroup]="form">
+    <div class="space-y-3 mt-2">
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.mail.amazon.accessKeyId' | transloco }}</ngs-label>
+        <input type="text" ngsInput formControlName="accessKeyId">
+      </ngs-form-field>
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.mail.amazon.secretAccessKey' | transloco }}</ngs-label>
+        <input type="text" ngsInput formControlName="secretAccessKey">
+      </ngs-form-field>
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.mail.amazon.region' | transloco }}</ngs-label>
+        <input type="text" ngsInput formControlName="region">
+        <ngs-hint>
+          Example: us-east-1
+        </ngs-hint>
+      </ngs-form-field>
+      <div class="mt-4">
+        <ngs-slide-toggle formControlName="isEnabled">{{ 'captchaProvider.isEnabled' | transloco }}</ngs-slide-toggle>
+      </div>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button type="submit" ngsButton="filled" color="primary" [disabled]="form.invalid" (click)="apply()">
+    {{ 'common.apply' | transloco }}
+  </button>
+</ngs-dialog-actions>

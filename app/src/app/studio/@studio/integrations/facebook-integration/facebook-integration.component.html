@@ -1,0 +1,33 @@
+<ngs-card appearance="outlined" class="h-full">
+  <div class="flex px-5 pt-5 items-center justify-between">
+    <img src="/assets/integrations/facebook.svg" alt="" class="h-10" [title]="integration().name | transloco">
+    @if (integration().isConfigured) {
+      <button ngsIconButton [ngsMenuTriggerFor]="menu"><ngs-icon name="fluent:settings-24-regular"/></button>
+    } @else {
+      <a [href]="connectUrl" ngsButton="outlined">Connect</a>
+    }
+  </div>
+  @if (integration().isConfigured) {
+    <ngs-card-content>
+      <div class="pt-4">
+        <a [href]="userProfileUrl" target="_blank" class="flex gap-2.5">
+          <ngs-dicebear [key]="user.id"
+                        [image]="user.profile_image_url" class="size-9"/>
+          <div>
+            <div class="text-sm">{{ user.name }}</div>
+            <div class="text-xs text-neutral-500">{{ user.username }}</div>
+          </div>
+        </a>
+      </div>
+    </ngs-card-content>
+  } @else {
+    <ngs-card-content class="text-sm">
+      <div class="px-1 text-neutral-600 pt-4">{{ integration().description | transloco }}</div>
+    </ngs-card-content>
+  }
+</ngs-card>
+
+<ngs-menu #menu="ngsMenu">
+  <button ngs-menu-item (click)="refresh()">Refresh</button>
+  <button ngs-menu-item (click)="disconnect()">Disconnect</button>
+</ngs-menu>

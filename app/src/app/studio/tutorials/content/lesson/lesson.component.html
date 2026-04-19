@@ -1,0 +1,29 @@
+<ngs-panel>
+  <ngs-panel-header class="border-b border-b-border">
+    <div class="h-full flex items-center gap-2 px-6">
+      @if (loaded()) {
+        <a [routerLink]="tutorialUrl" ngsIconButton [ngsTooltip]="'backToTutorial' | transloco" class="-ms-3"><ngs-icon name="fluent:arrow-left-24-regular"/></a>
+        <h1 class="font-bold text-on-primary-fixed">
+          {{ lesson().sectionItem.section.name }} / <span class="text-primary">{{ lesson().name }}</span>
+        </h1>
+      } @else {
+        Loading...
+      }
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    @if (loaded()) {
+      <ngs-scrollbar-area>
+        <div class="max-w-[1000px] mx-auto p-10">
+          <div class="bg-surface-container-lowest rounded-3xl">
+            <ngs-content-builder [content]="lesson().blocksContent"
+                                 [options]="options()"
+                                 (contentChanged)="onContentChanged($event)"/>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    } @else {
+      <div class="p-6">Loading...</div>
+    }
+  </ngs-panel-content>
+</ngs-panel>

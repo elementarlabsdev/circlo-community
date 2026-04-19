@@ -1,0 +1,7 @@
+@use 'tailwindcss';
+
+:host {
+  ngs-tiles {
+    --ngs-tiles-row-height: 5px;
+  }
+}

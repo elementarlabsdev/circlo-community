@@ -1,0 +1,17 @@
+@use 'tailwindcss';
+
+:host {
+  display: block;
+
+  .sidebar {
+    top: --spacing(14);
+    height: calc(100vh - --spacing(24));
+    overflow-y: auto;
+  }
+}
+
+:host-context(body:has(ngs-announcement)) {
+  .sidebar {
+    top: --spacing(24);
+  }
+}

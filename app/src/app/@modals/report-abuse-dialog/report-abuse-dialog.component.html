@@ -1,0 +1,66 @@
+<form class="w-full max-w-xl" [formGroup]="form" (ngSubmit)="submit()">
+  <h2 ngs-dialog-title class="text-2xl font-semibold">{{ 'reportAbuse.title' | transloco }}</h2>
+  <ngs-dialog-content class="mt-2 space-y-5">
+    @if (!isCaptchaConfigured()) {
+      <ngs-alert variant="warning" class="mb-5">{{ 'reportAbuse.configure-warning' | transloco }}</ngs-alert>
+    }
+
+    <p class="text-sm text-gray-500">
+      {{ 'reportAbuse.description' | transloco }}
+    </p>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">{{ 'reportAbuse.reason.label' | transloco }}</label>
+      <ngs-radio-group class="flex flex-col gap-2" formControlName="reason">
+        @for (r of reasons; track r.code) {
+          <ngs-radio-button [value]="r.code">
+            {{ r.name | transloco }}
+          </ngs-radio-button>
+        }
+      </ngs-radio-group>
+    </div>
+
+    <div>
+      <ngs-form-field class="w-full mt-5">
+        <ngs-label>{{ 'reportAbuse.reported-url.label' | transloco }}</ngs-label>
+        <input
+          ngsInput
+          formControlName="reportedUrl"
+          type="url"
+          placeholder="https://example.com/post/123" />
+      </ngs-form-field>
+    </div>
+
+    <div>
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'reportAbuse.message.label' | transloco }}</ngs-label>
+        <textarea
+          ngsInput
+          rows="3"
+          ngsTextareaAutoSize
+          [placeholder]="'reportAbuse.message.placeholder' | transloco"
+          formControlName="details"></textarea>
+      </ngs-form-field>
+    </div>
+
+    @if (!isUserLoggedIn() && isRecaptcha()) {
+      <small class="text-gray-500">
+        {{ 'reportAbuse.site-protected-recaptcha-start' | transloco }}
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="underline">{{ 'reportAbuse.privacy-policy' | transloco }}</a>
+        {{ 'reportAbuse.site-protected-recaptcha-and' | transloco }}
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" class="underline">{{ 'reportAbuse.terms-of-service' | transloco }}</a>
+        {{ 'reportAbuse.site-protected-recaptcha-end' | transloco }}
+      </small>
+    }
+  </ngs-dialog-content>
+  <ngs-dialog-actions align="end" class="pt-2">
+    <button type="button" ngsButton (click)="close(false)" [disabled]="submitting()">{{ 'common.cancel' | transloco }}</button>
+    <button type="submit" ngsButton="filled" [disabled]="form.invalid || submitting() || !isCaptchaConfigured()">
+      @if (!submitting()) {
+        <span>{{ 'reportAbuse.send-feedback' | transloco }}</span>
+      } @else {
+        {{ 'reportAbuse.sending' | transloco }}
+      }
+    </button>
+  </ngs-dialog-actions>
+</form>

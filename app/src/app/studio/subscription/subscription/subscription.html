@@ -1,0 +1,58 @@
+<div class="p-12" *transloco="let t">
+  @if (info(); as infoData) {
+    <ngs-card class="info-card">
+      <ngs-card-header>
+        <ngs-card-title>{{ t('subscription.currentStatus') }}</ngs-card-title>
+      </ngs-card-header>
+      <ngs-card-content>
+        <div class="status-details">
+          <div class="status-badge" [class.active]="infoData.hasActiveSubscription">
+            {{ infoData.hasActiveSubscription ? t('subscription.active') : t('subscription.inactive') }}
+          </div>
+          @if (infoData.currentPeriodEnd) {
+            <p>
+              {{ t('subscription.periodEnd') }}: {{ infoData.currentPeriodEnd | date:'mediumDate' }}
+            </p>
+          }
+          @if (infoData.cancelAtPeriodEnd) {
+            <p class="warning">
+              {{ t('subscription.willBeCancelled') }}
+            </p>
+          }
+        </div>
+      </ngs-card-content>
+      <ngs-card-actions>
+        @if (infoData.hasActiveSubscription && !infoData.cancelAtPeriodEnd) {
+          <button ngsButton="filled" (click)="cancelSubscription()">
+            {{ t('subscription.cancelBtn') }}
+          </button>
+        }
+
+        @if (infoData.cancelAtPeriodEnd || !infoData.hasActiveSubscription) {
+          <button ngsButton="filled" (click)="activateSubscription()">
+            {{ t('subscription.activateBtn') }}
+          </button>
+        }
+      </ngs-card-actions>
+    </ngs-card>
+
+    <section class="mt-12">
+      <h2 class="mb-4 text-xl font-bold">{{ t('subscription.transactionsHistory') }}</h2>
+      <div class="border border-border rounded-2xl overflow-hidden">
+        <ngs-data-view
+          #datagridRef
+          [columnDefs]="columnDefs"
+          [cellRenderers]="cellRenderers"
+          [datasource]="datasource"
+          rowModelType="serverSide"
+          withPagination
+          autoHeight
+          class="h-[500px]"
+          [emptyFilterResultsText]="t('subscription.noTransactions')"
+        />
+      </div>
+    </section>
+  } @else {
+    {{ t('loading') }}
+  }
+</div>

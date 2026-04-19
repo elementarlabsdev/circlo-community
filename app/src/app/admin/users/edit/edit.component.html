@@ -1,0 +1,95 @@
+<ngs-panel>
+  <ngs-panel-header class="h-16 border-b border-b-border">
+    <div class="h-full flex items-center gap-5 justify-between px-5">
+      <div class="flex items-center gap-5">
+        <div class="font-bold">{{ 'admin.users.edit.title' | transloco }}</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a routerLink="/admin/users" ngsButton>{{ 'common.cancel' | transloco }}</a>
+        <button ngsButton="filled" type="button" [disabled]="saving || form.invalid"
+                (click)="submit()">{{ 'common.save' | transloco }}
+        </button>
+      </div>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <div class="absolute inset-0 p-10">
+      @if (!loading) {
+        <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4 xl:w-6/12">
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.users.edit.name' | transloco }}</ngs-label>
+            <input ngsInput formControlName="name"/>
+            @if (form.get('name')?.invalid) {
+              <ngs-error>{{ 'admin.users.edit.nameRequired' | transloco }}</ngs-error>
+            }
+          </ngs-form-field>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.users.edit.username' | transloco }}</ngs-label>
+            <input ngsInput formControlName="username"/>
+            @if (form.get('username')?.invalid) {
+              <ngs-error>{{ 'admin.users.edit.usernameRequired' | transloco }}</ngs-error>
+            }
+          </ngs-form-field>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.users.edit.email' | transloco }}</ngs-label>
+            <input ngsInput formControlName="email"/>
+            @if (form.get('email')?.invalid) {
+              <ngs-error>{{ 'admin.users.edit.emailRequired' | transloco }}</ngs-error>
+            }
+          </ngs-form-field>
+
+          <div class="w-full mb-2">
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'admin.users.edit.newPassword' | transloco }}</ngs-label>
+              <input ngsInput [type]="passwordVisibility()" formControlName="password"/>
+              <div ngsIconButtonSuffix>
+                @if (passwordVisibility() === 'text') {
+                  <button ngsIconButton type="button" (click)="togglePasswordVisibility()">
+                    <ngs-icon name="fluent:eye-24-regular"/>
+                  </button>
+                } @else {
+                  <button ngsIconButton type="button" (click)="togglePasswordVisibility()">
+                    <ngs-icon name="fluent:eye-off-24-regular"/>
+                  </button>
+                }
+              </div>
+              @if (form.get('password')?.invalid && form.get('password')?.value) {
+                <ngs-error>{{ 'admin.users.edit.passwordError' | transloco }}</ngs-error>
+              }
+            </ngs-form-field>
+            <div>
+              <button ngsButton="tonal" type="button"
+                      (click)="generateAndSetPassword()">{{ 'admin.users.edit.generatePassword' | transloco }}
+              </button>
+            </div>
+          </div>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.users.edit.role' | transloco }}</ngs-label>
+            <ngs-select formControlName="roleId">
+              @for (r of roles; track r.id) {
+                <ngs-option [value]="r.id">{{ r.name }})</ngs-option>
+              }
+            </ngs-select>
+          </ngs-form-field>
+
+          <div class="flags">
+            <ngs-checkbox formControlName="isBlocked">{{ 'admin.users.edit.blocked' | transloco }}</ngs-checkbox>
+            <ngs-checkbox formControlName="verified">{{ 'admin.users.edit.verified' | transloco }}</ngs-checkbox>
+          </div>
+        </form>
+      } @else {
+        <div class="loading">{{ 'common.loading' | transloco }}</div>
+      }
+
+      <div class="mt-10">
+        <button ngsButton="tonal" (click)="delete()" [disabled]="isSuperAdminUser">
+          <ngs-icon name="fluent:delete-24-regular"/>
+          {{ 'admin.users.edit.deleteUser' | transloco }}
+        </button>
+      </div>
+    </div>
+  </ngs-panel-content>
+</ngs-panel>

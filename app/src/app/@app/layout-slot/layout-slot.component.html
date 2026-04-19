@@ -1,0 +1,4 @@
+@for (widget of widgets(); track widget) {
+  @let component = getWidgetComponent(widget.type);
+  <ng-container [ngComponentOutlet]="component | async" [ngComponentOutletInputs]="{ widget }"/>
+}

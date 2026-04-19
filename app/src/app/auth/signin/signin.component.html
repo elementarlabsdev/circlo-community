@@ -1,0 +1,85 @@
+<a routerLink="/" class="text-2xl font-bold absolute top-4 start-4 sm:top-7 sm:start-7 z-1">
+  <app-logo/>
+</a>
+<div class="form-container min-h-screen flex flex-col justify-center items-center p-4 sm:p-5">
+  <ngs-card appearance="filled" class="w-full max-w-[500px]">
+    <div class="p-6 sm:p-12">
+      <h1 class="text-center text-2xl sm:text-3xl font-bold"><span>{{ 'login.welcomeBack' | transloco }}</span></h1>
+      <p class="mt-2 text-center text-neutral-500 text-sm">{{ 'login.enterEmailAndPasswordToContinue' | transloco }}</p>
+      <div class="w-full">
+        @if (oAuthEnabled()) {
+          <div class="grid mt-10 gap-4 text-sm"
+               [class.grid-cols-1]="oAuthProviders().length === 1"
+               [class.grid-cols-2]="oAuthProviders().length > 1">
+            @for (oAuthProvider of oAuthProviders(); track oAuthProvider) {
+              <button class="col-span-1 flex items-center justify-center rounded-full cursor-pointer
+                           border border-muted gap-2 px-3 py-3 outline-none ring-neutral-400
+                           ring-offset-2 transition focus:ring-2 hover:border-primary dark:hover:border-primary"
+                      (click)="oAuthLoginBy(oAuthProvider.type)">
+                <img class="w-5 h-5" [src]="oAuthProvider.iconUrl" [alt]="oAuthProvider.name">
+                {{ 'login.loginWith' | transloco }} {{ oAuthProvider.name }}
+              </button>
+            }
+          </div>
+          <ngs-divider class="mt-8">{{ 'login.or' | transloco }}</ngs-divider>
+        }
+
+        @if (showBlockedError()) {
+          <div class="rounded-xl bg-red-100 p-5 mt-6 text-sm">
+            {{ 'login.yourAccountIsBlocked' | transloco }}.
+          </div>
+        } @else if (showEmailVerificationError()) {
+          <div class="rounded-xl bg-red-100 p-5 mt-6 text-sm">
+            {{ 'login.accountInNotVerifiedError' | transloco }}.
+            <a [routerLink]="['/email', emailVerificationHash(), 'verification']" class="link underline underline-offset-2">
+              Click to verify your email address
+            </a>.
+          </div>
+        } @else if (showAuthError()) {
+          <div class="rounded-xl bg-red-100 p-5 mt-6 text-sm">
+            {{ 'login.invalidEmailOrPassword' | transloco }}.
+          </div>
+        }
+
+        <form class="flex flex-col pt-8" [formGroup]="form" (ngSubmit)="login()">
+          <ngs-form-field>
+            <ngs-label>{{ 'login.email' | transloco }}</ngs-label>
+            <input type="email" formControlName="email" ngsInput>
+          </ngs-form-field>
+          <ngs-form-field class="mt-2">
+            <ngs-label>{{ 'login.password' | transloco }}</ngs-label>
+            <input type="password" formControlName="password" ngsInput>
+            <a routerLink="/forgot-password" ngsSuffix
+               class="mr-3 underline-offset-4 text-xs font-semibold text-neutral-800 dark:text-neutral-300 hover:underline hover:text-accent">
+              {{ 'login.forgotPassword' | transloco }}?
+            </a>
+          </ngs-form-field>
+
+          @if (isRecaptcha()) {
+            <div class="mt-4 text-[10px] text-neutral-500 leading-tight">
+              {{ 'registration.protectedByRecaptcha' | transloco }}
+              <a href="https://policies.google.com/privacy" target="_blank" class="underline">Privacy Policy</a>
+              {{ 'registration.and' | transloco }}
+              <a href="https://policies.google.com/terms" target="_blank" class="underline">Terms of Service</a>
+              {{ 'registration.apply' | transloco }}
+            </div>
+          }
+
+          <button type="submit" ngsButton="filled" fullWidth class="!h-12 mt-5"
+                  [loading]="loading()"
+                  [disabled]="form.invalid || loading()">{{ 'login.login' | transloco }}</button>
+        </form>
+
+        @if (registrationEnabled()) {
+          <div class="mt-10 text-center">
+            <p class="whitespace-nowrap text-xs">
+              <span class="inline-block me-2 text-neutral-600 dark:text-neutral-400">{{ 'login.dontHaveAnAccount' | transloco }}?</span>
+              <a routerLink="/register" class="underline-offset-4 font-semibold text-neutral-800 dark:text-neutral-300
+                                              underline hover:text-accent dark:hover:text-accent">{{ 'login.register' | transloco }}</a>
+            </p>
+          </div>
+        }
+      </div>
+    </div>
+  </ngs-card>
+</div>

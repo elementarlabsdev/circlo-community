@@ -1,0 +1,15 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+
+  .aside {
+    top: --spacing(16);
+  }
+}
+
+:host-context(body:has(ngs-announcement)) {
+  .aside {
+    top: --spacing(26);
+  }
+}

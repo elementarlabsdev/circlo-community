@@ -1,0 +1,67 @@
+<ngs-panel>
+  <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+    <div class="flex h-full items-center justify-between">
+      <div class="flex items-center gap-5">
+        <h1 class="font-bold">{{ 'studio.channels.list.title' | transloco }}</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <button ngsButton="filled" routerLink="new">
+          <ngs-icon name="fluent:add-24-regular"/>
+          {{ 'studio.channels.list.create' | transloco }}
+        </button>
+      </div>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content class="p-6">
+    @if (loading()) {
+      <div class="flex justify-center p-12">{{ 'common.loading' | transloco }}</div>
+    } @else {
+      @if (channels().length === 0) {
+        <div class="p-12 h-full flex items-center justify-center text-sm text-neutral-500">
+          {{ 'studio.channels.list.empty' | transloco }}
+        </div>
+      } @else {
+        <div class="grid gap-4">
+          @for (channel of channels(); track channel.id) {
+            <div
+              class="flex items-center justify-between p-4 rounded-xl border border-border bg-surface-container-low
+                     hover:bg-surface-container transition-colors">
+              <div class="flex items-center gap-4">
+                @if (channel.logoUrl) {
+                  <img [src]="channel.logoUrl" class="w-12 h-12 rounded-lg object-cover"/>
+                } @else {
+                  <div
+                    class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">
+                    {{ channel.name.charAt(0) }}
+                  </div>
+                }
+                <div>
+                  <div class="font-bold">{{ channel.name }}</div>
+                  <div class="text-tiny text-on-surface-variant">/channel/{{ channel.slug }}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 text-sm text-on-surface-variant mr-auto ml-10">
+                <div class="flex flex-col items-center">
+                  <span class="font-bold text-on-surface">{{ channel.followersCount }}</span>
+                  <span>{{ 'followersCount' | transloco:{count: channel.followersCount} }}</span>
+                </div>
+                <div class="flex flex-col items-center ml-6">
+                  <span class="font-bold text-on-surface">{{ channel.publicationsCount }}</span>
+                  <span>{{ 'publicationsCount' | transloco:{count: channel.publicationsCount} }}</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button ngsIconButton [routerLink]="[channel.id, 'edit']">
+                  <ngs-icon name="fluent:edit-24-regular"/>
+                </button>
+                <button ngsIconButton (click)="deleteChannel(channel)">
+                  <ngs-icon name="fluent:delete-24-regular"/>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </ngs-panel-content>
+</ngs-panel>

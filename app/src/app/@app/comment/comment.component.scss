@@ -1,0 +1,40 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+
+  .comment-button {
+    --mdc-text-button-label-text-color: var(--color-neutral-600);
+    --mdc-text-button-label-text-size: var(--text-sm);
+    --ngs-icon-size: 22px;
+
+    &:hover {
+      --mdc-text-button-label-text-color: var(--color-neutral-900);
+    }
+  }
+
+  .has-reaction {
+    color: theme(--color-red-500);
+  }
+
+  .content {
+    transition: outline-color 1s ease-in-out;
+  }
+
+  &.is-new {
+    .content {
+      outline: 2px solid var(--color-primary);
+    }
+  }
+
+  ::ng-deep {
+    pre {
+      border-radius: theme(--radius-2xl);
+      padding: --spacing(3);
+      font-size: var(--text-md);
+      line-height: var(--leading-tight);
+      margin: 0;
+      background: var(--color-surface-container-low) !important;
+    }
+  }
+}

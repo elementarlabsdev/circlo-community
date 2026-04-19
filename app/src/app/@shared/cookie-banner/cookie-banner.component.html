@@ -1,0 +1,22 @@
+@if (isVisible() && settings) {
+  <div class="cookie-banner">
+    <div class="cookie-banner-content">
+      <div class="cookie-banner-text-container">
+        @if (settings.bannerTitle) {
+          <h3 class="cookie-banner-title">{{ settings.bannerTitle }}</h3>
+        }
+        <p class="cookie-banner-text">
+          {{ settings.messageText || ('COOKIE_BANNER.MESSAGE' | transloco) }}
+        </p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button ngsButton (click)="customize()">
+          {{ 'COOKIE_BANNER.CUSTOMIZE' | transloco }}
+        </button>
+        <button ngsButton="filled" color="primary" (click)="accept()">
+          {{ settings.acceptLabel || ('COOKIE_BANNER.ACCEPT_ALL' | transloco) }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

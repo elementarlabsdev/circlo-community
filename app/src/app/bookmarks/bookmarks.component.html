@@ -1,0 +1,33 @@
+<div class="lg:w-[740px] mx-auto">
+  <h1 class="text-3xl font-extrabold">{{ 'bookmarks.title' | transloco }}</h1>
+
+  @if (bookmarks().length > 0) {
+    <div class="mt-10 space-y-10">
+      @for (item of bookmarks(); track item) {
+        @switch (item.bookmark.targetType) {
+          @case ('publication') {
+            <app-publication [publication]="item.publication" [reactions]="reactions[item.publication.id]"/>
+          }
+          @case ('tutorial') {
+            <app-tutorial-preview [tutorial]="item.tutorial" [reactions]="reactions[item.tutorial.id]"/>
+          }
+          @case ('thread') {
+            <app-thread [thread]="item.thread" [reactions]="reactions[item.thread.id] || []"/>
+          }
+        }
+      }
+    </div>
+  } @else {
+    <div class="text-sm text-center my-20">{{ 'bookmarks.noBookmarks' | transloco }}.</div>
+  }
+
+  @if (pagination().totalPages > 1) {
+    <div class="w-3/12 mx-auto">
+      <ngs-paginator route="/topics/page"
+                     [totalItems]="pagination().totalItems"
+                     [pageSize]="pagination().pageSize"
+                     [pageNumber]="pageNumber"
+                     (pageChanged)="onPageChanged($event)" ></ngs-paginator>
+    </div>
+  }
+</div>

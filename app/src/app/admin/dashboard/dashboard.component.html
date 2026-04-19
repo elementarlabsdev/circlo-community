@@ -1,0 +1,68 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-4 sm:px-6">
+      <div class="flex h-full items-center justify-between">
+        <div class="flex items-center gap-5">
+          <h1 class="font-bold">{{ 'studio.dashboard' | transloco }}</h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <!--          <button ngsButton="filled" ngsRipple>-->
+          <!--            <ngs-icon name="fluent:add-24-regular"/> Add Widget-->
+          <!--          </button>-->
+        </div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-tiles [items]="layout()"
+                 (layoutChanged)="onLayoutChanged($event)"
+                 class="px-4 pb-4 sm:px-6 sm:pb-6">
+        @for (item of layout(); track $index) {
+          <ngs-tile [width]="item.w" [height]="item.h" [width.lg]="item.wLg" class="group">
+            @if (item.movable) {
+              <div ngsTileHandle
+                   class="absolute start-3 top-3 opacity-0 z-10 group-hover:opacity-100 shadow-sm rounded-full
+                bg-surface-container-lowest size-9 flex items-center justify-center cursor-move">
+                <ngs-icon name="fluent:arrow-move-24-regular"/>
+              </div>
+            }
+            @if (item.deletable) {
+              <div
+                   class="absolute end-3 top-3 opacity-0 z-10 group-hover:opacity-100 flex gap-2">
+                <div ngsTileHandle
+                     class="shadow-sm rounded-full bg-surface-container-lowest size-9 flex items-center justify-center cursor-pointer"
+                     (click)="removeItem(item.id)">
+                  <ngs-icon name="fluent:delete-24-regular"/>
+                </div>
+              </div>
+            }
+            @switch (item.type) {
+              @case ('gettingStarted') {
+                <app-getting-started-widget [widget]="item.widget"/>
+              }
+              @case ('publicationCount') {
+                <app-publications-widget [widget]="item.widget"/>
+              }
+              @case ('reactionCount') {
+                <app-reactions-widget [widget]="item.widget"/>
+              }
+              @case ('viewCount') {
+                <app-views-widget [widget]="item.widget"/>
+              }
+              @case ('latestPublications') {
+                <app-latest-publications-widget [widget]="item.widget"/>
+              }
+              @case ('latestTutorials') {
+                <app-latest-tutorials-widget [widget]="item.widget"/>
+              }
+              @case ('activity') {
+                <app-activity-widget [widget]="item.widget"/>
+              }
+            }
+          </ngs-tile>
+        }
+      </ngs-tiles>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-5">{{ 'common.loading' | transloco }}</div>
+}

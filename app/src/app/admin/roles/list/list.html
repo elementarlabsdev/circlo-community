@@ -1,0 +1,28 @@
+<ngs-panel>
+  <ngs-panel-header autoHeight>
+    <ngs-toolbar class="h-16 px-6 border-b border-b-border">
+      <ngs-toolbar-title>{{ 'admin.roles.list.title' | transloco }}</ngs-toolbar-title>
+      <ngs-toolbar-spacer/>
+      <a routerLink="new" ngsButton="filled">
+        <ngs-icon name="fluent:add-24-regular"/>
+        Add role
+      </a>
+    </ngs-toolbar>
+  </ngs-panel-header>
+
+  <ngs-panel-content>
+    <ngs-data-view
+      #dataView
+      [columnDefs]="columnDefs"
+      [cellRenderers]="cellRenderers"
+      [datasource]="datasource"
+      withPagination
+      rowModelType="serverSide"
+      autoHeight
+      withSelection
+      withColumnSettings
+      class="absolute inset-0"
+      emptyFilterResultsIcon="fluent:table-lock-24-regular"
+      [emptyFilterResultsText]="'admin.roles.noRoles' | transloco"/>
+  </ngs-panel-content>
+</ngs-panel>

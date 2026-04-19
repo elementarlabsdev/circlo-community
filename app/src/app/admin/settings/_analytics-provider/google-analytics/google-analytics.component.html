@@ -1,0 +1,20 @@
+<div ngs-dialog-title>{{ 'admin.settings.analytics.google.title' | transloco }}</div>
+<ngs-dialog-content>
+  <form [formGroup]="form">
+    <div class="pt-2">
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.analytics.google.id' | transloco }}</ngs-label>
+        <input type="text" ngsInput formControlName="googleAnalyticsId">
+      </ngs-form-field>
+      <div class="mt-3">
+        <ngs-slide-toggle formControlName="isEnabled">{{ 'common.enabled' | transloco }}</ngs-slide-toggle>
+      </div>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button type="submit" ngsButton="filled" color="primary" [disabled]="form.invalid" (click)="apply()">
+    {{ 'common.save' | transloco }}
+  </button>
+</ngs-dialog-actions>

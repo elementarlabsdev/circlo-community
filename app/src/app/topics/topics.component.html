@@ -1,0 +1,31 @@
+<div class="lg:w-[740px] mx-auto">
+  <h1 class="text-3xl font-extrabold">{{ 'topics.title' | transloco }}</h1>
+
+  @if (loaded()) {
+    @if (topics().length > 0) {
+      <main class="mt-10 space-y-10">
+        @for (topic of topics(); track topic) {
+          <app-topic [topic]="topic"/>
+        }
+      </main>
+    } @else {
+      <div class="text-sm text-center my-20">{{ 'thereAreNoTopics' | transloco }}.</div>
+    }
+
+    @if (pagination().totalPages > 1) {
+      <div class="w-3/12 mx-auto">
+        <ngs-paginator route="/topics/page"
+                       [totalItems]="pagination().totalItems"
+                       [pageSize]="pagination().pageSize"
+                       [pageNumber]="pageNumber"
+                       (pageChanged)="onPageChanged($event)"/>
+      </div>
+    }
+  } @else {
+    <div class="mt-10 space-y-10">
+      @for (loadingTopic of loadingTopics; track loadingTopic) {
+        <app-topic-skeleton/>
+      }
+    </div>
+  }
+</div>

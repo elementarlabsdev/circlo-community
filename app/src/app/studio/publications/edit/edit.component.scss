@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  min-height: 100vh;
+
+  .channel-list-form-field {
+    ::ng-deep {
+      .ngs-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
+  }
+
+  .dotsPattern {
+    --pattern-color: transparent;
+    background-image: radial-gradient(#aeaeae 0.5px, var(--pattern-color) 0.5px);
+    background-size: 10px 10px;
+  }
+
+  .dotsPattern2 {
+    --pattern-color: transparent;
+    background-image: radial-gradient(#aeaeae 0.5px, transparent 0.5px),
+                      radial-gradient(#aeaeae 0.5px, var(--pattern-color) 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+}

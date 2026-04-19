@@ -1,0 +1,78 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 border-b border-b-border">
+      <div class="h-full flex items-center gap-5 justify-between px-5">
+        <div class="flex items-center gap-5">
+          <div class="font-bold">
+            {{ (menu ? 'admin.menu.edit.title' : 'admin.menu.create.title') | transloco }}
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a routerLink="/admin/menus" ngsButton>{{ 'common.cancel' | transloco }}</a>
+          <button ngsButton="filled" type="button" [disabled]="saving() || form.invalid" (click)="save()">{{ 'common.save' | transloco }}</button>
+        </div>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content class="overflow-y-auto p-10">
+      <div [formGroup]="form" class="xl:w-6/12">
+        <ngs-form-field class="w-full">
+          <ngs-label>{{ 'admin.users.edit.name' | transloco }}</ngs-label>
+          <input type="text" ngsInput formControlName="name">
+        </ngs-form-field>
+        <div formArrayName="items" class="mt-5">
+          <div class="font-bold mb-5">{{ 'admin.menu.edit.links' | transloco }}</div>
+          <ngs-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+            @for (item of items; track item; let index = $index) {
+              <ngs-expansion-panel [formGroup]="item" cdkDrag>
+                <ngs-expansion-panel-header cdkDragHandle>
+                  <ngs-expansion-panel-title>{{ item.value.name }}</ngs-expansion-panel-title>
+                </ngs-expansion-panel-header>
+                <div class="space-y-5">
+                  <ngs-form-field class="w-full">
+                    <ngs-label>{{ 'admin.users.edit.name' | transloco }}</ngs-label>
+                    <input type="text" ngsInput formControlName="name">
+                  </ngs-form-field>
+                  <ngs-form-field class="w-full">
+                    <ngs-label>Url</ngs-label>
+                    <input type="text" ngsInput formControlName="url">
+                  </ngs-form-field>
+                  <div>
+                    <div class="text-tiny">
+                      {{ 'admin.menu.edit.linkIcon' | transloco }}
+                    </div>
+                    <div class="mt-2">
+                      <div class="flex items-center gap-2">
+                        @if (item.value.iconUrl) {
+                          <img [src]="item.value.iconUrl | imageProxy:'48x48'" alt="icon" class="max-h-10">
+                        }
+
+                        @if (item.value.iconUrl) {
+                          <button ngsButton (click)="removeIconUrl(item)">{{ 'table.action.delete' | transloco }}</button>
+                        } @else {
+                          <button ngsButton="outlined" ngsUploadTrigger accept="image/*"
+                                  (fileSelected)="iconSelected($event, item)">{{ 'admin.media.list.upload' | transloco }}</button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <ngs-slide-toggle formControlName="authorisedOnly">{{ 'admin.menu.edit.authorizedOnly' | transloco }}</ngs-slide-toggle>
+                    <button ngsButton="outlined" (click)="deleteLink(item, index)">{{ 'table.action.delete' | transloco }}</button>
+                  </div>
+                </div>
+              </ngs-expansion-panel>
+            }
+          </ngs-accordion>
+
+          <div class="mt-7">
+            <button ngsButton="tonal" (click)="addNewLink()">{{ 'admin.menu.edit.addLink' | transloco }}</button>
+          </div>
+        </div>
+      </div>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">
+    {{ 'common.loading' | transloco }}
+  </div>
+}

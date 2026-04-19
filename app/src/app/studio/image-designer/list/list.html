@@ -1,0 +1,41 @@
+<ngs-panel>
+  <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+    <div class="flex h-full items-center justify-between">
+      <div class="flex items-center gap-5">
+        <h1 class="font-bold">{{ 'myProfile.heading.imageDesigns' | transloco }}</h1>
+      </div>
+      <button ngsButton="filled" (click)="addImageDesign()">
+        <ngs-icon name="fluent:add-24-regular"/>
+        {{ 'studio.addCoverImage' | transloco }}
+      </button>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-scrollbar-area>
+      @if (loaded()) {
+        @if (imageDesigns().length > 0) {
+          <div class="p-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              @for (imageDesign of imageDesigns(); track imageDesign.id) {
+                <app-image-design-card [imageDesign]="imageDesign"
+                                       (edit)="edit(imageDesign)"
+                                       (delete)="delete(imageDesign)"/>
+              }
+            </div>
+          </div>
+        } @else {
+          <ngs-empty-state>
+            <ngs-empty-state-icon>
+              <ngs-icon name="fluent:layer-24-regular"/>
+            </ngs-empty-state-icon>
+            <ngs-empty-state-content>
+              {{ 'noImageDesigns' | transloco }}.
+            </ngs-empty-state-content>
+          </ngs-empty-state>
+        }
+      } @else {
+        <div class="p-10">{{ 'loading' | transloco }}</div>
+      }
+    </ngs-scrollbar-area>
+  </ngs-panel-content>
+</ngs-panel>

@@ -1,0 +1,52 @@
+<div class="flex flex-col items-center justify-center min-h-screen p-10 bg-surface-container-low font-sans text-on-surface">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold mb-2 text-on-background">
+      {{ (loading() ? 'checkout.verifyingTitle' : 'checkout.successTitle') | transloco }}
+    </h1>
+    <p class="text-lg text-on-surface-variant">
+      {{ (loading() ? 'checkout.verifyingMessage' : 'checkout.successMessage') | transloco }}
+    </p>
+  </div>
+
+  <div class="max-w-[560px] w-full p-10 bg-surface rounded-3xl shadow-sm border border-border">
+    <div class="flex flex-col items-center text-center">
+      <div class="w-20 h-20 mb-6 rounded-2xl flex items-center justify-center text-4xl">
+        @if (loading()) {
+          <span class="block w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+        } @else {
+          <div class="w-20 h-20 bg-positive/10 text-positive rounded-2xl flex items-center justify-center">
+            <span>✅</span>
+          </div>
+        }
+      </div>
+
+      <h2 class="text-2xl font-bold mb-2 text-on-surface">
+        @if (loading()) {
+          Verifying Payment...
+        } @else {
+          Subscription Activated!
+        }
+      </h2>
+
+      @if (!loading()) {
+        <p class="text-on-surface-variant mb-8">
+          Thank you for your purchase. Your account has been upgraded.
+        </p>
+
+        <ngs-divider class="w-full my-6"/>
+
+        <div class="w-full">
+          <a [routerLink]="authService.isLogged() ? '/' : '/login'"
+             class="block w-full py-4 px-6 rounded-2xl bg-primary text-on-primary font-bold text-lg text-center shadow-lg shadow-primary/20 hover:translate-y-[-2px] hover:shadow-xl active:translate-y-0 transition-all duration-200">
+            {{ (authService.isLogged() ? 'checkout.goToHome' : 'checkout.goToLogin') | transloco }}
+          </a>
+        </div>
+      }
+    </div>
+
+    <div class="mt-10 flex items-center justify-center gap-2 text-sm text-on-surface-variant font-medium opacity-70">
+      <span class="text-lg">🛡</span>
+      <span>Secure Transaction Confirmed</span>
+    </div>
+  </div>
+</div>

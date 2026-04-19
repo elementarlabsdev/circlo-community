@@ -1,0 +1,45 @@
+<div class="p-10 gap-6">
+  @if (loaded()) {
+    @if (tutorial().status.type === 'draft' || tutorial().status.type === 'scheduled') {
+      @if (tutorial().status.type === 'draft') {
+        <div class="mb-5">
+          <h3 class="text-lg font-medium mb-2">Schedule Publication</h3>
+          <div class="w-1/2 grid grid-cols-2 gap-5">
+            <ngs-form-field>
+              <ngs-label>Choose a date</ngs-label>
+              <input ngsInput [ngsDatepicker]="picker" [ngModel]="scheduledDate()" (ngModelChange)="updateDate($event)">
+              <ngs-hint>MM/DD/YYYY</ngs-hint>
+              <ngs-datepicker-toggle ngsSuffix [for]="picker"></ngs-datepicker-toggle>
+              <ngs-datepicker #picker></ngs-datepicker>
+            </ngs-form-field>
+            <ngs-form-field>
+              <ngs-label>Choose a time</ngs-label>
+              <input ngsInput [ngsTimepicker]="timepicker" [ngModel]="scheduledTime()" (ngModelChange)="updateTime($event)">
+              <ngs-timepicker-toggle ngsSuffix [for]="timepicker"></ngs-timepicker-toggle>
+              <ngs-timepicker #timepicker interval="15min"></ngs-timepicker>
+            </ngs-form-field>
+          </div>
+        </div>
+
+        @if (scheduledAt()) {
+          <button ngsButton="filled" (click)="publish()">Schedule</button>
+        } @else {
+          or <button ngsButton="filled" (click)="publish()">Publish Now</button>
+        }
+      } @else {
+        <div class="mb-5">
+          <h3 class="text-lg font-medium mb-2">Publication is scheduled at {{ tutorial().scheduledAt | date:'medium' }}</h3>
+          <p>You can cancel the schedule to make changes or publish it now.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button ngsButton="filled" (click)="publish()">Publish Now</button>
+          or
+          <button ngsButton="tonal" (click)="cancelSchedule()">{{ 'studio.cancel' | transloco }}</button>
+        </div>
+      }
+    } @else {
+      <button ngsButton="filled" (click)="publish()"
+              [disabled]="!tutorial().hasChanges">Publish Changes</button>
+    }
+  }
+</div>

@@ -1,0 +1,19 @@
+@if (loaded()) {
+  <ngs-card class="h-full !bg-surface-container-lowest">
+    <ngs-card-content>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="tracking-tight font-semibold">Views</h3>
+          <div class="pt-0 flex items-center mt-3 gap-3">
+            <div class="text-3xl font-semibold">
+              {{ data().viewsCount }}
+            </div>
+          </div>
+        </div>
+        <div class="bg-yellow-50 rounded-xl size-20 flex items-center justify-center text-yellow-500">
+          <ngs-icon name="fluent:eye-24-regular" class="size-7"/>
+        </div>
+      </div>
+    </ngs-card-content>
+  </ngs-card>
+}

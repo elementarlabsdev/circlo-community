@@ -1,0 +1,47 @@
+@reference 'tailwindcss';
+
+:host {
+  height: calc(100vh - --spacing(16));
+  display: block;
+  padding: --spacing(7) 0 --spacing(6) --spacing(6);
+  top: --spacing(16);
+
+  .inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+
+  .header {
+    flex: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .body {
+    flex-grow: 1;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .footer {
+    flex: none;
+    padding-inline-start: --spacing(3);
+    margin-top: --spacing(6);
+    padding-bottom: --spacing(1);
+  }
+
+  @media (max-width: 1022px) {
+    .inner {
+      margin: 0 auto;
+    }
+
+    height: auto;
+  }
+}
+
+:host-context(body:has(ngs-announcement)) {
+  height: calc(100vh - --spacing(26)) !important;
+  top: --spacing(26);
+}

@@ -1,0 +1,16 @@
+<h2 ngs-dialog-title>API Key</h2>
+<ngs-dialog-content [formGroup]="form">
+  <div>
+    <ngs-form-field class="w-full mt-4">
+      <ngs-label>API Key</ngs-label>
+      <input ngsInput type="text" formControlName="apiKey">
+    </ngs-form-field>
+  </div>
+</ngs-dialog-content>
+<ngs-dialog-actions>
+  <button ngsButton (click)="cancel()">Cancel</button>
+  <button ngsButton="filled"
+          [loading]="loading()"
+          [disabled]="form.invalid"
+          (click)="apply()">Add</button>
+</ngs-dialog-actions>

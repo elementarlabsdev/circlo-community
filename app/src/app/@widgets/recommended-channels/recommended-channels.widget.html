@@ -1,0 +1,26 @@
+<div class="rounded-xl bg-surface-container-low p-5 pb-6">
+  <div class="font-bold text-sm">{{ 'widget.recommendedChannels.title' | transloco }}</div>
+  @if (widget().data.channels.length > 0) {
+    <div class="mt-6 space-y-5">
+      @for (channel of widget().data.channels; track channel) {
+        <div class="flex items-center gap-2 justify-between">
+          <div class="flex items-center gap-3.5">
+            <ngs-dicebear [key]="channel.id" [image]="channel.logoUrl | imageProxy:'100x100,sc'" class="size-9"/>
+            <div>
+              <a [routerLink]="['/channel', channel.slug]"
+                 class="text-tiny block font-semibold hover:text-primary hover:underline leading-none">{{ channel.name }}</a>
+              <app-followers-count [count]="channel.followersCount" class="text-xs text-neutral-500 leading-none"/>
+            </div>
+          </div>
+          <app-subscription [targetId]="channel.id" targetType="channel" [compact]="true"/>
+        </div>
+      }
+    </div>
+    <div class="mt-4 -mb-2">
+      <a routerLink="/channels"
+         class="text-xs text-primary hover:underline underline-offset-1">{{ 'widget.recommendedChannels.seeMoreLink' | transloco }}</a>
+    </div>
+  } @else {
+    <div class="text-xs mt-5">{{ 'widget.recommendedChannels.noChannels' | transloco }}.</div>
+  }
+</div>

@@ -1,0 +1,29 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+      <ngs-toolbar class="h-full">
+        <ngs-toolbar-title>
+          {{ 'admin.settings.license-key.heading' | transloco }}
+        </ngs-toolbar-title>
+        <ngs-toolbar-spacer/>
+        <button ngsButton="filled" (click)='save()' [disabled]="form.invalid">
+          {{ 'save' | transloco }}
+        </button>
+      </ngs-toolbar>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <div class="p-12">
+        <form [formGroup]="form" class="flex flex-col gap-6 md:w-8/12">
+          <div class="text-sm text-muted-foreground mb-4">
+            {{ 'admin.settings.license-key.description' | transloco }}
+          </div>
+
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.settings.license-key.label' | transloco }}</ngs-label>
+            <textarea ngsInput formControlName="licenseKey" rows="4"></textarea>
+          </ngs-form-field>
+        </form>
+      </div>
+    </ngs-panel-content>
+  </ngs-panel>
+}

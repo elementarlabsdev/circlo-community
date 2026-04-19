@@ -1,0 +1,28 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+
+  ngs-sidebar-header {
+    --ngs-sidebar-header-padding: 0;
+  }
+
+  ngs-sidebar-body {
+    --ngs-sidebar-body-padding: 0;
+  }
+
+  ngs-sidebar-nav {
+    --ngs-sidebar-nav-item-border-radius: 14px;
+    --ngs-sidebar-nav-item-height: 44px;
+  }
+
+  ngs-sidebar-nav-divider {
+    --ngs-sidebar-nav-divider-margin: --spacing(6) --spacing(5);
+  }
+
+  ngs-sidebar-footer {
+    --ngs-sidebar-footer-padding: 0 --spacing(5);
+  }
+}

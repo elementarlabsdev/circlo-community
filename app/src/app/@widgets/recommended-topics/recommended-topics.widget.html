@@ -1,0 +1,19 @@
+<div class="rounded-xl bg-surface-container-low p-5 pb-6">
+  <div class="font-bold text-sm">{{ 'widget.recommendedTopics.title' | transloco }}</div>
+  @if (widget().data.length > 0) {
+    <nav class="mt-5 flex flex-wrap gap-3">
+      @for (topic of widget().data; track topic) {
+        <a [routerLink]="['/topic', topic.slug]" ngsRipple
+           class="bg-surface-container-lowest flex items-center hover:bg-surface-container-high rounded-full h-8 px-3 text-on-surface text-xs">
+          {{ topic.name }}
+        </a>
+      }
+    </nav>
+    <div class="mt-4 -mb-2">
+      <a routerLink="/topics"
+         class="text-xs text-primary hover:underline underline-offset-1">{{ 'widget.recommendedTopics.seeMoreLink' | transloco }}</a>
+    </div>
+  } @else {
+    <div class="text-xs mt-5">{{ 'widget.recommendedTopics.noTopics' | transloco }}.</div>
+  }
+</div>

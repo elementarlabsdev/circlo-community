@@ -1,0 +1,23 @@
+<div ngs-dialog-title>{{ 'admin.settings.mail.resend.title' | transloco }}</div>
+<ngs-dialog-content>
+  <form [formGroup]="form">
+    <div class="space-y-3 mt-2">
+      <ngs-form-field class="w-full">
+        <ngs-label>{{ 'admin.settings.mail.resend.apiKey' | transloco }}</ngs-label>
+        <input type="text" ngsInput formControlName="apiKey">
+        <ngs-hint>
+          {{ 'admin.settings.mail.resend.apiKeyHint' | transloco }} <a href="https://resend.com/api-keys" target="_blank">https://resend.com/api-keys</a>
+        </ngs-hint>
+      </ngs-form-field>
+      <div class="mt-4">
+        <ngs-slide-toggle formControlName="isEnabled">{{ 'captchaProvider.isEnabled' | transloco }}</ngs-slide-toggle>
+      </div>
+    </div>
+  </form>
+</ngs-dialog-content>
+<ngs-dialog-actions align="end">
+  <button ngsButton (click)="cancel()">{{ 'common.cancel' | transloco }}</button>
+  <button type="submit" ngsButton="filled" color="primary" [disabled]="form.invalid" (click)="apply()">
+    {{ 'common.apply' | transloco }}
+  </button>
+</ngs-dialog-actions>

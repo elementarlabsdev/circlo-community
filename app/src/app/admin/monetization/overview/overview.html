@@ -1,0 +1,105 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center">
+        <h1 class="font-bold">{{ 'admin.monetization.overview' | transloco }}</h1>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content class="prose max-w-full">
+      <ngs-scrollbar-area>
+        <div class="p-10">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Stripe Status Card -->
+            <ngs-card class="cursor-pointer" routerLink="/admin/monetization/stripe">
+              <ngs-card-header>
+                <div class="flex items-center gap-3 h-full">
+                  <ngs-icon name="fluent:payment-24-regular" class="size-6 text-primary"></ngs-icon>
+                  <span class="font-semibold">{{ 'admin.monetization.stripe' | transloco }}</span>
+                </div>
+              </ngs-card-header>
+              <ngs-card-content>
+                <div class="flex items-center gap-2">
+                  <div class="size-2 rounded-full" [class.bg-green-500]="settings().stripeConfigured" [class.bg-red-500]="!settings().stripeConfigured"></div>
+                  <span>{{ (settings().stripeConfigured ? 'admin.monetization.configured' : 'admin.monetization.not-configured') | transloco }}</span>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">{{ 'admin.monetization.stripe-description' | transloco }}</p>
+              </ngs-card-content>
+            </ngs-card>
+
+            <!-- Paid Account Card -->
+            <ngs-card class="cursor-pointer" routerLink="/admin/monetization/paid-account">
+              <ngs-card-header>
+                <div class="flex items-center gap-3 h-full">
+                  <ngs-icon name="fluent:person-star-24-regular" class="size-6 text-primary"></ngs-icon>
+                  <span class="font-semibold">{{ 'admin.monetization.paid-account' | transloco }}</span>
+                </div>
+              </ngs-card-header>
+              <ngs-card-content>
+                <div class="flex items-center gap-2">
+                  <div class="size-2 rounded-full" [class.bg-green-500]="settings().monetizationPaidAccountEnabled" [class.bg-gray-400]="!settings().monetizationPaidAccountEnabled"></div>
+                  <span>{{ (settings().monetizationPaidAccountEnabled ? 'admin.monetization.enabled' : 'admin.monetization.disabled') | transloco }}</span>
+                </div>
+                @if (settings().monetizationPaidAccountEnabled) {
+                  <p class="text-sm font-medium mt-2">{{ 'admin.monetization.price' | transloco }}: {{ settings().monetizationPaidAccountPrice }}</p>
+                }
+                <p class="text-sm text-gray-500 mt-2">{{ 'admin.monetization.paid-account-description' | transloco }}</p>
+              </ngs-card-content>
+            </ngs-card>
+
+            <!-- Credits Card -->
+            @if (monetizationCreditsEnabled()) {
+              <ngs-card class="cursor-pointer" routerLink="/admin/monetization/credits">
+                <ngs-card-header>
+                  <div class="flex items-center gap-3 h-full">
+                    <ngs-icon name="fluent:money-24-regular" class="size-6 text-primary"></ngs-icon>
+                    <span class="font-semibold">{{ 'admin.monetization.credits' | transloco }}</span>
+                  </div>
+                </ngs-card-header>
+                <ngs-card-content>
+                  <div class="flex items-center gap-2">
+                    <div class="size-2 rounded-full" [class.bg-green-500]="settings().monetizationCreditsEnabled" [class.bg-gray-400]="!settings().monetizationCreditsEnabled"></div>
+                    <span>{{ (settings().monetizationCreditsEnabled ? 'admin.monetization.enabled' : 'admin.monetization.disabled') | transloco }}</span>
+                  </div>
+                  <p class="text-sm text-gray-500 mt-2">{{ 'admin.monetization.credits-description' | transloco }}</p>
+                </ngs-card-content>
+              </ngs-card>
+            }
+          </div>
+
+          <!-- Quick Actions/Links -->
+          <div class="mt-10">
+            <h2 class="text-xl font-bold mb-4">{{ 'admin.monetization.quick-actions' | transloco }}</h2>
+            <div class="flex gap-4">
+              <a ngsButton="outlined" routerLink="/admin/monetization/transactions">
+                <ngs-icon name="fluent:history-24-regular"></ngs-icon>
+                {{ 'admin.monetization.view-transactions' | transloco }}
+              </a>
+            </div>
+          </div>
+
+          <!-- Information Section -->
+          <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+              <h2 class="text-xl font-bold mb-4">{{ 'admin.monetization.what-is-title' | transloco }}</h2>
+              <p class="leading-relaxed">
+                {{ 'admin.monetization.what-is-description' | transloco }}
+              </p>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold mb-4">{{ 'admin.monetization.how-to-use-title' | transloco }}</h2>
+              <ul class="space-y-3 text-gray-600 dark:text-gray-400">
+                <li>{{ 'admin.monetization.how-to-use-step-1' | transloco }}</li>
+                <li>{{ 'admin.monetization.how-to-use-step-2' | transloco }}</li>
+                <li>{{ 'admin.monetization.how-to-use-step-3' | transloco }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10 flex justify-center items-center h-full">
+    <span>{{ 'common.loading' | transloco }}</span>
+  </div>
+}

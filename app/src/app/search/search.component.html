@@ -1,0 +1,20 @@
+<div class="lg:w-[740px] mx-auto">
+  <h1 class="text-3xl font-extrabold">{{ 'search.title' | transloco }}: {{ query() }}</h1>
+  <div class="space-y-10 mt-10">
+    @if (publications().length > 0) {
+      @for (publication of publications(); track publication) {
+        <app-publication [publication]="publication" [reactions]="reactions[publication.id]"/>
+      }
+
+      @if (pagination().totalPages > 1) {
+        <ngs-paginator route="/publications/page"
+                       [totalItems]="pagination().totalItems"
+                       [pageSize]="pagination().pageSize"
+                       [pageNumber]="pageNumber"
+                       (pageChanged)="onPageChanged($event)"/>
+      }
+    } @else {
+      <div class="text-sm text-center">{{ 'search.thereAreNoSearchResults' | transloco }}.</div>
+    }
+  </div>
+</div>

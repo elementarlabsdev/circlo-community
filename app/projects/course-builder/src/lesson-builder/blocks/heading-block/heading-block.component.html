@@ -1,0 +1,8 @@
+<ngs-inline-text-edit placeholder="Enter heading"
+                      [class.level-1]="localLevel() === 1"
+                      [class.level-2]="localLevel() === 2"
+                      [class.level-3]="localLevel() === 3"
+                      [class.level-4]="localLevel() === 4"
+                      [class.level-5]="localLevel() === 5"
+                      [class.level-6]="localLevel() === 6"
+                      (changed)="onChanged($event)">{{ this.block().data.content }}</ngs-inline-text-edit>

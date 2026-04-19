@@ -1,0 +1,3 @@
+.form { display: grid; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 16px; }
+.flags { margin: 8px 0; display: flex; gap: 16px; }
+.loading { padding: 24px; text-align: center; }

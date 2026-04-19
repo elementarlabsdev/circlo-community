@@ -1,0 +1,8 @@
+<a [routerLink]="['/admin/pages', element().hash, 'edit']"
+   class="block h-full w-full hover:underline underline-offset-1">
+  @if (fieldData()) {
+    {{ fieldData() }}
+  } @else {
+    <span class="text-neutral-500">No title</span>
+  }
+</a>

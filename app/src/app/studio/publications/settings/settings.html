@@ -1,0 +1,143 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'studio.publication-edit.settings-heading' | transloco }}</h1>
+        <button ngsButton="filled"
+                (click)="save()"
+                [disabled]="form.invalid">{{ 'save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-12 ngs-typography w-7/12" [formGroup]="form">
+          <div>
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'slug' | transloco }}</ngs-label>
+              <input type="text" ngsInput formControlName="slug">
+            </ngs-form-field>
+            <ngs-form-field class="w-full">
+              <ngs-label>Channel</ngs-label>
+              <input type="text"
+                     ngsInput
+                     [formControl]="channelSearchControl"
+                     [ngsAutocomplete]="channelsAutocomplete">
+              @if (form.value.channelId) {
+                <button ngsIconButton ngsSuffix type="button" (click)="clearChannel()" aria-label="Clear channel"><ngs-icon name="fluent:dismiss-circle-24-regular"/></button>
+              }
+              <ngs-autocomplete #channelsAutocomplete="ngsAutocomplete"
+                                [displayWith]="displayChannel"
+                                (optionSelected)="channelSelected($event)">
+                @for (c of filteredChannels(); track c.id) {
+                  <ngs-option [value]="c">{{ c.name }}</ngs-option>
+                }
+              </ngs-autocomplete>
+            </ngs-form-field>
+            <ngs-form-field class="w-full">
+              <ngs-label>{{ 'topics' | transloco }}</ngs-label>
+              <ngs-chip-grid #chipGrid>
+                @for (topic of publication()!.topics; track topic) {
+                  <ngs-chip-row (removed)="removeTopic(topic)">
+                    {{ topic.name }}
+                    <button ngsChipRemove>
+                      <ngs-icon name="fluent:dismiss-24-regular"/>
+                    </button>
+                  </ngs-chip-row>
+                }
+              </ngs-chip-grid>
+              <input [placeholder]="'newTopic' | transloco"
+                     #topicInput
+                     maxlength="30"
+                     [formControl]="topicNameControl"
+                     [ngsChipInputFor]="chipGrid"
+                     [ngsAutocomplete]="topicsAutocomplete"
+                     [ngsChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (chipInputTokenEnd)="addTopic($event)">
+              <ngs-autocomplete #topicsAutocomplete="ngsAutocomplete"
+                                (optionSelected)="topicSelected($event)">
+                @for (topic of filteredTopics(); track topic) {
+                  <ngs-option [value]="topic" [disabled]="publication()!.topics.length >= 6">{{ topic.name }}</ngs-option>
+                }
+              </ngs-autocomplete>
+              <ngs-hint>{{ 'maxTopics' | transloco }}</ngs-hint>
+            </ngs-form-field>
+            <ngs-checkbox-group class="mt-5">
+              <ngs-checkbox formControlName="pinned">{{ 'pinPublication' | transloco }}</ngs-checkbox>
+              <ngs-checkbox formControlName="discussionEnabled">{{ 'enableCommentsOnThisPublication' | transloco }}</ngs-checkbox>
+            </ngs-checkbox-group>
+          </div>
+          <div class="mt-8">
+            <h6>{{ 'license.title' | transloco }}</h6>
+            <ul class="bg-surface-container text-xs leading-relaxed p-4 flex flex-col gap-2 rounded-2xl mt-4">
+              @for (rule of licenseRules; track rule) {
+                <li class="flex gap-2">
+                  @if (rule.icon) {
+                    <img [src]="rule.icon" alt="" class="size-4 relative top-0.5">
+                  }
+                  {{ rule.name | transloco }}
+                </li>
+              }
+            </ul>
+            <div class="mt-5">
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'license.type' | transloco }}</ngs-label>
+                <ngs-select formControlName="licenseTypeId">
+                  @for (license of licenseTypes(); track license.id) {
+                    @if (license.children.length > 0) {
+                      <ngs-optgroup [label]="license.name | transloco">
+                        @for (child of license.children; track child.id) {
+                          <ngs-option [value]="child.id">{{ child.name | transloco }}</ngs-option>
+                        }
+                      </ngs-optgroup>
+                    } @else {
+                      <ngs-option [value]="license.id">{{ license.name | transloco }}</ngs-option>
+                    }
+                  }
+                </ngs-select>
+              </ngs-form-field>
+            </div>
+          </div>
+          <div class="mt-8">
+            <h6 class="flex items-center justify-between">
+              {{ 'seoAndSettings' | transloco }}
+              <button ngsButton>Fill with AI</button>
+            </h6>
+            <div class="space-y-6 mt-4">
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'metaTitle' | transloco }}</ngs-label>
+                <input ngsInput formControlName="metaTitle">
+                <ngs-hint>
+                  {{ 'metaTitleHint' | transloco }}.
+                </ngs-hint>
+              </ngs-form-field>
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'metaDescription' | transloco }}</ngs-label>
+                <textarea ngsInput formControlName="metaDescription" rows="3" ngsTextareaAutoSize></textarea>
+                <ngs-hint>
+                  {{ 'metaDescriptionHint' | transloco }}.
+                </ngs-hint>
+              </ngs-form-field>
+            </div>
+          </div>
+          <div class="mt-12">
+            <h6>Advanced Settings</h6>
+            <div class="mt-4">
+              <ngs-form-field class="w-full">
+                <ngs-label>{{ 'canonicalUrl' | transloco }}</ngs-label>
+                <input type="url" ngsInput formControlName="canonicalUrl">
+                <ngs-hint>If this publication was originally published elsewhere</ngs-hint>
+              </ngs-form-field>
+              <div class="bg-surface-container text-xs p-4 rounded-2xl mt-4 leading-relaxed">
+                When articles are published on more than one website, search engines use canonical links to determine and prioritize
+                the ultimate source of content. If your article was originally published on another platform, and
+                you want search engines to index that article instead of this Medium story, you can set the canonical link here.
+              </div>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-10">Loading...</div>
+}

@@ -1,0 +1,86 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'admin.settings.social-media-links-heading' | transloco }}</h1>
+        <button ngsButton="filled" (click)="save()">{{ 'common.save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-6 xl:p-12">
+          <form [formGroup]="form">
+            <div>
+              <p>
+                {{ 'admin.settings.social.description' | transloco }}
+              </p>
+              <div class="grid grid-cols-1 xl:grid-cols-2 gap-12 mt-8">
+                <div class="cold-span-1">
+                  @if (formSocialMediaLinks.length > 0) {
+                    <div class="flex flex-col gap-1 mb-5"
+                         cdkDropList
+                         (cdkDropListDropped)="drop($event)">
+                      @for (formSocialMediaLink of formSocialMediaLinks; track formSocialMediaLink) {
+                        @let socialMediaLink = getSocialMediaLink(formSocialMediaLink.type);
+                        <div cdkDrag class="relative">
+                          <div class="w-max absolute top-2 -translate-x-full">
+                            <button ngsIconButton cdkDragHandle><ngs-icon name="fluent:list-24-regular"/></button>
+                          </div>
+                          <ngs-form-field class="w-full">
+                            <ngs-label>{{ socialMediaLink.name }}</ngs-label>
+                            <div ngsPrefix class="ps-4 pe-2">
+                              <img [src]="socialMediaLink.iconUrl" class="size-6">
+                            </div>
+                            <input type="url" ngsInput
+                                   [(ngModel)]="formSocialMediaLink.url"
+                                   [ngModelOptions]="{standalone: true}"
+                                   [placeholder]="'admin.settings.social.urlPlaceholder' | transloco">
+                          </ngs-form-field>
+                        </div>
+                      }
+                    </div>
+                  }
+                  <button class="bg-surface-container-low w-full rounded-2xl mb-5 p-5 h-18 px-3 gap-3 hover:bg-surface-container
+                   flex items-center justify-center block cursor-pointer xl:w-1/2"
+                          ngsRipple [ngsMenuTriggerFor]="availableSocialMediaLinksMenu">
+                    <ngs-icon name="fluent:add-24-regular"/> {{ 'admin.settings.social.addLink' | transloco }}
+                  </button>
+                </div>
+                <div class="cold-span-1">
+                  @if (formSocialMediaLinks.length > 0) {
+                    <div class="bg-surface-container rounded-2xl p-4">
+                      <h5 class="font-bold text-sm">{{ 'admin.settings.social.preview' | transloco }}</h5>
+                      <div class="mt-2 flex gap-3">
+                        @for (formSocialMediaLink of formSocialMediaLinks; track formSocialMediaLink) {
+                          @let socialMediaLink = getSocialMediaLink(formSocialMediaLink.type);
+                          <a [href]="formSocialMediaLink.url" target="_blank">
+                            <img [src]="socialMediaLink.iconUrl" alt="" class="size-7">
+                          </a>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-6 xl:p-12">{{ 'common.loading' | transloco }}</div>
+}
+
+<ngs-menu #availableSocialMediaLinksMenu="ngsMenu">
+  <div class="min-w-64">
+    @for (availableSocialMediaLink of availableSocialMediaLinks(); track availableSocialMediaLink) {
+      <button ngs-menu-item (click)="addSocialMediaLink(availableSocialMediaLink)">
+        <div class="flex gap-3 items-center">
+          <img [src]="availableSocialMediaLink.iconUrl" alt="" class="size-7">
+          {{ availableSocialMediaLink.name }}
+        </div>
+      </button>
+    }
+  </div>
+</ngs-menu>

@@ -1,0 +1,23 @@
+<ngs-panel>
+  <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+    <div class="flex h-full items-center justify-between">
+      <ngs-toolbar>
+        <ngs-toolbar-title>{{ 'admin.monetization.transactions' | transloco }}</ngs-toolbar-title>
+        <div class="text-xs text-secondary">{{ 'admin.monetization.view-transactions' | transloco }}</div>
+      </ngs-toolbar>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-data-view
+      #datagridRef
+      [columnDefs]="columnDefs"
+      [cellRenderers]="cellRenderers"
+      [withPagination]="true"
+      [datasource]="datasource"
+      rowModelType="serverSide"
+      autoHeight
+      class="absolute inset-0"
+      emptyFilterResultsIcon="fluent:number-symbol-24-regular"
+      [emptyFilterResultsText]="'admin.monetization.noTransactions' | transloco"/>
+  </ngs-panel-content>
+</ngs-panel>

@@ -1,0 +1,14 @@
+:host {
+  color: var(--color-primary);
+  line-height: 0;
+  min-width: 130px;
+  display: inline-block;
+
+  &:hover {
+    color: var(--color-tertiary);
+  }
+
+  @media (max-width: 1022px) {
+    min-width: 0;
+  }
+}

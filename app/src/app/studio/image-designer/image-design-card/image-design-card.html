@@ -1,0 +1,24 @@
+<ngs-card>
+  <ngs-card-header>
+    <ngs-card-title>{{ imageDesign().name }}</ngs-card-title>
+  </ngs-card-header>
+  <ngs-card-image class="h-[220px] bg-neutral-100">
+    @if (imageDesign().resultImageUrl) {
+      <img
+        [src]="imageDesign().resultImageUrl"
+        [alt]="imageDesign().name"
+        class="object-cover object-center h-full"
+      />
+    } @else {
+      <ngs-image-placeholder class="h-full"/>
+    }
+  </ngs-card-image>
+  <ngs-card-actions>
+    <button ngsButton (click)="edit.emit(imageDesign().id)">
+      <ngs-icon name="fluent:edit-24-regular"/> {{ 'edit' | transloco }}
+    </button>
+    <button ngsButton (click)="delete.emit(imageDesign().id)" class="!text-neutral-600 hover:!text-red-600">
+      <ngs-icon name="fluent:delete-24-regular"/> {{ 'delete' | transloco }}
+    </button>
+  </ngs-card-actions>
+</ngs-card>

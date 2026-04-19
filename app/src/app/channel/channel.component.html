@@ -1,0 +1,97 @@
+<div class="lg:w-[1120px] mx-auto pt-10 px-6 lg:px-0">
+  <ngs-breadcrumbs lastItemAsLink>
+    <a routerLink="/" ngs-breadcrumb-item>{{ 'breadcrumbs.home' | transloco }}</a>
+    <ngs-breadcrumb-separator>/</ngs-breadcrumb-separator>
+    <a routerLink="/channels" ngs-breadcrumb-item>{{ 'breadcrumbs.channels' | transloco }}</a>
+  </ngs-breadcrumbs>
+  <h1 class="text-3xl font-extrabold mt-2 mb-10">
+    @if (loaded()) {
+      {{ 'channel.title' | transloco }}: {{ channel.name }}
+    }
+  </h1>
+</div>
+
+<div class="grow lg:grid lg:grid-cols-[740px_380px] lg:w-[1120px] px-6 lg:px-0 mx-auto gap-10">
+  @if (loaded()) {
+    <main class="space-y-10 pb-10">
+      @if (items().length > 0) {
+        <app-feed-items [items]="items()" [reactions]="reactions"/>
+
+        @if (pagination().totalPages > 1) {
+          <ngs-paginator route="/feed/page"
+                         [totalItems]="pagination().totalItems"
+                         [pageSize]="pagination().pageSize"
+                         [pageNumber]="pageNumber"
+                         (pageChanged)="onPageChanged($event)"/>
+        }
+      } @else {
+        <div class="text-sm text-center">{{ 'thereAreNoPublications' | transloco }}.</div>
+      }
+    </main>
+
+    <aside class="pb-10 space-y-10">
+      <div class="bg-surface-container-low rounded-2xl p-8 space-y-5">
+        <ngs-dicebear [key]="channel.id"
+                      [image]="channel.logoUrl | imageProxy:'200x200,sc,q90'" class="size-32"/>
+        <div>
+          <div class="text-sm text-neutral-700 dark:text-neutral-500 mt-2 items-center flex gap-4">
+            <app-followers-count [count]="channel.followersCount"/>
+            @if (allowPublications()) {
+              <ngs-divider vertical/>
+              <app-publications-count [count]="channel.publicationsCount"/>
+            }
+            @if (allowTutorials()) {
+              <ngs-divider vertical/>
+              <app-tutorials-count [count]="channel.tutorialsCount"/>
+            }
+          </div>
+
+          @if (channel.description) {
+            <div class="text-sm leading-relaxed mt-4">{{ channel.description }}</div>
+          }
+
+          <div class="mt-6">
+            <app-subscription [targetId]="channel.id" targetType="channel"/>
+          </div>
+        </div>
+      </div>
+
+      @if (channel.moderators && channel.moderators.length > 0) {
+        <div class="space-y-4">
+          <div class="text-xs font-bold uppercase tracking-wider text-neutral-500 px-4">{{ 'channel.moderators' | transloco }}</div>
+          <div class="space-y-2">
+            @for (moderator of channel.moderators; track moderator.id) {
+              <a [routerLink]="['/user', moderator.username]" class="flex items-center gap-3 group px-4 py-2 hover:bg-surface-container-high rounded-xl transition-colors">
+                <ngs-dicebear [image]="moderator.avatarUrl | imageProxy:'80x80,sc,q90'"
+                              [key]="moderator.id"
+                              class="size-10 rounded-full overflow-hidden"/>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold group-hover:text-primary transition-colors">{{ moderator.name }}</span>
+                  <span class="text-xs text-neutral-500">&#64;{{ moderator.username }}</span>
+                </div>
+              </a>
+            }
+          </div>
+        </div>
+      }
+
+      @if (channel.rules.length > 0) {
+        <div>
+          <ngs-accordion>
+            @for (channelRule of channel.rules; track channelRule; let index = $index) {
+              <ngs-expansion-panel class="expansion-panel ngs-elevation-z0">
+                <ngs-expansion-panel-header>
+                  <ngs-expansion-panel-title class="text-sm">
+                    <span class="inline-block w-5">{{ index + 1 }}.</span>
+                    {{ channelRule.name }}
+                  </ngs-expansion-panel-title>
+                </ngs-expansion-panel-header>
+                <p class="text-tiny">{{ channelRule.description }}</p>
+              </ngs-expansion-panel>
+            }
+          </ngs-accordion>
+        </div>
+      }
+    </aside>
+  }
+</div>

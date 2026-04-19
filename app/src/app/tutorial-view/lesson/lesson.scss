@@ -1,0 +1,13 @@
+@reference 'tailwindcss';
+
+:host {
+  .controls {
+    top: --spacing(16);
+  }
+}
+
+:host-context(body:has(ngs-announcement)) {
+  .controls {
+    top: --spacing(24);
+  }
+}

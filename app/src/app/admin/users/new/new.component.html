@@ -1,0 +1,85 @@
+<ngs-panel>
+  <ngs-panel-header class="h-16 border-b border-b-border">
+    <div class="h-full flex items-center gap-5 justify-between px-5">
+      <div class="flex items-center gap-5">
+        <div class="font-bold">{{ 'admin.users.new.createUser' | transloco }}</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a routerLink="/admin/users" ngsButton>{{ 'admin.users.new.cancel' | transloco }}</a>
+        <button ngsButton="filled" type="button" [disabled]="saving || form.invalid" (click)="submit()">
+          {{ 'admin.users.new.create' | transloco }}
+        </button>
+      </div>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content class="overflow-y-auto p-10">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4 xl:w-6/12">
+      <ngs-form-field>
+        <ngs-label>{{ 'admin.users.new.name' | transloco }}</ngs-label>
+        <input ngsInput formControlName="name"/>
+        @if (form.get('name')?.invalid) {
+          <ngs-error>{{ 'admin.users.new.nameRequired' | transloco }}</ngs-error>
+        }
+      </ngs-form-field>
+
+      <ngs-form-field>
+        <ngs-label>{{ 'admin.users.new.username' | transloco }}</ngs-label>
+        <input ngsInput formControlName="username"/>
+        @if (form.get('username')?.invalid) {
+          <ngs-error>{{ 'admin.users.new.usernameRequired' | transloco }}</ngs-error>
+        }
+      </ngs-form-field>
+
+      <ngs-form-field>
+        <ngs-label>{{ 'admin.users.new.email' | transloco }}</ngs-label>
+        <input ngsInput formControlName="email"/>
+        @if (form.get('email')?.invalid) {
+          <ngs-error>{{ 'admin.users.new.emailRequired' | transloco }}</ngs-error>
+        }
+      </ngs-form-field>
+
+      <div class="w-full mb-5">
+        <ngs-form-field class="w-full">
+          <ngs-label>{{ 'admin.users.new.password' | transloco }}</ngs-label>
+          <input ngsInput [type]="passwordVisibility()" formControlName="password"/>
+          <div ngsIconButtonSuffix>
+            @if (passwordVisibility() === 'text') {
+              <button ngsIconButton type="button" (click)="togglePasswordVisibility()">
+                <ngs-icon name="fluent:eye-24-regular"/>
+              </button>
+            } @else {
+              <button ngsIconButton type="button" (click)="togglePasswordVisibility()">
+                <ngs-icon name="fluent:eye-off-24-regular"/>
+              </button>
+            }
+          </div>
+          @if (form.get('password')?.invalid) {
+            <ngs-error>{{ 'admin.users.new.passwordRequired' | transloco }}</ngs-error>
+          }
+        </ngs-form-field>
+        <div>
+          <button ngsButton="tonal" type="button" (click)="generateAndSetPassword()">
+            {{ 'admin.users.new.generatePassword' | transloco }}
+          </button>
+        </div>
+      </div>
+
+      <ngs-form-field>
+        <ngs-label>{{ 'admin.users.new.role' | transloco }}</ngs-label>
+        <ngs-select formControlName="roleId">
+          @for (r of roles; track r.id) {
+            <ngs-option [value]="r.id">{{ r.name | transloco }}</ngs-option>
+          }
+        </ngs-select>
+        @if (form.get('roleId')?.invalid) {
+          <ngs-error>{{ 'admin.users.new.roleRequired' | transloco }}</ngs-error>
+        }
+      </ngs-form-field>
+
+      <ngs-slide-toggle formControlName="sendEmail">{{ 'admin.users.new.sendEmail' | transloco }}</ngs-slide-toggle>
+      <div>
+        <ngs-checkbox formControlName="verified">{{ 'admin.users.new.verified' | transloco }}</ngs-checkbox>
+      </div>
+    </form>
+  </ngs-panel-content>
+</ngs-panel>

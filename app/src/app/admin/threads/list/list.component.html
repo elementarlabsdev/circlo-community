@@ -1,0 +1,21 @@
+<ngs-panel>
+  <ngs-panel-header autoHeight>
+    <ngs-toolbar class="h-16 px-6 border-b border-b-border">
+      <ngs-toolbar-title>{{ 'admin.sidebar.threads' | transloco }}</ngs-toolbar-title>
+    </ngs-toolbar>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-data-view
+      [columnDefs]="columnDefs"
+      [cellRenderers]="cellRenderers"
+      [withPagination]="true"
+      [datasource]="datasource"
+      autoHeight
+      rowModelType="serverSide"
+      withSelection
+      withColumnSettings
+      class="absolute inset-0"
+      emptyFilterResultsIcon="fluent:chat-24-regular"
+      [emptyFilterResultsText]="'admin.threads.noThreads' | transloco"/>
+  </ngs-panel-content>
+</ngs-panel>

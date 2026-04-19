@@ -1,0 +1,87 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'myProfile.heading.notifications' | transloco }}</h1>
+        <button ngsButton="filled"
+                (click)="save()"
+                [disabled]="form.invalid">{{ 'save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-12">
+          <div [formGroup]="form" class="mb-3">
+            <h3 class="font-bold mb-7">{{ 'studio.generalNotifications' | transloco }}</h3>
+            <div class="space-y-7">
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>
+                  <div>{{ 'studio.notificationsWhenSomeoneReactsToMyContent' | transloco }}.</div>
+                </div>
+                <ngs-slide-toggle formControlName="notificationsWhenSomeoneReactsToMyContent"/>
+              </div>
+            </div>
+            <ngs-divider class="mt-12"/>
+            <h3 class="font-bold mt-12 mb-7">{{ 'studio.emailNotifications' | transloco }}</h3>
+            <div class="space-y-7">
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>{{ 'studio.enableWeeklyNewsletterEmails' | transloco }}</div>
+                <ngs-slide-toggle formControlName="enableWeeklyNewsletterEmails"/>
+              </div>
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>{{ 'studio.enablePeriodicDigestOfTopPostsFromMyTopics' | transloco }}</div>
+                <ngs-slide-toggle formControlName="enablePeriodicDigestOfTopPostsFromMyTopics"/>
+              </div>
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>{{ 'studio.enableEmailWhenSomeoneRepliesToMeInCommentThread' | transloco }}</div>
+                <ngs-slide-toggle formControlName="enableEmailWhenSomeoneRepliesToMeInCommentThread"/>
+              </div>
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>{{ 'studio.enableEmailWhenSomeoneNewFollowsMe' | transloco }}</div>
+                <ngs-slide-toggle formControlName="enableEmailWhenSomeoneNewFollowsMe"/>
+              </div>
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>{{ 'studio.enableEmailWhenSomeoneMentionsMe' | transloco }}</div>
+                <ngs-slide-toggle formControlName="enableEmailWhenSomeoneMentionsMe"/>
+              </div>
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>{{ 'studio.enableEmailWhenIReceiveBadge' | transloco }}</div>
+                <ngs-slide-toggle formControlName="enableEmailWhenIReceiveBadge"/>
+              </div>
+            </div>
+            <ngs-divider class="mt-12"/>
+            <h3 class="font-bold mt-12 mb-7">{{ 'studio.pushNotifications' | transloco }}</h3>
+            <div class="space-y-7">
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>
+                  <div>{{ 'studio.enablePushNotificationWhenSomeoneRepliesToMeInCommentThread' | transloco }}</div>
+                </div>
+                <ngs-slide-toggle formControlName="enablePushNotificationWhenSomeoneRepliesToMeInCommentThread"/>
+              </div>
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>
+                  <div>{{ 'studio.enablePushNotificationWhenSomeoneMentionsMe' | transloco }}</div>
+                </div>
+                <ngs-slide-toggle formControlName="enablePushNotificationWhenSomeoneMentionsMe"/>
+              </div>
+            </div>
+            <ngs-divider class="mt-12"/>
+            <h3 class="font-bold mt-12 mb-7">{{ 'studio.sounds' | transloco }}</h3>
+            <div class="space-y-9">
+              <div class="flex items-center justify-between gap-14 text-sm">
+                <div>
+                  <div>{{ 'studio.muteAllNotifications' | transloco }}</div>
+                </div>
+                <ngs-slide-toggle formControlName="muteAllNotifications"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-12">
+    Loading...
+  </div>
+}

@@ -1,0 +1,10 @@
+@if (widget().data.length > 0) {
+  <div class="flex items-center gap-3.5 px-4 mt-7">
+    @for (socialMediaLink of widget().data; track socialMediaLink) {
+      <a [href]="socialMediaLink.url" target="_blank">
+        <img [src]="socialMediaLink.iconUrl"
+             [alt]="socialMediaLink.name" class="size-7">
+      </a>
+    }
+  </div>
+}

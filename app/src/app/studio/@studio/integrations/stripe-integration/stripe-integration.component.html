@@ -1,0 +1,17 @@
+<ngs-card appearance="outlined" class="h-full">
+  <div class="flex px-5 pt-5 items-center justify-between">
+    <img src="/assets/integrations/stripe.svg" alt="" class="h-12" [title]="integration().name">
+    @if (integration().isConfigured) {
+      <button ngsIconButton [ngsMenuTriggerFor]="menu"><ngs-icon name="fluent:settings-24-regular"/></button>
+    } @else {
+      <button ngsButton="outlined" (click)="configure()">Connect</button>
+    }
+  </div>
+  <ngs-card-content class="text-sm">
+    <div class="px-1 text-neutral-600 pt-4">{{ integration().description | transloco }}</div>
+  </ngs-card-content>
+</ngs-card>
+<ngs-menu #menu="ngsMenu" xPosition="before">
+  <button ngs-menu-item (click)="configure()">Edit</button>
+  <button ngs-menu-item (click)="revoke()">Revoke</button>
+</ngs-menu>

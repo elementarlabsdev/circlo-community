@@ -1,0 +1,60 @@
+@if (loaded()) {
+  <ngs-panel>
+    <ngs-panel-header class="h-16 px-6 border-b border-b-border">
+      <div class="flex h-full items-center justify-between">
+        <h1 class="font-bold">{{ 'myProfile.heading.cookie' | transloco }}</h1>
+        <button ngsButton="filled"
+                (click)="save()"
+                [disabled]="form.invalid">{{ 'save' | transloco }}</button>
+      </div>
+    </ngs-panel-header>
+    <ngs-panel-content>
+      <ngs-scrollbar-area>
+        <div class="p-12">
+          <div class="mb-6">
+            <div class="text-sm leading-relaxed">
+              {{ 'studio.cookiePreferencesDesc' | transloco }}.
+            </div>
+            <h3 class="text-lg font-bold mt-10 mb-7">{{ 'studio.manageConsentPreferences' | transloco }}</h3>
+            <div [formGroup]="form">
+              <ngs-accordion>
+                @for (category of categories(); track category.id) {
+                  <ngs-expansion-panel [expanded]="category.isExpanded">
+                    <ngs-expansion-panel-header>
+                      <ngs-expansion-panel-title class="text-sm font-semibold whitespace-nowrap">
+                        {{ category.name }}
+                      </ngs-expansion-panel-title>
+                      <ngs-expansion-panel-description>
+                        @if (category.isMandatory) {
+                          <div class="font-semibold text-sm text-primary-500 ms-auto">
+                            {{ 'studio.cookies.alwaysActive' | transloco }}
+                          </div>
+                        } @else {
+                          <div class="ms-auto" (click)="$event.stopPropagation()">
+                            <ngs-slide-toggle [formControlName]="category.id.toString()"/>
+                          </div>
+                        }
+                      </ngs-expansion-panel-description>
+                    </ngs-expansion-panel-header>
+                    <p class="text-xs leading-relaxed">
+                      {{ category.shortDescription }}
+                    </p>
+                    @if (category.detailedDescription) {
+                      <p class="text-xs leading-relaxed mt-2">
+                        {{ category.detailedDescription }}
+                      </p>
+                    }
+                  </ngs-expansion-panel>
+                }
+              </ngs-accordion>
+            </div>
+          </div>
+        </div>
+      </ngs-scrollbar-area>
+    </ngs-panel-content>
+  </ngs-panel>
+} @else {
+  <div class="p-12">
+    Loading...
+  </div>
+}

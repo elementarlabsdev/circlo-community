@@ -1,0 +1,1421 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres", "postgresqlExtensions"]
+  binaryTargets   = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  extensions = [vector, timescaledb]
+}
+
+model MediaItem {
+  id                    String              @id @default(cuid())
+  extension             String
+  path                  String
+  url                   String
+  name                  String
+  size                  Int
+  category              String
+  type                  String              @default("file")
+  mimeType              String
+  deleted               Boolean             @default(false)
+  temporary             Boolean             @default(true)
+  createdAt             DateTime            @default(now()) @db.Timestamp(6)
+  payload               Json?
+  orientation           String?
+  channels              Channel[]
+  menuItems             MenuItem[]
+  pages                 Page[]
+  publications          Publication[]
+  lessons               Lesson[]
+  reactions             Reaction[]
+  topics                Topic[]
+  threads               Thread[]
+  // Back-relation for Question.image
+  questions             Question[]
+  // Back-relation for Sponsor.logo
+  sponsors              Sponsor[]
+  uploadedBy            User                @relation("uploadedBy", fields: [uploadedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  uploadedById          String
+  updatedBy             User?               @relation("updatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedById           String?
+  oAuthProvider         OAuthProvider[]
+  fileStorageProviderId String
+  fileStorageProvider   FileStorageProvider @relation(fields: [fileStorageProviderId], references: [id])
+  userAsAvatar          User?               @relation("avatar")
+  mediaStar             MediaStar[]
+  folderId              String?
+  folder                MediaItem?          @relation("folder", fields: [folderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  items                 MediaItem[]         @relation("folder")
+  // Complaints attachments back-relation
+  complaints            Complaint[]
+  imageDesigns          ImageDesign[]
+}
+
+model Bookmark {
+  id         String    @id @default(cuid())
+  createdAt  DateTime? @db.Timestamp(6)
+  targetId   String
+  targetType String
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([targetId, targetType, userId])
+}
+
+model Channel {
+  id                String            @id @default(cuid())
+  name              String
+  description       String?
+  slug              String            @unique()
+  logoUrl           String?
+  subscriptionType  String            @default("channel")
+  accessType        String?           // subscribers, paid
+  price             Float             @default(0)
+  createdAt         DateTime          @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime?         @db.Timestamp(6)
+  publicationsCount Int               @default(0)
+  tutorialsCount    Int               @default(0)
+  followersCount    Int               @default(0)
+  logoId            String?
+  logo              MediaItem?        @relation(fields: [logoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  publications      Publication[]
+  tutorials         Tutorial[]
+  owner             User?             @relation("owner", fields: [ownerId], references: [id])
+  ownerId           String?
+  rules             ChannelRule[]
+  visibility        ChannelVisibility @relation(fields: [visibilityId], references: [id])
+  visibilityId      String
+  metaTitle         String?
+  metaDescription   String?
+  metaTags          MetaTag[]
+  // Back-relation for FeedItem.channel
+  feedItems         FeedItem[]
+  moderators        User[]            @relation("ChannelModerators")
+  embedding         Unsupported("vector(384)")?
+}
+
+model ChannelVisibility {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  type        String    @unique
+  channels    Channel[]
+}
+
+model ChannelRule {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  position    Int     @default(0)
+  channelId   String
+  channel     Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id             String       @id @default(cuid())
+  htmlContent    String       @db.Text
+  textContent    String       @default("") @db.Text
+  createdAt      DateTime?    @db.Timestamp(6)
+  depth          Int          @default(0)
+  reactionsCount Int          @default(0)
+  repliesCount   Int          @default(0)
+  isHidden       Boolean      @default(false)
+  respondingToId String?
+  publicationId  String?
+  lessonId       String?
+  authorId       String
+  author         User         @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  publication    Publication? @relation(fields: [publicationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  lesson         Lesson?      @relation(fields: [lessonId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  respondingTo   Comment?     @relation("commentTocomment", fields: [respondingToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies        Comment[]    @relation("commentTocomment")
+  qualityScore   Json?
+
+  @@index([qualityScore(path: "$.overallScore")])
+}
+
+model Menu {
+  id          String     @id @default(cuid())
+  name        String
+  type        String
+  position    Int        @default(0)
+  createdAt   DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime?  @db.Timestamp(6)
+  items       MenuItem[]
+  isPermanent Boolean    @default(false)
+}
+
+model MenuItem {
+  id             String     @id @default(cuid())
+  name           String
+  url            String
+  position       Int        @default(0)
+  iconName       String?
+  iconUrl        String?
+  authorisedOnly Boolean
+  createdAt      DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime?  @db.Timestamp(6)
+  iconId         String?
+  icon           MediaItem? @relation(fields: [iconId], references: [id])
+  menu           Menu       @relation(fields: [menuId], references: [id])
+  menuId         String
+}
+
+model Page {
+  id               String     @id @default(cuid())
+  title            String
+  slug             String
+  textContent      String     @db.Text
+  blocksContent    Json
+  hash             String
+  createdAt        DateTime   @default(now())
+  metaTitle        String?
+  metaDescription  String?
+  metaTags         MetaTag[]
+  readingTime      Json
+  hasChanges       Boolean    @default(false)
+  lastPublishedDraftVersion Int      @default(0)
+  version          Int        @default(0)
+  updatedAt        DateTime?  @db.Timestamp(6)
+  publishedAt      DateTime?  @db.Timestamp(6)
+  featuredImageUrl String?
+  featuredImageId  String?
+  authorId         String?
+  statusId         String
+  featuredImage    MediaItem? @relation(fields: [featuredImageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  author           User?      @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  status           PageStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  drafts           PageDraft[]
+
+  @@unique([hash])
+}
+
+model PageDraft {
+  id            String   @id @default(cuid())
+  version       Int
+  pageId        String
+  page          Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  lastUpdateAt  DateTime @default(now())
+  draft         Json
+
+  @@index([pageId])
+}
+
+model PageStatus {
+  id    String @id @default(cuid())
+  name  String
+  type  String @unique()
+  pages Page[]
+}
+
+model ReplyOptions {
+  id           String        @id @default(cuid())
+  name         String
+  type         String        @unique
+  position     Int           @default(0)
+  threads      Thread[]
+  publications Publication[]
+  tutorials    Tutorial[]
+}
+
+model Publication {
+  id                String            @id @default(cuid())
+  title             String?
+  slug              String?
+  textContent       String            @db.Text()
+  blocksContent     Json
+  hash              String
+  createdAt         DateTime          @default(now())
+  metaTitle         String?
+  metaDescription   String?
+  metaTags          MetaTag[]
+  canonicalUrl      String?
+  readingTime       Json
+  hasChanges        Boolean           @default(false)
+  lastPublishedDraftVersion Int               @default(0)
+  pinned            Boolean           @default(false)
+  version           Int               @default(0)
+  updatedAt         DateTime?         @db.Timestamp(6)
+  publishedAt       DateTime?         @db.Timestamp(6)
+  reactionsCount    Int               @default(0)
+  commentsCount     Int               @default(0)
+  readersCount      Int               @default(0)
+  viewsCount        Int               @default(0)
+  scheduledAt       DateTime?
+  discussionEnabled Boolean           @default(true)
+  featuredImageUrl  String?
+  featuredImageId   String?
+  authorId          String
+  statusId          String
+  typeId            String
+  replyOptionsId    String?
+  comments          Comment[]
+  author            User              @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type              PublicationType   @relation(fields: [typeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  status            PublicationStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  channel           Channel?          @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  channelId         String?
+  featuredImage     MediaItem?        @relation(fields: [featuredImageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  topics            Topic[]
+  licenseType       LicenseType       @relation(fields: [licenseTypeId], references: [id])
+  licenseTypeId     String
+  purchases         Purchase[]
+  replyOptions      ReplyOptions?     @relation(fields: [replyOptionsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  embedding         Unsupported("vector(384)")?
+  drafts            PublicationDraft[]
+  qualityScore      Json?
+
+  @@unique([hash])
+  @@index([qualityScore(path: "$.overallScore")])
+}
+
+model PublicationDraft {
+  id            String      @id @default(cuid())
+  version       Int
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  lastUpdateAt  DateTime    @default(now())
+  draft         Json
+
+  @@index([publicationId])
+}
+
+model MetaTag {
+  id            String       @id @default(cuid())
+  type          String       @default("name")
+  name          String?
+  property      String?
+  content       String
+  channelId     String?
+  channel       Channel?     @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  pageId        String?
+  page          Page?        @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  publicationId String?
+  publication   Publication? @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([channelId])
+  @@index([pageId])
+  @@index([publicationId])
+}
+
+model LicenseType {
+  id           String        @id @default(cuid())
+  name         String
+  rules        Json
+  isDefault    Boolean       @default(false)
+  position     Int           @default(0)
+  children     LicenseType[] @relation("ParentChildren")
+  parent       LicenseType?  @relation("ParentChildren", fields: [parentId], references: [id])
+  parentId     String?
+  publications Publication[]
+  tutorials    Tutorial[]
+
+  @@index([parentId])
+}
+
+model PublicationStatus {
+  id           String        @id @default(cuid())
+  name         String
+  type         String        @unique()
+  publications Publication[]
+}
+
+model ThreadStatus {
+  id      String   @id @default(cuid())
+  name    String
+  type    String   @unique()
+  threads Thread[]
+}
+
+model PublicationType {
+  id           String        @id @default(cuid())
+  name         String
+  type         String        @unique()
+  publications Publication[]
+}
+
+model Reaction {
+  id           String         @id @default(cuid())
+  name         String
+  type         String
+  position     Int            @default(0)
+  iconUrl      String
+  iconId       String?
+  icon         MediaItem?     @relation(fields: [iconId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reactionList ReactionList[]
+}
+
+model ReactionList {
+  id         String    @id @default(cuid())
+  targetType String
+  targetId   String
+  actorId    String?
+  reactionId String?
+  actor      User?     @relation(fields: [actorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reaction   Reaction? @relation(fields: [reactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([targetType, targetId, actorId, reactionId])
+}
+
+model Complaint {
+  id          String          @id @default(cuid())
+  name        String?
+  targetType  String
+  targetId    String
+  reportedUrl String?
+  reporterIp  String?
+  reporterId  String?
+  reporter    User?           @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reasonId    String
+  reason      ComplaintReason @relation(fields: [reasonId], references: [id], onDelete: Restrict)
+  statusId    String
+  status      ComplaintStatus @relation(fields: [statusId], references: [id], onDelete: Restrict)
+  details     String?
+  attachments MediaItem[]
+  internalNotes ComplaintInternalNote[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@unique([reporterId, targetType, targetId], name: "uniq_user_target_complaint")
+  @@index([targetType, targetId])
+  @@index([reporterIp, targetType, targetId])
+  @@index([reasonId])
+}
+
+model ComplaintInternalNote {
+  id          String    @id @default(cuid())
+  complaintId String
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  type        String
+  content     String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([complaintId])
+}
+
+model ComplaintReason {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String
+  description String?
+  position    Int         @default(0)
+  complaints  Complaint[]
+}
+
+model ComplaintStatus {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String
+  description String?
+  position    Int         @default(0)
+  complaints  Complaint[]
+}
+
+model Role {
+  id          String       @id @default(cuid())
+  name        String
+  type        String       @unique()
+  isBuiltIn   Boolean      @default(false)
+  permissions Permission[]
+  users       User[]
+  parentId    String?
+  parent      Role?        @relation("RoleToRole", fields: [parentId], references: [id])
+  children    Role[]       @relation("RoleToRole")
+}
+
+model Permission {
+  id         String   @id @default(cuid())
+  roleId     String
+  role       Role     @relation(fields: [roleId], references: [id])
+  action     String
+  subject    String
+  conditions Json?
+  inverted   Boolean  @default(false)
+  reason     String?
+}
+
+model EmailVerification {
+  id           String    @id @default(cuid())
+  hash         String    @unique
+  code         Int
+  createdAt    DateTime  @default(now()) @db.Timestamp(6)
+  // When the last code was sent (initial send on create)
+  sentAt       DateTime  @default(now()) @db.Timestamp(6)
+  // Total number of sends including the initial one
+  sentCount    Int       @default(1)
+  // If set and is in the future, user is blocked from resending until this time
+  blockedUntil DateTime?
+  // When this verification request expires and should be cleaned up
+  expireAt     DateTime  @db.Timestamp(6)
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expireAt])
+}
+
+model Setting {
+  id       String @id @default(cuid())
+  name     String @unique()
+  category String
+  data     Json
+}
+
+model SocialMediaLink {
+  id           String  @id @default(cuid())
+  name         String
+  type         String  @unique()
+  iconUrl      String?
+  position     Int     @default(0)
+  isConfigured Boolean @default(false)
+}
+
+model Subscription {
+  id         String   @id @default(cuid())
+  targetType String
+  targetId   String
+  createdAt  DateTime @default(now()) @db.Timestamp(6)
+  followerId String
+  follower   User     @relation(fields: [followerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([followerId, targetId, targetType])
+}
+
+model Topic {
+  id                String          @id @default(cuid())
+  name              String
+  description       String?
+  allowCustomPrice  Boolean         @default(false)
+  slug              String          @unique()
+  logoUrl           String?
+  subscriptionType  String          @default("topic")
+  createdAt         DateTime        @db.Timestamp(6)
+  updatedAt         DateTime?       @db.Timestamp(6)
+  publicationsCount Int             @default(0)
+  tutorialsCount    Int             @default(0)
+  followersCount    Int             @default(0)
+  threads           Thread[]
+  publications      Publication[]
+  logo              MediaItem?      @relation(fields: [logoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  logoId            String?
+  metaTitle         String?
+  metaDescription   String?
+  tutorial          Tutorial?       @relation(fields: [tutorialId], references: [id])
+  tutorialId        String?
+  // Back-relation for FeedItemTopic.topic
+  feedItemTopics    FeedItemTopic[]
+  embedding         Unsupported("vector(384)")?
+}
+
+model User {
+  id                     String                   @id @default(cuid())
+  name                   String
+  username               String                   @unique()
+  email                  String                   @unique()
+  password               String
+  jobTitle               String?
+  bio                    String?
+  registrationProvider   String
+  createdAt              DateTime                 @db.Timestamp(6)
+  updatedAt              DateTime?                @db.Timestamp(6)
+  lastActivityAt         DateTime?                @db.Timestamp(6)
+  notificationsViewedAt  DateTime?                @db.Timestamp(6)
+  avatarUrl              String?
+  openAIApiKey           String?
+  location               String?
+  mediaView              String                   @default("grid")
+  publicationsCount      Int                      @default(0)
+  tutorialsCount         Int                      @default(0)
+  commentsCount          Int                      @default(0)
+  followersCount         Int                      @default(0)
+  credits                Int                      @default(0)
+  isBlocked              Boolean                  @default(false)
+  verified               Boolean                  @default(true)
+  isDeactivated          Boolean                  @default(false)
+  isSuperAdmin           Boolean                  @default(false)
+  hasPaidAccount         Boolean                  @default(false)
+  subscriptionType       String                   @default("user")
+  bookmarks              Bookmark[]
+  comments               Comment[]
+  pages                  Page[]
+  publications           Publication[]
+  reactionLists          ReactionList[]
+  subscriptions          Subscription[]
+  birthDate              DateTime?
+  gender                 String?
+  avatarId               String?                  @unique
+  avatar                 MediaItem?               @relation("avatar", fields: [avatarId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  role                   Role                     @relation(fields: [roleId], references: [id])
+  roleId                 String
+  emailVerification      EmailVerification[]
+  timezone               String                   @default("UTC+0")
+  cookieSettings         CookieSettings?
+  notificationSettings   NotificationSettings?
+  securitySettings       SecuritySettings?
+  isCookiesAccepted      Boolean                  @default(false)
+  cookieConsent          Boolean                  @default(false)
+  cookiePreferences      Json?                    @default("{}")
+  preferredColorScheme   String                   @default("light")
+  oAuthLoginProviders    UserOAuthLoginProvider[]
+  recentVisits           RecentVisit[]
+  loginHistory           LoginHistory[]
+  passwordReset          PasswordReset[]
+  channels               Channel[]                @relation("owner")
+  notifications          Notification[]
+  activity               Activity[]
+  uploadedMediaItems     MediaItem[]              @relation("uploadedBy")
+  updatedMediaItems      MediaItem[]              @relation("updatedBy")
+  imageDesigns           ImageDesign[]
+  mediaStars             MediaStar[]
+  createdTutorials       Tutorial[]               @relation("AuthorTutorials")
+  feedItems              FeedItem[]
+  resourceAccess         ResourceAccess[]
+  lessonProgress         LessonProgress[]
+  quizAttempts           QuizAttempt[]
+  emailChanges           EmailChange[]
+  loginSessions          LoginSession[]
+  userDashboard          UserDashboard?
+  threads                Thread[]
+  Complaint              Complaint[]
+  donationLinks          DonationLink[]
+  announcements          Announcement[]           @relation("AnnouncementCreator")
+  readAnnouncements      AnnouncementRead[]
+  dismissedAnnouncements AnnouncementDismissal[]
+  moderatedChannels      Channel[]                @relation("ChannelModerators")
+  stripeAccountId        String?
+  stripeAccountStatus    String?                  @default("not_started") // not_started, onboarding, active
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?
+  subscriptionExpiresAt  DateTime?
+  purchases              Purchase[]
+  pollVotes            ThreadPollVote[]
+  creditTransactions   CreditTransaction[]
+  interestVector       Unsupported("vector(384)")?
+}
+
+model ResourceAccess {
+  id String @id @default(cuid())
+
+  subjectType String
+  subjectId   String
+
+  resourceType String
+  resourceId   String
+
+  role String
+
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [subjectId], references: [id], map: "ResourceAccess_userId_fkey")
+
+  @@unique([subjectType, subjectId, resourceType, resourceId])
+  @@index([subjectId])
+  @@index([resourceType, resourceId])
+}
+
+model Purchase {
+  id              String       @id @default(cuid())
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  userId          String
+  user            User         @relation(fields: [userId], references: [id])
+  publicationId   String?
+  publication     Publication? @relation(fields: [publicationId], references: [id])
+  tutorialId      String?
+  tutorial        Tutorial?    @relation(fields: [tutorialId], references: [id])
+  amount          Decimal      @db.Decimal(10, 2)
+  currency        String       @default("usd")
+  stripeSessionId String       @unique
+  status          String       @default("pending") // pending, completed, failed, refunded
+
+  @@index([userId])
+  @@index([publicationId])
+  @@index([tutorialId])
+}
+
+model CreditTransaction {
+  id        String   @id @default(cuid())
+  amount    Int      // Positive for credit, negative for debit
+  type      String   // e.g., 'purchase', 'manual', 'usage'
+  details   Json?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model ImageDesign {
+  id             String       @id @default(cuid())
+  name           String
+  snapshot       Json?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resultImageUrl String?
+  images         MediaItem[]
+
+  @@index([userId])
+}
+
+model SystemDashboard {
+  id        String   @id @default(cuid())
+  layout    Json     @default("[]")
+  type      String   @default("default")
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
+  position  Int      @default(0)
+}
+
+model UserDashboard {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  layout    Json     @default("[]")
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
+  position  Int      @default(0)
+}
+
+model DonationLink {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  title     String
+  url       String
+  platform  String?
+  position  Int      @default(0)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, position])
+  @@index([userId])
+}
+
+model FileStorageProvider {
+  id              String      @id @default(cuid())
+  name            String
+  position        Int         @default(0)
+  type            String      @unique
+  logoUrl         String?
+  description     String?
+  accessKeyId     String?
+  secretAccessKey String?
+  region          String?
+  bucket          String?
+  useAcl          Boolean     @default(false)
+  isConfigured    Boolean     @default(false)
+  isEnabled       Boolean     @default(false)
+  isDefault       Boolean     @default(false)
+  cdnEnabled      Boolean     @default(false)
+  mediaItems      MediaItem[]
+}
+
+model EmailChange {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  newEmail  String
+  codeHash  String
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+
+  @@index([expiresAt])
+}
+
+model SecuritySettings {
+  id            String  @id @default(cuid())
+  mfaConfigured Boolean @default(false)
+  mfaEnabled    Boolean @default(false)
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String  @unique()
+}
+
+model CookieSettings {
+  id                      String  @id @default(cuid())
+  allowFunctionalCookies  Boolean @default(false)
+  allowTargetingCookies   Boolean @default(false)
+  allowPerformanceCookies Boolean @default(false)
+  user                    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String  @unique()
+}
+
+model NotificationSettings {
+  id                                                          String  @id @default(cuid())
+  enableWeeklyNewsletterEmails                                Boolean @default(false)
+  enablePeriodicDigestOfTopPostsFromMyTopics                  Boolean @default(false)
+  enableEmailWhenSomeoneRepliesToMeInCommentThread            Boolean @default(false)
+  enableEmailWhenSomeoneNewFollowsMe                          Boolean @default(false)
+  enableEmailWhenSomeoneMentionsMe                            Boolean @default(false)
+  enableEmailWhenIReceiveBadge                                Boolean @default(false)
+  enablePushNotificationWhenSomeoneRepliesToMeInCommentThread Boolean @default(false)
+  enablePushNotificationWhenSomeoneMentionsMe                 Boolean @default(false)
+  notificationsWhenSomeoneReactsToMyContent                   Boolean @default(true)
+  muteAllNotifications                                        Boolean @default(false)
+  user                                                        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                                                      String  @unique()
+}
+
+model DashboardWidgetDef {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  type        String  @unique()
+  settings    Json?
+  position    Int     @default(0)
+}
+
+model LayoutWidgetDef {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  type        String  @unique()
+  settings    Json
+  position    Int     @default(0)
+}
+
+model MailProvider {
+  id           String  @id @default(cuid())
+  name         String
+  position     Int     @default(0)
+  type         String  @unique
+  description  String?
+  isEnabled    Boolean @default(false)
+  isConfigured Boolean @default(false)
+  isDefault    Boolean @default(false)
+  config       Json?
+}
+
+model OAuthProvider {
+  id           String     @id @default(cuid())
+  name         String
+  position     Int        @default(0)
+  type         String     @unique
+  description  String?
+  isConfigured Boolean    @default(false)
+  isEnabled    Boolean    @default(false)
+  config       Json?
+  iconUrl      String?
+  mediaItem    MediaItem? @relation(fields: [mediaItemId], references: [id])
+  mediaItemId  String?
+}
+
+model UserOAuthLoginProvider {
+  id         String @id @default(cuid())
+  type       String
+  data       Json
+  profileId  String
+  profileUrl String
+  username   String
+  userId     String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([type, userId])
+}
+
+model RecentVisit {
+  id         String   @id @default(cuid())
+  targetType String
+  targetId   String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visitedAt  DateTime @default(now()) @db.Timestamp(6)
+
+  @@unique([targetType, targetId, userId])
+}
+
+model LoginHistory {
+  id       String   @id @default(cuid())
+  ip       String
+  geo      Json?
+  os       Json?
+  client   Json?
+  loggedAt DateTime @default(now()) @db.Timestamp(6)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+}
+
+model PasswordReset {
+  id                 String    @id @default(cuid())
+  hash               String    @unique
+  code               Int
+  verified           Boolean   @default(false)
+  userId             String    @unique
+  condeSentCount     Int       @default(1)
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime  @default(now()) @db.Timestamp(6)
+  codeSentLastTimeAt DateTime  @default(now()) @db.Timestamp(6)
+  blockedUntil       DateTime?
+}
+
+model AdsProvider {
+  id           String  @id @default(cuid())
+  name         String
+  position     Int     @default(0)
+  type         String  @unique
+  logoUrl      String?
+  description  String?
+  config       Json?
+  isConfigured Boolean @default(false)
+  isEnabled    Boolean @default(false)
+}
+
+model AnalyticsProvider {
+  id           String  @id @default(cuid())
+  name         String
+  position     Int     @default(0)
+  type         String  @unique
+  logoUrl      String?
+  description  String?
+  config       Json?
+  isConfigured Boolean @default(false)
+  isEnabled    Boolean @default(false)
+}
+
+model CaptchaProvider {
+  id           String  @id @default(cuid())
+  name         String
+  position     Int     @default(0)
+  type         String  @unique
+  description  String?
+  isConfigured Boolean @default(false)
+  isDefault    Boolean @default(false)
+  siteKey      String?
+  secretKey    String?
+}
+
+model Layout {
+  id          String       @id @default(cuid())
+  name        String
+  position    Int          @default(0)
+  type        String       @unique()
+  description String?
+  layoutSlots LayoutSlot[]
+}
+
+model LayoutSlot {
+  id            String         @id @default(cuid())
+  name          String
+  position      Int            @default(0)
+  type          String         @unique()
+  description   String?
+  layoutId      String
+  layout        Layout         @relation(fields: [layoutId], references: [id])
+  layoutWidgets LayoutWidget[]
+}
+
+model LayoutWidget {
+  id           String     @id @default(cuid())
+  name         String
+  position     Int        @default(0)
+  type         String
+  settings     Json
+  layoutSlotId String
+  layoutSlot   LayoutSlot @relation(fields: [layoutSlotId], references: [id])
+}
+
+model Notification {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            String
+  data            Json?
+  isRead          Boolean  @default(false)
+  relatedEntityId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, isRead, createdAt(sort: Desc)])
+  @@index([userId, type, relatedEntityId, isRead, updatedAt(sort: Desc)], name: "idx_notification_aggregation_lookup")
+}
+
+model Activity {
+  id         String   @id @default(cuid())
+  actorId    String
+  actor      User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  action     String
+  targetType String?
+  targetId   String?
+  details    Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([targetType, targetId])
+  @@index([action])
+}
+
+model MediaStar {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaItemId String
+  mediaItem   MediaItem @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+}
+
+model Tutorial {
+  id                String         @id @default(cuid())
+  title             String
+  description       String?        @db.Text
+  metaTitle         String?
+  metaDescription   String?
+  pinned            Boolean        @default(false)
+  featuredImageUrl  String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  publishedAt       DateTime?
+  scheduledAt       DateTime?
+  slug              String?        @unique
+  revision          Int            @default(1)
+  rootId            String?
+  root              Tutorial?      @relation("TutorialRoot", fields: [rootId], references: [id], onDelete: Cascade)
+  versions          Tutorial[]     @relation("TutorialRoot")
+  reactionsCount    Int            @default(0)
+  commentsCount     Int            @default(0)
+  readersCount      Int            @default(0)
+  viewsCount        Int            @default(0)
+  discussionEnabled Boolean        @default(true)
+  sectionsCount     Int            @default(0)
+  lessonsCount      Int            @default(0)
+  quizesCount       Int            @default(0)
+  learningDuration  Int            @default(0)
+  estimatedTime     Json           @default("{\"minutes\":0,\"words\":0,\"text\":\"less than a minute\"}")
+  whatYouWillLearn  Json           @default("[]")
+  hasChanges        Boolean        @default(false)
+  authorId          String
+  author            User           @relation("AuthorTutorials", fields: [authorId], references: [id])
+  channelId         String?
+  channel           Channel?       @relation(fields: [channelId], references: [id], onDelete: SetNull)
+  sections          Section[]
+  lessons           Lesson[]
+  quizzes           Quiz[]
+  statusId          String
+  status            TutorialStatus @relation(fields: [statusId], references: [id])
+  topics            Topic[]
+  licenseType       LicenseType    @relation(fields: [licenseTypeId], references: [id])
+  licenseTypeId     String
+  purchases         Purchase[]
+  replyOptions      ReplyOptions?  @relation(fields: [replyOptionsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replyOptionsId    String?
+  embedding         Unsupported("vector(384)")?
+
+  @@unique([rootId, revision])
+  @@index([rootId])
+  @@index([statusId])
+}
+
+model Section {
+  id               String        @id @default(cuid())
+  name             String
+  position         Int           @default(0)
+  stableKey        String        @default(cuid())
+  lessonsCount     Int           @default(0)
+  learningDuration Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  tutorialId       String
+  tutorial         Tutorial      @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+  items            SectionItem[]
+
+  @@unique([tutorialId, stableKey])
+}
+
+model SectionItem {
+  id            String         @id @default(cuid())
+  type          String
+  position      Int            @default(0)
+  isFreePreview Boolean        @default(true)
+  stableKey     String         @default(cuid())
+  lessonId      String?        @unique
+  lesson        Lesson?        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  quizId        String?        @unique
+  quiz          Quiz?          @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  sectionId     String
+  section       Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  statusId      String
+  status        TutorialStatus @relation(fields: [statusId], references: [id])
+
+  @@unique([sectionId, stableKey])
+}
+
+model Lesson {
+  id               String           @id @default(cuid())
+  name             String
+  textContent      String           @db.Text
+  blocksContent    Json
+  slug             String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  learningDuration Int              @default(0)
+  reactionsCount   Int              @default(0)
+  commentsCount    Int              @default(0)
+  viewsCount       Int              @default(0)
+  readingTime      Json
+  // Featured image (optional)
+  featuredImageUrl String?
+  featuredImageId  String?
+  featuredImage    MediaItem?       @relation(fields: [featuredImageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  progress         LessonProgress[]
+  sectionItem      SectionItem?
+  // Tutorial-scope for slug uniqueness
+  tutorialId       String?
+  tutorial         Tutorial?        @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+  comments         Comment[]
+  hasChanges       Boolean          @default(false)
+  lastPublishedDraftVersion Int @default(0)
+  drafts           LessonDraft[]
+
+  @@unique([tutorialId, slug])
+  @@index([tutorialId])
+}
+
+model LessonDraft {
+  id           String   @id @default(cuid())
+  version      Int
+  lessonId     String
+  lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lastUpdateAt DateTime @default(now())
+  draft        Json
+
+  @@index([lessonId])
+}
+
+model LessonProgress {
+  id          String    @id @default(cuid())
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+  userId      String
+  lessonId    String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model Quiz {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String?
+  description   String?
+  passingScore  Int           @default(75)
+  // Cached number of questions for quick access
+  questionCount Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  questions     Question[]
+  attempts      QuizAttempt[]
+  sectionItem   SectionItem?
+
+  tutorialId String?
+  tutorial   Tutorial? @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+  hasChanges Boolean   @default(false)
+  lastPublishedDraftVersion Int @default(0)
+  drafts     QuizDraft[]
+
+  @@unique([tutorialId, slug])
+  @@index([tutorialId])
+}
+
+model QuizDraft {
+  id           String   @id @default(cuid())
+  version      Int
+  quizId       String
+  quiz         Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  lastUpdateAt DateTime @default(now())
+  draft        Json
+
+  @@index([quizId])
+}
+
+model Question {
+  id          String         @id @default(cuid())
+  text        String
+  position    Int            @default(0)
+  type        QuestionType   @default(single)
+  explanation Json           @default("[]")
+  imageUrl    String?
+  imageId     String?
+  image       MediaItem?     @relation(fields: [imageId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  quizId      String
+  quiz        Quiz           @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options     AnswerOption[]
+  userAnswers UserAnswer[]
+}
+
+enum QuestionType {
+  single
+  multiple
+}
+
+model AnswerOption {
+  id             String       @id @default(cuid())
+  text           String
+  isCorrect      Boolean      @default(false)
+  position       Int          @default(0)
+  questionId     String
+  question       Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userSelections UserAnswer[]
+}
+
+model QuizAttempt {
+  id        String            @id @default(cuid())
+  score     Float
+  status    QuizAttemptStatus
+  startedAt DateTime          @default(now())
+  endedAt   DateTime?
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId    String
+  quiz      Quiz              @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  answers   UserAnswer[]
+}
+
+enum QuizAttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
+model UserAnswer {
+  id               String       @id @default(cuid())
+  quizAttemptId    String
+  attempt          QuizAttempt  @relation(fields: [quizAttemptId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptionId String
+  selectedOption   AnswerOption @relation(fields: [selectedOptionId], references: [id], onDelete: Cascade)
+  wasCorrect       Boolean
+
+  @@unique([quizAttemptId, questionId])
+}
+
+model TutorialStatus {
+  id           String        @id @default(cuid())
+  type         String        @unique
+  name         String
+  tutorials    Tutorial[]
+  sectionItems SectionItem[]
+}
+
+model LoginSession {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device         String
+  userAgent      String?
+  ipAddress      String
+  location       String?
+  createdAt      DateTime  @default(now()) @db.Timestamp(6)
+  lastActivityAt DateTime? @db.Timestamp(6)
+  isCurrent      Boolean   @default(false)
+  expiresAt      DateTime? @db.Timestamp(6)
+  revokedAt      DateTime? @db.Timestamp(6)
+  metadata       Json?
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Thread {
+  id             String        @id @default(cuid())
+  textContent    String        @db.Text
+  htmlContent    String?       @db.Text
+  depth          Int           @default(0)
+  level          Int           @default(0)
+  createdAt      DateTime      @default(now())
+  scheduleAt     DateTime?
+  reactionsCount Int           @default(0)
+  repliesCount   Int           @default(0)
+  authorId       String
+  respondingToId String?
+  mainThreadId   String?
+  statusId       String
+  location       Json?
+  author         User          @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  respondingTo   Thread?       @relation("ThreadToThread", fields: [respondingToId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  mainThread     Thread?       @relation("ThreadToMainThread", fields: [mainThreadId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  children       Thread[]      @relation("ThreadToThread")
+  descendants    Thread[]      @relation("ThreadToMainThread")
+  mediaItems     MediaItem[]
+  status         ThreadStatus  @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  poll           ThreadPoll?
+  replyOptions   ReplyOptions? @relation(fields: [replyOptionsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replyOptionsId String?
+  topics         Topic[]
+  embedding      Unsupported("vector(384)")?
+  qualityScore   Json?
+
+  @@index([authorId])
+  @@index([respondingToId])
+  @@index([mainThreadId])
+  @@index([createdAt])
+  @@index([statusId])
+  @@index([qualityScore(path: "$.overallScore")])
+}
+
+model ThreadPoll {
+  id        String             @id @default(cuid())
+  question  String
+  threadId  String             @unique
+  thread    Thread             @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  options   ThreadPollOption[]
+  expiresAt DateTime?
+}
+
+model ThreadPollOption {
+  id     String           @id @default(cuid())
+  text   String
+  pollId String
+  poll   ThreadPoll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes  ThreadPollVote[]
+}
+
+model ThreadPollVote {
+  id        String           @id @default(cuid())
+  userId    String
+  optionId  String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option    ThreadPollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+
+  @@unique([userId, optionId])
+}
+
+model Feed {
+  id        String     @id @default(cuid())
+  name      String
+  type      String     @unique
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  items     FeedItem[]
+}
+
+model FeedItem {
+  id         String   @id @default(cuid())
+  feedId     String
+  authorId   String
+  targetType String
+  targetId   String
+  createdAt  DateTime @default(now()) @db.Timestamp(6)
+  pinned     Boolean  @default(false)
+  hidden     Boolean  @default(false)
+  target     Json?
+  // New relations to allow filtering/feed lookups by channel/topic
+  channelId  String?
+
+  feed    Feed            @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  author  User            @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  channel Channel?        @relation(fields: [channelId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  topics  FeedItemTopic[]
+
+  @@unique([feedId, targetType, targetId])
+  @@index([createdAt])
+  @@index([authorId])
+}
+
+/// SponsorType is a lookup table for classifying sponsors.
+model SponsorType {
+  id       String    @id @default(cuid())
+  type     String    @unique
+  name     String
+  position Int       @default(0)
+  sponsors Sponsor[]
+}
+
+/// Sponsor represents a sponsoring entity that can be displayed in the app.
+model Sponsor {
+  id        String   @id @default(cuid())
+  name      String
+  url       String?
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  sponsorTypeId String
+  sponsorType   SponsorType @relation(fields: [sponsorTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  logoId String?
+  logo   MediaItem? @relation(fields: [logoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([sponsorTypeId])
+}
+
+model FeedItemTopic {
+  feedItemId String
+  topicId    String
+
+  feedItem FeedItem @relation(fields: [feedItemId], references: [id], onDelete: Cascade)
+  topic    Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([feedItemId, topicId])
+  @@index([topicId])
+}
+
+model AnnouncementType {
+  id            String         @id @default(cuid())
+  name          String
+  type          String         @unique // 'info', 'warning', 'success', 'critical'
+  announcements Announcement[]
+}
+
+model AnnouncementStatus {
+  id            String         @id @default(cuid())
+  name          String
+  type          String         @unique // 'draft', 'published', 'archived'
+  announcements Announcement[]
+}
+
+model Announcement {
+  id                   String                  @id @default(cuid())
+  name                 String
+  content              String
+  type                 AnnouncementType        @relation(fields: [typeId], references: [id])
+  typeId               String
+  priority             Int                     @default(0)
+  dismissable          Boolean                 @default(true)
+  requireManualDismiss Boolean                 @default(false)
+  targetUrl            String?
+  actionText           String?
+  startAt              DateTime                @default(now()) @db.Timestamp(6)
+  endAt                DateTime?               @db.Timestamp(6)
+  status               AnnouncementStatus      @relation(fields: [statusId], references: [id])
+  statusId             String
+  createdBy            User                    @relation("AnnouncementCreator", fields: [createdById], references: [id])
+  createdById          String
+  createdAt            DateTime                @default(now()) @db.Timestamp(6)
+  updatedAt            DateTime?               @updatedAt @db.Timestamp(6)
+  readBy               AnnouncementRead[]
+  dismissedBy          AnnouncementDismissal[]
+}
+
+model AnnouncementRead {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip             String?
+  readAt         DateTime     @default(now()) @db.Timestamp(6)
+
+  @@unique([announcementId, userId])
+  @@unique([announcementId, ip])
+  @@index([userId])
+  @@index([ip])
+}
+
+model AnnouncementDismissal {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip             String?
+  dismissedAt    DateTime     @default(now()) @db.Timestamp(6)
+
+  @@unique([announcementId, userId])
+  @@unique([announcementId, ip])
+  @@index([userId])
+  @@index([ip])
+}

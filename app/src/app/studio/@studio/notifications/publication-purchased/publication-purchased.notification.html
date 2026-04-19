@@ -1,0 +1,15 @@
+<ngs-notification [isUnread]="isUnread()">
+  <div ngsNotificationAvatar class="flex items-center justify-center bg-green-100 text-green-600 rounded-full w-10 h-10">
+    <ngs-icon name="fluent:book-24-regular"/>
+  </div>
+  <ngs-notification-message>
+    @if (link()) {
+      <a [routerLink]="link()" class="hover:underline">
+        {{ notification().message }}
+      </a>
+    } @else {
+      {{ notification().message }}
+    }
+  </ngs-notification-message>
+  <ngs-notification-time>{{ notification().createdAt | timeAgo }}</ngs-notification-time>
+</ngs-notification>

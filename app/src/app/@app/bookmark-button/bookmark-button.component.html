@@ -1,0 +1,17 @@
+@if (loading) {
+  <ngs-skeleton class="size-10 rounded-full"/>
+} @else {
+  @if (!isLogged) {
+    <app-login-guard>
+      <button ngsIconButton [attr.aria-label]="'Bookmark' | transloco"><ngs-icon name="fluent:bookmark-24-regular"/></button>
+    </app-login-guard>
+  } @else {
+    <button ngsIconButton (click)="toggle()" [attr.aria-label]="'Bookmark' | transloco">
+      @if (bookmarkStore.has(targetId())) {
+        <ngs-icon name="fluent:bookmark-24-filled" class="text-primary"/>
+      } @else {
+        <ngs-icon name="fluent:bookmark-24-regular"/>
+      }
+    </button>
+  }
+}

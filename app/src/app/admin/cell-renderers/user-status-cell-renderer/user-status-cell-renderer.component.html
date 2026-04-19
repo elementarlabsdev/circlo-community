@@ -1,0 +1,9 @@
+@if (fieldData()) {
+  <div class="text-xs rounded-lg h-6 px-3 flex items-center bg-red-500 text-white font-bold w-max">
+    {{ 'admin.users.edit.blocked' | transloco }}
+  </div>
+} @else {
+  <div class="text-xs rounded-lg h-6 px-3 flex items-center bg-lime-500 text-white font-bold w-max">
+    {{ 'admin.users.edit.active' | transloco }}
+  </div>
+}

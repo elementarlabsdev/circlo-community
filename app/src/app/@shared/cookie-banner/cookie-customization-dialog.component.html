@@ -1,0 +1,52 @@
+<h2 ngs-dialog-title>{{ data.settings?.bannerTitle }}</h2>
+<div class="absolute top-2 right-2">
+  <button ngsIconButton (click)="close()">
+    <ngs-icon name="fluent:dismiss-24-regular"/>
+  </button>
+</div>
+
+<!-- Content -->
+<ngs-dialog-content>
+  <div class="space-y-6">
+    <p class="text-secondary text-sm">
+      {{ data.settings?.messageText }}
+    </p>
+
+    <ngs-accordion multi class="mt-6 flex flex-col gap-4">
+      @for (category of data.categories; track category.id) {
+        <ngs-expansion-panel [expanded]="expanded[category.id]"
+                             (opened)="expanded[category.id] = true"
+                             (closed)="expanded[category.id] = false">
+          <ngs-expansion-panel-header>
+            <ngs-expansion-panel-title>
+              {{ category.name }}
+            </ngs-expansion-panel-title>
+            @if (category.isMandatory) {
+              <ngs-expansion-panel-description>
+                {{ 'COOKIE_BANNER.ALWAYS_ACTIVE' | transloco }}
+              </ngs-expansion-panel-description>
+            }
+            @if (!category.isMandatory) {
+              <ngs-expansion-panel-description (click)="$event.stopPropagation()">
+                <ngs-slide-toggle [(ngModel)]="preferences[category.id]"/>
+              </ngs-expansion-panel-description>
+            }
+          </ngs-expansion-panel-header>
+          <div class="text-secondary leading-relaxed">
+            {{ category.detailedDescription || category.shortDescription }}
+          </div>
+        </ngs-expansion-panel>
+      }
+
+    </ngs-accordion>
+  </div>
+</ngs-dialog-content>
+
+<ngs-dialog-actions>
+  <button ngsButton="outlined" (click)="acceptNecessary()">
+    {{ 'COOKIE_BANNER.ACCEPT_NECESSARY' | transloco }}
+  </button>
+  <button ngsButton="filled" (click)="savePreferences()">
+    {{ 'COOKIE_BANNER.SAVE_PREFERENCES' | transloco }}
+  </button>
+</ngs-dialog-actions>

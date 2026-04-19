@@ -1,0 +1,16 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+
+  ::ng-deep {
+    pre {
+      border-radius: theme(--radius-2xl);
+      padding: --spacing(3);
+      font-size: var(--text-md);
+      line-height: var(--leading-tight);
+      margin: 0;
+      background: var(--color-surface-container-low) !important;
+    }
+  }
+}

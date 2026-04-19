@@ -1,0 +1,11 @@
+<form (ngSubmit)="onSubmit()" class="w-full md:w-72">
+  <ngs-form-field subscriptHiddenIfEmpty>
+    <ngs-icon name="fluent:search-24-regular" ngsIconPrefix class="text-neutral-400"/>
+    <input ngsInput type="text" [(ngModel)]="searchText" name="searchText" [placeholder]="'header.search' | transloco">
+    @if (searchText()) {
+      <button type="button" ngsIconButton (click)="clearText()" ngsIconButtonSuffix>
+        <ngs-icon name="fluent:dismiss-24-regular"/>
+      </button>
+    }
+  </ngs-form-field>
+</form>

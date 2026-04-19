@@ -1,0 +1,62 @@
+@if (loaded()) {
+<ngs-panel>
+  <ngs-panel-header class="h-16 ps-16 pe-6 lg:px-6 border-b border-b-border">
+    <div class="flex h-full items-center justify-between">
+      <h1 class="font-bold">{{ 'admin.settings.captcha-heading' | transloco }}</h1>
+    </div>
+  </ngs-panel-header>
+  <ngs-panel-content>
+    <ngs-scrollbar-area>
+      <div class="p-6 xl:p-12 md:w-10/12 mb-5">
+        <p class="text-sm text-bold">{{ 'admin.settings.captcha.description' | transloco }}</p>
+        <div class="mt-6">
+          <div class="flex gap-6 flex-wrap">
+            @for (item of captchaProviders(); track item.type) {
+            <ngs-card class="rounded-2xl w-full xl:w-60">
+              <ngs-card-title class="pt-3 px-4">{{ item.name || item.type }}</ngs-card-title>
+              <ngs-card-content>
+                <div class="flex pt-3 flex-col gap-2 text-sm w-full">
+                  <div>
+                    <span class="text-neutral-500">{{ 'admin.settings.captcha.configured' | transloco }}:</span>
+                    <span class="ml-1">
+                      @if (item.isConfigured) {
+                        {{ 'common.yes' | transloco }}
+                      } @else {
+                        {{ 'common.no' | transloco }}
+                      }
+                    </span>
+                  </div>
+                  <div>
+                    <span class="text-neutral-500">{{ 'admin.settings.captcha.default' | transloco }}:</span>
+                    <span class="ml-1">
+                      @if (item.isDefault) {
+                        {{ 'common.yes' | transloco }}
+                      } @else {
+                        {{ 'common.no' | transloco }}
+                      }
+                    </span>
+                  </div>
+                </div>
+              </ngs-card-content>
+              <ngs-card-actions>
+                <div class="flex flex-col gap-2 pt-2 pb-1.5 px-2 w-full">
+                  <button ngsButton="filled" color="primary" [disabled]="item.isDefault || !item.isConfigured"
+                          (click)="makeDefault(item, $event)" class="w-full">
+                    {{ 'admin.settings.captcha.make-default' | transloco }}
+                  </button>
+                  <button ngsButton="outlined" (click)="configure(item, $event)" class="w-full">
+                    {{ 'common.settings' | transloco }}
+                  </button>
+                </div>
+              </ngs-card-actions>
+            </ngs-card>
+            }
+          </div>
+        </div>
+      </div>
+    </ngs-scrollbar-area>
+  </ngs-panel-content>
+</ngs-panel>
+} @else {
+<div class="p-6 xl:p-12">{{ 'common.loading' | transloco }}</div>
+}

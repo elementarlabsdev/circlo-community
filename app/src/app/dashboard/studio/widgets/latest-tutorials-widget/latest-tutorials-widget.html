@@ -1,0 +1,27 @@
+<ngs-card class="h-full !bg-surface-container-lowest">
+  <ngs-card-header>
+    <h3 ngs-card-title>Latest Tutorials</h3>
+  </ngs-card-header>
+  <ngs-card-content>
+    <div class="flex flex-col h-full">
+      @if (tutorials().length) {
+        <div class="grow relative">
+          <ngs-scrollbar-area>
+            <div class="px-5 pb-5 flex flex-col gap-3">
+              @for (tutorial of tutorials(); track tutorial.id) {
+                <div>
+                  <a [routerLink]="['/studio/tutorials', tutorial.id, 'overview']" class="link">{{ tutorial.title }}</a>
+                </div>
+              }
+            </div>
+          </ngs-scrollbar-area>
+        </div>
+      } @else {
+        <div class="grow flex items-center flex-col justify-center gap-2">
+          <ngs-icon name="fluent:video-24-regular" class="size-8 text-neutral-600"/>
+          <div class="text-neutral-500">There are no tutorials.</div>
+        </div>
+      }
+    </div>
+  </ngs-card-content>
+</ngs-card>

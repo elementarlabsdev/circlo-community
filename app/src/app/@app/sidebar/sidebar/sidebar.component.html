@@ -1,0 +1,62 @@
+<div class="inner">
+  <div class="body">
+    <app-layout-slot slotType="homeSidebarBeforeMainMenu"/>
+
+    <ngs-navigation #navigation [activeKey]="activeLinkId" class="navigation">
+      @for (navItem of mainItems | authorizedOnly; track navItem) {
+        @switch (navItem.type) {
+          @case ('heading') {
+            <ngs-navigation-heading>{{ navItem.name }}</ngs-navigation-heading>
+          }
+          @case ('group') {
+            <ngs-navigation-group>
+              <ngs-navigation-group-toggle>
+                <ng-template ngsNavigationItemIcon>
+                  @if (navItem.iconUrl) {
+                    <img [src]="navItem.iconUrl | imageProxy:'48x48'" alt="" class="size-7">
+                  } @else if (navItem.iconName) {
+                    <ngs-icon [name]="navItem.iconName"/>
+                  }
+                </ng-template>
+                {{ navItem.name | transloco }}
+                <ngs-icon ngsNavigationGroupToggleIcon name="fluent:chevron-down-24-regular"/>
+              </ngs-navigation-group-toggle>
+              <ngs-navigation-group-menu>
+                @for (childItem of navItem.children | orderBy:'name'; track childItem) {
+                  <a ngs-navigation-item [routerLink]="childItem.url" [key]="childItem.url">
+                    {{ childItem.name }}
+                  </a>
+                }
+              </ngs-navigation-group-menu>
+            </ngs-navigation-group>
+          }
+          @default {
+            <a ngs-navigation-item [routerLink]="navItem.url" [key]="navItem.url"
+               [attr.rel]="navItem.authorisedOnly ? 'nofollow' : null">
+              <ng-template ngsNavigationItemIcon>
+                @if (navItem.iconUrl) {
+                  <img [src]="navItem.iconUrl | imageProxy:'48x48'" alt="" class="size-7">
+                } @else if (navItem.iconName) {
+                  <ngs-icon [name]="navItem.iconName"/>
+                }
+              </ng-template>
+              {{ navItem.name | transloco }}
+            </a>
+          }
+        }
+      }
+    </ngs-navigation>
+    <app-layout-slot slotType="homeSidebarAfterMainMenu"/>
+  </div>
+  <div class="footer">
+    <app-layout-slot slotType="homeSidebarBeforeFooterMenu"/>
+    <nav class="flex flex-col gap-4">
+      @for (footerItem of footerItems | authorizedOnly; track footerItem) {
+        <a [routerLink]="footerItem.url"
+           class="w-max text-tiny text-on-surface-variant
+                  hover:text-tertiary hover:underline underline-offset-1">{{ footerItem.name | transloco }}</a>
+      }
+    </nav>
+    <app-layout-slot slotType="homeSidebarAfterFooterMenu"/>
+  </div>
+</div>

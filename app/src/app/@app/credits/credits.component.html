@@ -1,0 +1,14 @@
+<div class="credits-page">
+  <h1>{{ 'credits.buy' | transloco }}</h1>
+  <p>{{ 'credits.payWhatYouWant' | transloco }}</p>
+
+  <form (ngSubmit)="buy()">
+    <label>
+      {{ 'credits.amount' | transloco }}
+      <input type="number" name="amount" [(ngModel)]="amount" min="1" step="1" />
+    </label>
+    <button ngsButton type="submit" [disabled]="loading">{{ loading ? ('credits.processing' | transloco) : ('credits.buyButton' | transloco) }}</button>
+  </form>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+</div>
