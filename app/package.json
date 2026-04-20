@@ -1,7 +1,6 @@
 {
   "name": "circlo",
-  "version": "0.0.0",
-  "license": "MIT",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng cache clean && ng serve --no-hmr",
