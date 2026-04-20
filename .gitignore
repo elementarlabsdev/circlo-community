@@ -7,7 +7,6 @@ certbot
 node_modules
 .idea
 .git
-.github
 .vscode
 dist
 npm-debug.log
