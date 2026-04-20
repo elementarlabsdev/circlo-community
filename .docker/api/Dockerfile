@@ -14,7 +14,7 @@ COPY ./api .
 COPY .docker/api/entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
-RUN npx prisma generate
+RUN DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy npx prisma generate
 RUN npm run build
 
 ENTRYPOINT [ "./entrypoint.sh" ]
