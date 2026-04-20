@@ -45,8 +45,8 @@ export class ContentEditorContentEditableDirective implements OnInit, OnDestroy 
   private _isAlreadyRendered = false;
 
   ngOnInit() {
-    this._props.set(this.props());
-    this.props().forEach(prop => {
+    this._props.set(this.props() || []);
+    (this.props() || []).forEach(prop => {
       this._renderer.setAttribute(this._elementRef.nativeElement, `data-props-${prop.name}`, prop.value);
     });
     this._renderer.setAttribute(this._elementRef.nativeElement, 'contenteditable', 'true');

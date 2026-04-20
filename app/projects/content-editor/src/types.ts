@@ -81,6 +81,7 @@ export interface ContentEditorEmbedBlockSettings {
 
 export interface ContentEditorListItem {
   content: string;
+  props?: ContentEditorItemProperty[];
   children: ContentEditorListItem[];
   [prop: string]: any;
 }

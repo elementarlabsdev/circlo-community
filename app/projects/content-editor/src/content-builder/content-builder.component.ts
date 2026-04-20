@@ -90,6 +90,7 @@ import { List, ListItem, ListItemIcon, ListItemTitle } from '@ngstarter/componen
     'class': 'ngs-content-builder',
     '[class.is-block-dragging]': '_blockDragging()',
     '[class.is-selection-of-blocks-active]': 'isSelectionOfBlocksActive()',
+    '(paste)': '_onPaste($event)',
   }
 })
 export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -660,17 +661,16 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
     this.insertBlock(type, this._content().length, {}, focus);
   }
 
-  insertBlock(type: string, index: number, options?: object, focus: boolean = true): any {
+  insertBlock(type: string, index: number, options?: object, focus: boolean = true, content?: any): any {
     const isLastIndex = index === this._content().length;
-    const newBlock = this._createBlock(type, options);
+    const newBlock = this._createBlock(type, options, content);
 
     if (focus) {
       this.focusBlock(newBlock.id);
     }
 
     this._content.update((data: ContentEditorBlock[]) => {
-      data.splice(index, 0, newBlock);
-      return data;
+      return [...data.slice(0, index), newBlock, ...data.slice(index)];
     });
     this._store.addBlock(newBlock, index);
 
@@ -683,7 +683,7 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
     return newBlock;
   }
 
-  private _createBlock(type: string, settings = {}): ContentEditorBlock {
+  private _createBlock(type: string, settings = {}, content?: any): ContentEditorBlock {
     const blockDef = this.blockDefs().find(
       blockDefItem => blockDefItem.type === type
     ) as ContentEditorBlockDef;
@@ -696,10 +696,14 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
       };
     }
 
+    if (content !== undefined) {
+      empty.content = content;
+    }
+
     return {
       id: uuid(),
       type: blockDef.type,
-      isEmpty: true,
+      isEmpty: content === undefined || content === '' || (Array.isArray(content) && content.length === 0),
       ...empty
     };
   }
@@ -971,5 +975,135 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
 
   onSettingsPopoverClose() {
     this.unselectSelectedBlocks();
+  }
+
+  protected _onPaste(event: ClipboardEvent) {
+    const html = event.clipboardData?.getData('text/html');
+    const text = event.clipboardData?.getData('text/plain');
+
+    if (!html && !text) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    let index = this._content().length;
+    const activeBlockId = this._store.activeBlockId() || this._store.focusedBlockId();
+
+    if (activeBlockId) {
+      const activeIndex = this._content().findIndex(b => b.id === activeBlockId);
+      if (activeIndex !== -1) {
+        index = activeIndex + 1;
+      }
+    }
+
+    if (html) {
+      this._handleHtmlPaste(html, index);
+    } else if (text) {
+      this._handleTextPaste(text, index);
+    }
+  }
+
+  private _handleTextPaste(text: string, index: number) {
+    const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+    lines.forEach((line, i) => {
+      this.insertBlock('paragraph', index + i, {}, false, line);
+    });
+  }
+
+  private _handleHtmlPaste(html: string, index: number) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const body = doc.body;
+
+    let currentIndex = index;
+    Array.from(body.children).forEach(node => {
+      const block = this._mapNodeToBlock(node);
+      if (block) {
+        this.insertBlock(block.type, currentIndex, block.settings, false, block.content);
+        currentIndex++;
+      }
+    });
+  }
+
+  private _mapNodeToBlock(node: Element): { type: string, settings: any, content?: any } | null {
+    const tag = node.tagName.toLowerCase();
+
+    switch (tag) {
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+        return {
+          type: 'heading',
+          settings: { level: parseInt(tag.substring(1)) },
+          content: node.innerHTML
+        };
+      case 'p':
+        return {
+          type: 'paragraph',
+          settings: {},
+          content: node.innerHTML
+        };
+      case 'ul':
+        return {
+          type: 'bulletList',
+          settings: { listStyle: 'bullet' },
+          content: this._mapListItems(node)
+        };
+      case 'ol':
+        return {
+          type: 'orderedList',
+          settings: { listStyle: 'ordered' },
+          content: this._mapListItems(node)
+        };
+      case 'img':
+        return {
+          type: 'image',
+          settings: {},
+          content: {
+            src: node.getAttribute('src') || '',
+            alt: node.getAttribute('alt') || ''
+          }
+        };
+      case 'blockquote':
+        return {
+          type: 'quote',
+          settings: {},
+          content: node.innerHTML
+        };
+      case 'pre':
+        return {
+          type: 'code',
+          settings: { language: 'none' },
+          content: node.textContent
+        };
+      case 'hr':
+        return {
+          type: 'divider',
+          settings: {}
+        };
+      default:
+        if (node.textContent?.trim()) {
+          return {
+            type: 'paragraph',
+            settings: {},
+            content: node.innerHTML
+          };
+        }
+        return null;
+    }
+  }
+
+  private _mapListItems(node: Element): any[] {
+    return Array.from(node.children)
+      .filter(child => child.tagName.toLowerCase() === 'li')
+      .map(li => ({
+        content: li.innerHTML,
+        children: []
+      }));
   }
 }

@@ -87,7 +87,7 @@
 </ngs-popover>
 
 <ngs-menu #suggestionsMenu="ngsMenu">
-  <div (click)="preventMenuClose($event)">
+  <div (click)="preventMenuClose($event)" class="min-h-[200px]">
     @for (suggestionItem of suggestions(); track $index; let first = $first) {
       @switch (suggestionItem.type) {
         @case ('heading') {
