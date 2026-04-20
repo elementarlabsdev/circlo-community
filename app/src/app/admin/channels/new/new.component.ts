@@ -81,9 +81,8 @@ export class NewComponent implements OnInit {
     logoId: [''],
     visibilityId: ['', [Validators.required]],
     accessType: [null as string | null, [Validators.required]],
-    price: [0, [Validators.min(0)]],
     moderatorIds: [[] as string[]],
-    ownerId: ['', [Validators.required]],
+    ownerId: [''],
     rules: [[]],
     metaTitle: [''],
     metaDescription: [''],
@@ -268,8 +267,7 @@ export class NewComponent implements OnInit {
     const dialogRef = this._dialog.open(UserSelectModal, {
       width: '800px',
       maxWidth: '800px',
-      minHeight: '800px',
-      height: '800px',
+      minHeight: '75vh',
       data: {
         selectedUsers: this.selectedModerators
       }
@@ -291,8 +289,7 @@ export class NewComponent implements OnInit {
     const dialogRef = this._dialog.open(UserSelectModal, {
       width: '800px',
       maxWidth: '800px',
-      minHeight: '800px',
-      height: '800px',
+      minHeight: '75vh',
       data: {
         selectedUsers: this.selectedOwner ? [this.selectedOwner] : [],
         multiple: false,

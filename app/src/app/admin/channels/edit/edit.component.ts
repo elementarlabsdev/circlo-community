@@ -83,9 +83,8 @@ export class EditComponent implements OnInit {
     logoId: [''],
     visibilityId: ['', [Validators.required]],
     accessType: [null as string | null, [Validators.required]],
-    price: [0, [Validators.min(0)]],
     moderatorIds: [[] as string[]],
-    ownerId: ['', [Validators.required]],
+    ownerId: [''],
     rules: [[]],
     metaTitle: [''],
     metaDescription: [''],
@@ -160,7 +159,6 @@ export class EditComponent implements OnInit {
         metaDescription: channel.metaDescription,
         visibilityId: channel.visibilityId,
         accessType: channel.accessType,
-        price: channel.price,
         moderatorIds: channel.moderators?.map((m: any) => m.id) ?? [],
         ownerId: channel.ownerId,
         rules: channel.rules.map((rule: any) => {
@@ -315,8 +313,7 @@ export class EditComponent implements OnInit {
     const dialogRef = this._dialog.open(UserSelectModal, {
       width: '800px',
       maxWidth: '800px',
-      minHeight: '800px',
-      height: '800px',
+      minHeight: '75vh',
       data: {
         selectedUsers: this.selectedOwner ? [this.selectedOwner] : [],
         multiple: false,
