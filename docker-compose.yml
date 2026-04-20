@@ -17,7 +17,6 @@ services:
 
   imageproxy:
     image: willnorris/imageproxy
-    container_name: imageproxy
     environment:
       IMAGEPROXY_CACHE: "redis://:$REDIS_PASSWORD@redis:6379"
       IMAGEPROXY_BASEURL: "https://$DOMAIN"

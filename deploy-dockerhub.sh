@@ -11,8 +11,8 @@ TAG=$1
 USERNAME="elementarlabs"
 
 # Arrays: local service names (in build-compose) and names for Docker Hub
-LOCAL_SERVICES=("api" "app")
-HUB_SERVICES=("circlo-api" "circlo-app")
+LOCAL_SERVICES=("api" "app" "imageproxy")
+HUB_SERVICES=("circlo-api" "circlo-app" "circlo-imageproxy")
 
 echo "======================================"
 # Check if builder exists and create if not
@@ -30,7 +30,7 @@ for i in "${!LOCAL_SERVICES[@]}"; do
 
   echo "Starting build and push for $HUB_NAME..."
   docker buildx build \
-    --platform linux/amd64 \
+    --platform linux/amd64,linux/arm64 \
     --cache-from type=gha \
     --cache-to type=gha,mode=max \
     -f .docker/$LOCAL_NAME/Dockerfile \
