@@ -30,18 +30,16 @@ for i in "${!LOCAL_SERVICES[@]}"; do
   LOCAL_NAME="${LOCAL_SERVICES[$i]}"
   HUB_NAME="${HUB_SERVICES[$i]}"
 
-  echo "Starting build and push for $HUB_NAME..."
+  echo "Starting build and push for $HUB_NAME with tag $TAG and latest..."
   docker buildx build \
     --platform linux/amd64,linux/arm64 \
     --cache-from type=registry,ref=$USERNAME/$HUB_NAME:cache \
     --cache-to type=registry,ref=$USERNAME/$HUB_NAME:cache,mode=max \
     -f .docker/$LOCAL_NAME/Dockerfile \
     -t $USERNAME/$HUB_NAME:$TAG \
-    --push . &
+    -t $USERNAME/$HUB_NAME:latest \
+    --push .
 done
-
-# Wait for all background processes to finish
-wait
 
 # Optional: Add cleanup or success message
 echo "======================================"
