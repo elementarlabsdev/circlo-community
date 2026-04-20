@@ -2,6 +2,7 @@
 
 :host {
   --ngs-content-builder-content-width: 704px;
+  outline: none;
 
   ::ng-deep {
     .link-selection,
@@ -62,6 +63,28 @@
 
     &.is-selected {
       background: var(--color-primary-100);
+    }
+  }
+
+  ::ng-deep {
+    .selection-area {
+      background: var(--color-primary-100);
+      opacity: 0.4;
+      border: 1px solid var(--color-primary);
+      border-radius: theme(--radius-sm);
+    }
+
+    .ngs-content-editor-content-editable {
+      user-select: text;
+    }
+  }
+
+  &.select-none,
+  &.is-selection-of-blocks-active {
+    ::ng-deep {
+      .ngs-content-editor-content-editable {
+        user-select: none !important;
+      }
     }
   }
 

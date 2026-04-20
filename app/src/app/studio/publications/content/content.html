@@ -31,11 +31,11 @@
                   class="text-4xl leading-relaxed w-full outline-0 placeholder:text-neutral-400
                                  overflow-hidden resize-none font-bold bg-transparent"></textarea>
         </div>
-        <div class="bg-surface-container-lowest rounded-3xl mt-7">
-          <ngs-content-builder [content]="blocksContent()"
-                               [options]="options()"
-                               (contentChanged)="onContentChanged($event)"/>
-      </div>
+    </div>
+    <div class="bg-surface-container-lowest rounded-3xl mt-7">
+      <ngs-content-builder [content]="blocksContent()"
+                           [options]="options()"
+                           (contentChanged)="onContentChanged($event)"/>
     </div>
   </div>
 } @else {

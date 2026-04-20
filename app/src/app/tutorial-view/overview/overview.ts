@@ -11,7 +11,6 @@ import { TranslocoPipe, TranslocoModule } from '@jsverse/transloco';
 import { ReadingTime } from '@app/reading-time/reading-time';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
-import { CurrencyPipe } from '@angular/common';
 import { SnackBar } from '@ngstarter/components/snack-bar';
 import { FollowersCountComponent } from '@app/followers-count/followers-count.component';
 import { PublicationsCountComponent } from '@app/publications-count/publications-count.component';
@@ -31,7 +30,6 @@ import { Divider } from '@ngstarter/components/divider';
     ReadingTime,
     ImageProxyPipe,
     SubscriptionComponent,
-    CurrencyPipe,
     FollowersCountComponent,
     PublicationsCountComponent,
     TutorialsCount,

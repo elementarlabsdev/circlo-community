@@ -90,7 +90,11 @@ import { List, ListItem, ListItemIcon, ListItemTitle } from '@ngstarter/componen
     'class': 'ngs-content-builder',
     '[class.is-block-dragging]': '_blockDragging()',
     '[class.is-selection-of-blocks-active]': 'isSelectionOfBlocksActive()',
+    '[class.select-none]': 'isSelectionOfBlocksActive()',
+    '[style.user-select]': 'isSelectionOfBlocksActive() ? "none" : null',
+    'tabindex': '0',
     '(paste)': '_onPaste($event)',
+    '(keydown)': '_onKeyDown($event)',
   }
 })
 export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -473,7 +477,7 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
   protected blockDefsMap = new Map<string, any>();
   protected blockDefsOptionsMap = new Map<string, any>();
   protected _blockDragging = signal(false);
-  protected isSelectionOfBlocksActive = signal(false);
+  public isSelectionOfBlocksActive = signal(false);
 
   _oldContent = signal({});
   readonly selectedBlocksModel = new SelectionModel(true);
@@ -852,12 +856,13 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   emitContentChangeEvent() {
-    console.log('emit content change event');
     this.contentChanged.emit(this.getData());
   }
 
-  selectBlock(blockId: string) {
-    this.selectedBlocksModel.clear();
+  selectBlock(blockId: string, multiple = false) {
+    if (!multiple) {
+      this.selectedBlocksModel.clear();
+    }
     this.selectedBlocksModel.select(blockId);
     this.cdr.markForCheck();
   }
@@ -876,7 +881,7 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
     return this.selectedBlocksModel.isSelected(blockId);
   }
 
-  deleteSelectedBlocks(popover: Popover) {
+  deleteSelectedBlocks(popover?: Popover) {
     const selectedIds = [...this.selectedBlocksModel.selected] as string[];
     if (!selectedIds.length) {
       return;
@@ -900,6 +905,26 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
 
       this.unselectSelectedBlocks();
     });
+  }
+
+  protected _onKeyDown(event: KeyboardEvent) {
+    if ((event.key === 'Delete' || event.key === 'Backspace') && this.selectedBlocksModel.hasValue()) {
+      const target = event.target as HTMLElement;
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+
+      // If we are in an input/contenteditable, only delete if multiple blocks are selected
+      // or if it's not a Backspace (to avoid deleting text while trying to delete blocks)
+      // Actually, if blocks are selected, they usually have a blue background and the user intent is likely to delete blocks.
+      // But if there's only ONE block selected AND we are typing in it, we probably want to delete text.
+
+      if (isInput && this.selectedBlocksModel.selected.length === 1) {
+         // Let the default behavior happen for text editing
+         return;
+      }
+
+      event.preventDefault();
+      this.deleteSelectedBlocks();
+    }
   }
 
   protected onDragStarted(event: CdkDragStart, block: ContentEditorBlock) {
@@ -974,7 +999,6 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   onSettingsPopoverClose() {
-    this.unselectSelectedBlocks();
   }
 
   protected _onPaste(event: ClipboardEvent) {

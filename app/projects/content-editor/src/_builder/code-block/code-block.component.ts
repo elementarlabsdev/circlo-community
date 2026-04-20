@@ -24,6 +24,7 @@ import { Button } from '@ngstarter/components/button';
 import { githubLight } from '@uiw/codemirror-theme-github';
 import { indentWithTab } from "@codemirror/commands"
 import { ContentBuilderComponent } from '@elementar-uix/components/content-editor';
+import { DOCUMENT } from '@angular/common';
 
 export interface ContentEditorCodeBlockSettings {
   language: string;
@@ -61,6 +62,7 @@ export class CodeBlockComponent implements OnInit, OnDestroy, ContentEditorDataB
   private _store = inject(ContentBuilderStore);
   private _contentBuilder = inject<ContentBuilderComponent>(CONTENT_BUILDER);
   private _destroyRef = inject(DestroyRef);
+  private document = inject(DOCUMENT);
 
   private _contentRef = viewChild.required<ElementRef<HTMLParagraphElement>>('contentRef');
 
@@ -167,7 +169,7 @@ export class CodeBlockComponent implements OnInit, OnDestroy, ContentEditorDataB
 
   focus() {
     const element = this._contentRef().nativeElement;
-    const range = window.document.createRange();
+    const range = this.document.createRange();
     range.setStart(element, 0);
     range.setEnd(element, 0);
     const selection = window.getSelection() as Selection;

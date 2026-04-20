@@ -29,7 +29,6 @@ import { Button } from '@ngstarter/components/button';
 import { AddComplaintDirective } from '@/@directives/add-complaint.directive';
 import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
 import { SnackBar } from '@ngstarter/components/snack-bar';
-import { CurrencyPipe } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -57,8 +56,7 @@ import { CurrencyPipe } from '@angular/common';
     Menu,
     MenuItem,
     MenuTrigger,
-    Button,
-    CurrencyPipe
+    Button
   ],
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss'
