@@ -27,29 +27,34 @@ export const ContentBuilderStore = signalStore(
     },
     addBlock(dataBlock: ContentEditorBlock, index: number): void {
       patchState(store, (state) => {
-        state.blocks.splice(index, 0, dataBlock);
+        const blocks = [...state.blocks];
+        blocks.splice(index, 0, dataBlock);
         return {
-          ...state
+          blocks
         }
       });
     },
     deleteBlock(blockId: string, index: number): void {
       patchState(store, (state) => {
-        state.blocks.splice(index, 1);
+        const blocks = [...state.blocks];
+        blocks.splice(index, 1);
         return {
-          ...state
+          blocks
         }
       });
     },
     updateBlock(blockId: string, data: any): void {
       patchState(store, (state) => {
-        const index = state.blocks.findIndex(block => block.id === blockId);
-        state.blocks[index] = {
-          ...state.blocks[index],
-          ...data
-        };
+        const blocks = [...state.blocks];
+        const index = blocks.findIndex(block => block.id === blockId);
+        if (index !== -1) {
+          blocks[index] = {
+            ...blocks[index],
+            ...data
+          };
+        }
         return {
-          ...state
+          blocks
         }
       });
     },

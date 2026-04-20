@@ -1002,6 +1002,17 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   protected _onPaste(event: ClipboardEvent) {
+    const target = event.target as HTMLElement;
+    const isInsideCodeBlock = target.closest('.ngs-code-block') ||
+                            target.closest('.cm-editor') ||
+                            target.closest('.cm-content') ||
+                            target.classList.contains('cm-content') ||
+                            target.classList.contains('cm-line');
+
+    if (isInsideCodeBlock) {
+      return;
+    }
+
     const html = event.clipboardData?.getData('text/html');
     const text = event.clipboardData?.getData('text/plain');
 
@@ -1009,11 +1020,20 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
       return;
     }
 
+    // Check if we are pasting into a block that should handle its own paste (like code block)
+    // but might not have been caught by target.closest if it's currently empty or has different structure.
+    const activeBlockId = this._store.activeBlockId() || this._store.focusedBlockId();
+    if (activeBlockId) {
+      const activeBlock = this._content().find(b => b.id === activeBlockId);
+      if (activeBlock?.type === 'code') {
+        return;
+      }
+    }
+
     event.preventDefault();
     event.stopPropagation();
 
     let index = this._content().length;
-    const activeBlockId = this._store.activeBlockId() || this._store.focusedBlockId();
 
     if (activeBlockId) {
       const activeIndex = this._content().findIndex(b => b.id === activeBlockId);
@@ -1030,10 +1050,23 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private _handleTextPaste(text: string, index: number) {
-    const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
-    lines.forEach((line, i) => {
-      this.insertBlock('paragraph', index + i, {}, false, line);
-    });
+    const lines = text.split(/\r?\n/);
+    if (lines.length === 1) {
+      this.insertBlock('paragraph', index, {}, false, text);
+    } else {
+      // If it looks like code (has indentation or common code characters), insert as a single code block
+      const isCodeLike = text.includes('{') || text.includes('}') || text.includes(';') || text.includes('  ') || text.includes('\t');
+      if (isCodeLike) {
+        this.insertBlock('code', index, { language: 'none' }, false, text);
+        return;
+      }
+
+      lines.forEach((line, i) => {
+        if (line.trim().length > 0) {
+          this.insertBlock('paragraph', index + i, {}, false, line);
+        }
+      });
+    }
   }
 
   private _handleHtmlPaste(html: string, index: number) {
@@ -1100,10 +1133,12 @@ export class ContentBuilderComponent implements OnInit, AfterViewInit, OnDestroy
           content: node.innerHTML
         };
       case 'pre':
+        const codeNode = node.querySelector('code');
+        const content = (codeNode || node).textContent || '';
         return {
           type: 'code',
           settings: { language: 'none' },
-          content: node.textContent
+          content: content.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trimEnd()
         };
       case 'hr':
         return {

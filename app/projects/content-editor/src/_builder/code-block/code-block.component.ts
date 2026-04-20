@@ -155,7 +155,6 @@ export class CodeBlockComponent implements OnInit, OnDestroy, ContentEditorDataB
           }
         })
       ],
-
     });
     await this.selectLanguage(this._language());
     this._editorView.contentDOM.style.width = '0';
@@ -168,18 +167,12 @@ export class CodeBlockComponent implements OnInit, OnDestroy, ContentEditorDataB
   }
 
   focus() {
-    const element = this._contentRef().nativeElement;
-    const range = this.document.createRange();
-    range.setStart(element, 0);
-    range.setEnd(element, 0);
-    const selection = window.getSelection() as Selection;
-    selection.removeAllRanges();
-    selection.addRange(range);
+    this._editorView.focus();
   }
 
   getData(): any {
     return {
-      content: this._editorView.state.doc.toString().trim(),
+      content: this._editorView.state.doc.toString(),
       settings: {
         ...this.settings(),
         language: this._language().language
@@ -188,7 +181,7 @@ export class CodeBlockComponent implements OnInit, OnDestroy, ContentEditorDataB
   }
 
   isEmpty(): boolean {
-    return this.getData().content.length === 0;
+    return this._editorView.state.doc.toString().trim().length === 0;
   }
 
   protected async selectLanguage(codeLanguage: ContentEditorCodeLanguage) {
