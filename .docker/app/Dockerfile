@@ -15,9 +15,10 @@ RUN npm i
 
 COPY --chown=node:node ./app .
 
-RUN npm run build:prod
+# Copy environment file
+COPY --chown=node:node .docker/app/environment.production.ts ./src/environments/environment.production.ts
 
-# COPY --chown=node:node .docker/app/environment.production.ts /environment.production.ts
+RUN npm run build:prod
 
 RUN ./node_modules/.bin/ng config --global cli.analytics false
 

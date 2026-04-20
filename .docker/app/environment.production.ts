@@ -1,11 +1,26 @@
+const getConfig = () => {
+  if (typeof window !== 'undefined') {
+    const configElement = window.document.getElementById('app-config');
+    if (configElement) {
+      try {
+        return JSON.parse(configElement.textContent || '{}');
+      } catch (e) {}
+    }
+  }
+  return {};
+};
+
+const config = getConfig();
+
 export const environment = {
-  locale: '${LOCALE}',
-  apiUrl: '${APP_API_URL}',
-  websocketUrl: '${WEBSOCKET_URL}',
+  baseUrl: config.baseUrl || (config.domain ? 'https://' + config.domain : 'http://localhost:4200'),
+  locale: config.locale || 'en',
+  apiUrl: config.apiUrl || '/api/v1/',
+  websocketUrl: config.websocketUrl || '',
   cookie: {
     path: '/',
-    secure: false,
+    secure: true,
     sameSite: 'Lax',
-    domain: undefined as string | undefined,
+    domain: config.domain || undefined,
   }
 };
