@@ -278,7 +278,7 @@ export class StudioPublicationsController {
     return {};
   }
 
-  @Post('studio/publication/edit/:hash/featured-image/delete')
+  @Delete('studio/publication/edit/:hash/featured-image')
   @UseGuards(AuthGuard, PublicationResourceGuard, PoliciesGuard)
   @CheckPolicies((ability, ctx) =>
     ability.can(

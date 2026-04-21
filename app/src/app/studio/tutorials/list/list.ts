@@ -232,7 +232,7 @@ export class List implements OnInit, OnDestroy {
     this._apiService
       .post('studio/tutorials')
       .subscribe((res: any) => {
-        this._router.navigateByUrl(`/studio/tutorials/${res.tutorial.id}/overview`);
+        this._router.navigateByUrl(`/studio/tutorials/${res.tutorial.id}/content`);
       })
     ;
   }

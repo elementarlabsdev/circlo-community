@@ -161,7 +161,7 @@ export class CommonComponent {
     this._apiService
       .post('studio/publication/new')
       .subscribe((res: any) => {
-        this._router.navigateByUrl(`/studio/publications/edit/${res.publication.hash}`);
+        this._router.navigateByUrl(`/studio/publications/edit/${res.publication.hash}/content`);
       })
     ;
   }
@@ -170,7 +170,7 @@ export class CommonComponent {
     this._apiService
       .post('studio/tutorials')
       .subscribe((res: any) => {
-        this._router.navigateByUrl(`/studio/tutorials/${res.tutorial.id}/overview`);
+        this._router.navigateByUrl(`/studio/tutorials/${res.tutorial.id}/content`);
       });
   }
 

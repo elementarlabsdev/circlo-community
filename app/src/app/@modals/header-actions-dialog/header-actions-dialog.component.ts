@@ -75,7 +75,7 @@ export class HeaderActionsDialogComponent {
 
   createTutorial() {
     this._apiService.post('studio/tutorials').subscribe((res: any) => {
-      this._router.navigateByUrl(`/studio/tutorials/${res.tutorial.id}/overview`);
+      this._router.navigateByUrl(`/studio/tutorials/${res.tutorial.id}/content`);
       this.close();
     });
   }

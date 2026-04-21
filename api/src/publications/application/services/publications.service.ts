@@ -227,6 +227,8 @@ export class PublicationsService {
         title: draft.title ?? publication.title,
         textContent: draft.textContent ?? publication.textContent,
         blocksContent: draft.blocksContent ?? publication.blocksContent,
+        featuredImageUrl: draft.featuredImageUrl !== undefined ? draft.featuredImageUrl : publication.featuredImageUrl,
+        featuredImageId: draft.featuredImageId !== undefined ? draft.featuredImageId : publication.featuredImageId,
       };
     }
 
@@ -357,7 +359,7 @@ export class PublicationsService {
       };
     });
 
-    await this.updateDraftSnapshot(publication, {
+    const draftData = await this.updateDraftSnapshot(publication, {
       slug: publicationDto.slug,
       metaTitle: publicationDto.metaTitle,
       metaDescription: publicationDto.metaDescription,
@@ -372,7 +374,7 @@ export class PublicationsService {
 
     await this.textQualityQueue.analyzePublication(publication.id);
 
-    return this._prisma.publication.update({
+    const updatedPublication = await this._prisma.publication.update({
       where: {
         id: publication.id,
       },
@@ -394,6 +396,15 @@ export class PublicationsService {
         },
       },
     });
+
+    return {
+      ...updatedPublication,
+      title: draftData.title ?? updatedPublication.title,
+      textContent: draftData.textContent ?? updatedPublication.textContent,
+      blocksContent: draftData.blocksContent ?? updatedPublication.blocksContent,
+      featuredImageUrl: draftData.featuredImageUrl !== undefined ? draftData.featuredImageUrl : updatedPublication.featuredImageUrl,
+      featuredImageId: draftData.featuredImageId !== undefined ? draftData.featuredImageId : updatedPublication.featuredImageId,
+    };
   }
 
   /**
@@ -723,14 +734,14 @@ export class PublicationsService {
       uploadedBy,
     );
 
-    await this.updateDraftSnapshot(publication, {
+    const draftData = await this.updateDraftSnapshot(publication, {
       featuredImageUrl: featuredImage.url,
       featuredImageId: featuredImage.id,
     });
 
     await this.textQualityQueue.analyzePublication(publication.id);
 
-    return this._prisma.publication.update({
+    const updatedPublication = await this._prisma.publication.update({
       where: {
         id: publication.id,
       },
@@ -752,6 +763,15 @@ export class PublicationsService {
         },
       },
     });
+
+    return {
+      ...updatedPublication,
+      title: draftData.title ?? updatedPublication.title,
+      textContent: draftData.textContent ?? updatedPublication.textContent,
+      blocksContent: draftData.blocksContent ?? updatedPublication.blocksContent,
+      featuredImageUrl: draftData.featuredImageUrl !== undefined ? draftData.featuredImageUrl : updatedPublication.featuredImageUrl,
+      featuredImageId: draftData.featuredImageId !== undefined ? draftData.featuredImageId : updatedPublication.featuredImageId,
+    };
   }
 
   async addImage(
@@ -782,19 +802,22 @@ export class PublicationsService {
 
     return {
       file,
-      publication,
+      publication: {
+        ...publication,
+        featuredImageUrl: publication.featuredImageUrl ?? file.url,
+      },
     };
   }
 
   async deleteFeaturedImage(publication: any) {
-    await this.updateDraftSnapshot(publication, {
+    const draftData = await this.updateDraftSnapshot(publication, {
       featuredImageUrl: null,
       featuredImageId: null,
     });
 
     await this.textQualityQueue.analyzePublication(publication.id);
 
-    return this._prisma.publication.update({
+    const updatedPublication = await this._prisma.publication.update({
       where: {
         id: publication.id,
       },
@@ -815,6 +838,15 @@ export class PublicationsService {
         },
       },
     });
+
+    return {
+      ...updatedPublication,
+      title: draftData.title ?? updatedPublication.title,
+      textContent: draftData.textContent ?? updatedPublication.textContent,
+      blocksContent: draftData.blocksContent ?? updatedPublication.blocksContent,
+      featuredImageUrl: draftData.featuredImageUrl !== undefined ? draftData.featuredImageUrl : updatedPublication.featuredImageUrl,
+      featuredImageId: draftData.featuredImageId !== undefined ? draftData.featuredImageId : updatedPublication.featuredImageId,
+    };
   }
 
   async findDrafts(owner: any, customWhere = {}) {

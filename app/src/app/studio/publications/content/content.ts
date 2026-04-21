@@ -11,8 +11,6 @@ import { Button } from '@ngstarter/components/button';
 import { UploadArea, UploadTriggerDirective } from '@ngstarter/components/upload';
 import { Icon } from '@ngstarter/components/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent, Subscription } from 'rxjs';
-import { auditTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { TextareaAutoSize } from '@ngstarter/components/core';
 
 @Component({
@@ -57,6 +55,7 @@ export class Content {
           this.api
             .post(this.imageUploadUrl, formData)
             .subscribe((res: any) => {
+              console.log('Image upload response:', res);
               resolve(res.file.url);
             });
         })

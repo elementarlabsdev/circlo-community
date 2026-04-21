@@ -237,6 +237,8 @@ export class PageListService {
         title: draft.title ?? page.title,
         textContent: draft.textContent ?? page.textContent,
         blocksContent: draft.blocksContent ?? page.blocksContent,
+        featuredImageUrl: draft.featuredImageUrl !== undefined ? draft.featuredImageUrl : page.featuredImageUrl,
+        featuredImageId: draft.featuredImageId !== undefined ? draft.featuredImageId : page.featuredImageId,
       };
     }
 
@@ -345,13 +347,13 @@ export class PageListService {
       await this.assertPageSlugUnique(pageSettingsDto.slug, page.id);
     }
 
-    await this.updateDraftSnapshot(page, {
+    const draftData = await this.updateDraftSnapshot(page, {
       slug: pageSettingsDto.slug,
       metaTitle: pageSettingsDto.metaTitle,
       metaDescription: pageSettingsDto.metaDescription,
     });
 
-    return this._prisma.page.update({
+    const updatedPage = await this._prisma.page.update({
       where: {
         id: page.id,
       },
@@ -370,6 +372,15 @@ export class PageListService {
         },
       },
     });
+
+    return {
+      ...updatedPage,
+      title: draftData.title ?? updatedPage.title,
+      textContent: draftData.textContent ?? updatedPage.textContent,
+      blocksContent: draftData.blocksContent ?? updatedPage.blocksContent,
+      featuredImageUrl: draftData.featuredImageUrl !== undefined ? draftData.featuredImageUrl : updatedPage.featuredImageUrl,
+      featuredImageId: draftData.featuredImageId !== undefined ? draftData.featuredImageId : updatedPage.featuredImageId,
+    };
   }
 
   /**
@@ -485,12 +496,12 @@ export class PageListService {
       uploadedBy,
     );
 
-    await this.updateDraftSnapshot(page, {
+    const draftData = await this.updateDraftSnapshot(page, {
       featuredImageUrl: featuredImage.url,
       featuredImageId: featuredImage.id,
     });
 
-    return this._prisma.page.update({
+    const updatedPage = await this._prisma.page.update({
       where: {
         id: page.id,
       },
@@ -509,6 +520,15 @@ export class PageListService {
         },
       },
     });
+
+    return {
+      ...updatedPage,
+      title: draftData.title ?? updatedPage.title,
+      textContent: draftData.textContent ?? updatedPage.textContent,
+      blocksContent: draftData.blocksContent ?? updatedPage.blocksContent,
+      featuredImageUrl: draftData.featuredImageUrl !== undefined ? draftData.featuredImageUrl : updatedPage.featuredImageUrl,
+      featuredImageId: draftData.featuredImageId !== undefined ? draftData.featuredImageId : updatedPage.featuredImageId,
+    };
   }
 
   async addImage(page: any, image: Express.Multer.File, uploadedBy: User) {
@@ -535,12 +555,12 @@ export class PageListService {
   }
 
   async deleteFeaturedImage(page: any) {
-    await this.updateDraftSnapshot(page, {
+    const draftData = await this.updateDraftSnapshot(page, {
       featuredImageUrl: null,
       featuredImageId: null,
     });
 
-    return this._prisma.page.update({
+    const updatedPage = await this._prisma.page.update({
       where: {
         id: page.id,
       },
@@ -559,6 +579,15 @@ export class PageListService {
         },
       },
     });
+
+    return {
+      ...updatedPage,
+      title: draftData.title ?? updatedPage.title,
+      textContent: draftData.textContent ?? updatedPage.textContent,
+      blocksContent: draftData.blocksContent ?? updatedPage.blocksContent,
+      featuredImageUrl: draftData.featuredImageUrl !== undefined ? draftData.featuredImageUrl : updatedPage.featuredImageUrl,
+      featuredImageId: draftData.featuredImageId !== undefined ? draftData.featuredImageId : updatedPage.featuredImageId,
+    };
   }
 
   async bulkUnpublish(ids: string[]) {

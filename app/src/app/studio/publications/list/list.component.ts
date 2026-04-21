@@ -123,7 +123,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this._apiService.post('studio/publications/list', params);
 
   edit(pub: any) {
-    this._router.navigateByUrl(`/studio/publications/edit/${pub.hash}`);
+    this._router.navigateByUrl(`/studio/publications/edit/${pub.hash}/content`);
   }
 
   ngOnInit() {

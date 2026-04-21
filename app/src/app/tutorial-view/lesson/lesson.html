@@ -23,9 +23,9 @@
 
           <main class="border border-border rounded-2xl">
             @if (lesson().featuredImageUrl) {
-              <div class="hidden lg:flex items-center justify-center h-[400px] max-h-[400px] relative overflow-hidden bg-surface-container">
+              <div class="hidden lg:flex items-center justify-center h-[440px] max-h-[440px] relative overflow-hidden bg-surface-container">
                 <img [alt]="lesson().name" class="bg-cover lazyload"
-                     [attr.data-src]="lesson().featuredImageUrl | imageProxy:'880x430,q80'">
+                     [attr.data-src]="lesson().featuredImageUrl | imageProxy:'880x440,q80'">
               </div>
             }
             <div class="p-5 lg:p-16">
