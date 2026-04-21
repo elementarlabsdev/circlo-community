@@ -233,6 +233,14 @@ export class StudioPublicationListService {
       return;
     }
 
+    // Remove reactions (polymorphic relation, needs manual cleanup)
+    await this._prisma.reactionList.deleteMany({
+      where: {
+        targetType: 'publication',
+        targetId: publication.id,
+      },
+    });
+
     await this._prisma.publication.delete({
       where: {
         id: publication.id,

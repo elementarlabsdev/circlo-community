@@ -538,6 +538,65 @@ export class PublicationsService {
         publishData.slug = slugifyWithHash(draft.title, publication.id.toString());
       }
 
+      if (publishData.slug) {
+        // Broad check for ANY record with this slug, including current one
+        const anyRecordWithSlug = await this._prisma.publication.findFirst({
+          where: { slug: publishData.slug },
+          select: { id: true, hash: true }
+        });
+
+        if (anyRecordWithSlug) {
+          console.log(`[PublicationsService.publish] Slug "${publishData.slug}" found in DB with ID: ${anyRecordWithSlug.id}, Hash: ${anyRecordWithSlug.hash}. Current publication ID: ${publication.id}, Hash: ${publication.hash}`);
+
+          if (anyRecordWithSlug.id !== publication.id && anyRecordWithSlug.hash === publication.hash) {
+            console.warn(`[PublicationsService.publish] Hash collision or ID mismatch! Hash: ${publication.hash} belongs to ID: ${anyRecordWithSlug.id} in DB, but we are updating ID: ${publication.id}`);
+          }
+        }
+
+        let isSlugTaken = await this._prisma.publication.findFirst({
+          where: {
+            slug: {
+              equals: publishData.slug,
+              mode: 'insensitive'
+            },
+            NOT: {
+              OR: [
+                { id: publication.id },
+                { hash: publication.hash }
+              ]
+            },
+          },
+          select: { id: true, title: true, status: { select: { type: true } } },
+        });
+
+        if (isSlugTaken) {
+          console.log(`[PublicationsService.publish] Slug "${publishData.slug}" is taken by DIFFERENT publication (ID: ${isSlugTaken.id}). Resolving...`);
+        }
+
+        while (isSlugTaken) {
+          const suffix = crypto.randomBytes(3).toString('hex');
+          publishData.slug = slugifyWithHash(
+            publishData.slug,
+            suffix,
+          );
+          isSlugTaken = await this._prisma.publication.findFirst({
+            where: {
+              slug: {
+                equals: publishData.slug,
+                mode: 'insensitive'
+              },
+              NOT: {
+                OR: [
+                  { id: publication.id },
+                  { hash: publication.hash }
+                ]
+              },
+            },
+            select: { id: true, title: true, status: { select: { type: true } } },
+          });
+        }
+      }
+
       if (draft.textContent) {
         publishData.textContent = draft.textContent;
       }
@@ -595,32 +654,45 @@ export class PublicationsService {
       }
     }
 
-    publication = await this._prisma.publication.update({
-      where: {
-        id: publication.id,
-      },
-      data: {
-        ...publishData,
-        lastPublishedDraftVersion: latestDraft?.version ?? publication.lastPublishedDraftVersion,
-      },
-      include: {
-        channel: {
-          include: {
-            owner: true,
+    try {
+      publication = await this._prisma.publication.update({
+        where: {
+          id: publication.id,
+        },
+        data: {
+          ...publishData,
+          lastPublishedDraftVersion: latestDraft?.version ?? publication.lastPublishedDraftVersion,
+        },
+        include: {
+          channel: {
+            include: {
+              owner: true,
+            },
+          },
+          featuredImage: true,
+          status: true,
+          author: true,
+          topics: true,
+          type: true,
+          licenseType: true,
+          drafts: {
+            orderBy: { version: 'desc' },
+            take: 1,
           },
         },
-        featuredImage: true,
-        status: true,
-        author: true,
-        topics: true,
-        type: true,
-        licenseType: true,
-        drafts: {
-          orderBy: { version: 'desc' },
-          take: 1,
-        },
-      },
-    });
+      });
+    } catch (e) {
+      if (e.code === 'P2002') {
+        const target = e.meta?.target;
+        console.error(`[PublicationsService.publish] Unique constraint failed on ${target}. Data:`, JSON.stringify({
+          id: publication.id,
+          slug: publishData.slug,
+          title: publishData.title,
+          hash: publication.hash
+        }, null, 2));
+      }
+      throw e;
+    }
 
     if (isOldStatusDraft) {
       for (const topic of publication.topics) {

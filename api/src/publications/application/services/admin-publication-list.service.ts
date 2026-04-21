@@ -179,6 +179,20 @@ export class AdminPublicationListService {
       });
     }
 
+    const publication = await this._prisma.publication.findUnique({
+      where: { hash },
+      select: { id: true },
+    });
+
+    if (publication) {
+      await this._prisma.reactionList.deleteMany({
+        where: {
+          targetType: 'publication',
+          targetId: publication.id,
+        },
+      });
+    }
+
     await this._prisma.publication.delete({
       where: {
         hash,

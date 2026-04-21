@@ -233,7 +233,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this._apiService
       .post('studio/publication/new')
       .subscribe((res: any) => {
-        this._router.navigateByUrl(`/studio/publications/edit/${res.publication.hash}`);
+        this._router.navigateByUrl(`/studio/publications/edit/${res.publication.hash}/content`);
       })
     ;
   }
