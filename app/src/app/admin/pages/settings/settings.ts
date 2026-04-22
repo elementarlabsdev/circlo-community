@@ -72,9 +72,9 @@ export class Settings {
       return;
     }
 
-    const hash = this.editRoot.pageHash();
+    const id = this.editRoot.pageId();
     this.saving.set(true);
-    this.api.saveSettings(hash, this.form.value).subscribe({
+    this.api.saveSettings(id, this.form.value).subscribe({
       next: (res: any) => {
         this.page.set(res.page);
         this.saving.set(false);

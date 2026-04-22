@@ -188,8 +188,10 @@ model Page {
   author           User?      @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   status           PageStatus @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   drafts           PageDraft[]
+  qualityScore     Json?
 
   @@unique([hash])
+  @@index([qualityScore(path: "$.overallScore")])
 }
 
 model PageDraft {

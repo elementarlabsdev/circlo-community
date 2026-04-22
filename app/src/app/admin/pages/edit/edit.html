@@ -8,15 +8,9 @@
           </a>
           <div class="flex items-center gap-4">
             <h1 class="font-bold text-on-primary-fixed">{{ page().title }}</h1>
-            @if (page().status.type === 'draft') {
-              <div class="text-2xs font-semibold bg-secondary-fixed-dim text-on-secondary-fixed rounded-full px-3 py-1">
-                {{ ('pageStatus.' + page().status.type) | transloco }}
-              </div>
-            } @else if (page().status.type === 'published') {
-              <div class="text-2xs font-semibold bg-primary text-on-primary rounded-full px-3 py-1">
-                {{ ('pageStatus.' + page().status.type) | transloco }}
-              </div>
-            }
+            <ngs-chip [appearance]="page().status.type">
+              {{ ('pageStatus.' + page().status.type) | transloco }}
+            </ngs-chip>
           </div>
         </div>
         <div class="flex items-center gap-5">

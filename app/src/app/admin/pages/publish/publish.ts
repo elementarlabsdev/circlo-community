@@ -40,8 +40,8 @@ export class Publish {
   }
 
   publish() {
-    const hash = this.editRoot.pageHash();
-    this.api.publish(hash).subscribe({
+    const id = this.editRoot.pageId();
+    this.api.publish(id).subscribe({
       next: (res: any) => {
         this.page.set(res.page);
         this.snack.open('Published!', 'OK', { duration: 2000 });
@@ -51,13 +51,13 @@ export class Publish {
   }
 
   unpublish() {
-    const hash = this.editRoot.pageHash();
+    const id = this.editRoot.pageId();
     const confirmDef = this.confirm.open({
       title: 'Unpublish page',
       description: 'Are you sure you want to unpublish this page?'
     });
     confirmDef.confirmed.subscribe(() => {
-      this.api.unpublish(hash).subscribe({
+      this.api.unpublish(id).subscribe({
         next: (res: any) => {
           this.page.set(res.page);
           this.snack.open('Unpublished!', 'OK', { duration: 2000 });
@@ -68,13 +68,13 @@ export class Publish {
   }
 
   delete() {
-    const hash = this.editRoot.pageHash();
+    const id = this.editRoot.pageId();
     const confirmDef = this.confirm.open({
       title: 'Delete page',
       description: 'Deletion is not reversible. This page will be completely deleted.'
     });
     confirmDef.confirmed.subscribe(() => {
-      this.api.delete(hash).subscribe({
+      this.api.delete(id).subscribe({
         next: () => {
           this.snack.open('Deleted!', 'OK', { duration: 2000 });
           this.router.navigate(['/admin/pages']);

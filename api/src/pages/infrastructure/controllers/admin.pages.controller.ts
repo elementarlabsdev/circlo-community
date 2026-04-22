@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -31,10 +32,10 @@ export class AdminPagesController {
     private readonly pagesTable: PagesDataTableService,
   ) {}
 
-  @Get(':hash')
+  @Get(':id')
   @CheckAbilities([Action.Read, 'PageEntity'])
-  async getPage(@Param('hash') hash: string) {
-    const page = await this._pageListService.findDraftByHash(hash);
+  async getPage(@Param('id') id: string) {
+    const page = await this._pageListService.findDraftByHashOrId(id);
     return {
       page,
     };
@@ -46,6 +47,7 @@ export class AdminPagesController {
     const page = await this._pageListService.createDraft(request.user);
     return {
       page: {
+        id: page.id,
         hash: page.hash,
       },
     };
@@ -67,14 +69,22 @@ export class AdminPagesController {
   @Post(':id/unpublish')
   @CheckAbilities([Action.Update, 'PageEntity'])
   async unpublish(@Param('id') id: string) {
-    await this._pageListService.unpublish(id);
+    const page = await this._pageListService.findOneByHashOrId(id);
+    if (!page) {
+      throw new BadRequestException('Page not found');
+    }
+    await this._pageListService.unpublish(page.id);
     return {};
   }
 
   @Post(':id/restore')
   @CheckAbilities([Action.Update, 'PageEntity'])
   async restore(@Param('id') id: string) {
-    await this._pageListService.restore(id);
+    const page = await this._pageListService.findOneByHashOrId(id);
+    if (!page) {
+      throw new BadRequestException('Page not found');
+    }
+    await this._pageListService.restore(page.id);
     return {};
   }
 
@@ -88,7 +98,11 @@ export class AdminPagesController {
   @Delete(':id/delete')
   @CheckAbilities([Action.Delete, 'PageEntity'])
   async delete(@Param('id') id: string) {
-    await this._pageListService.delete(id);
+    const page = await this._pageListService.findOneByHashOrId(id);
+    if (!page) {
+      throw new BadRequestException('Page not found');
+    }
+    await this._pageListService.delete(page.id);
     return {};
   }
 
@@ -102,48 +116,52 @@ export class AdminPagesController {
   @Delete(':id/force-delete')
   @CheckAbilities([Action.Delete, 'PageEntity'])
   async forceDelete(@Param('id') id: string) {
-    await this._pageListService.forceDelete(id);
+    const page = await this._pageListService.findOneByHashOrId(id);
+    if (!page) {
+      throw new BadRequestException('Page not found');
+    }
+    await this._pageListService.forceDelete(page.id);
     return {};
   }
 
-  @Get(':hash/content')
+  @Get(':id/content')
   @CheckAbilities([Action.Read, 'PageEntity'])
-  async content(@Param('hash') hash: string) {
-    const page = await this._pageListService.findDraftByHash(hash);
+  async content(@Param('id') id: string) {
+    const page = await this._pageListService.findDraftByHashOrId(id);
     return {
       page,
     };
   }
 
-  @Post(':hash/content')
+  @Post(':id/content')
   @CheckAbilities([Action.Update, 'PageEntity'])
   async saveContent(
-    @Param('hash') hash: string,
+    @Param('id') id: string,
     @Body() pageContentDto: PageContentDto,
   ) {
-    const page = await this._pageListService.saveContent(hash, pageContentDto);
+    const page = await this._pageListService.saveContent(id, pageContentDto);
     return {
       page,
     };
   }
 
-  @Get(':hash/settings')
+  @Get(':id/settings')
   @CheckAbilities([Action.Read, 'PageEntity'])
-  async edit(@Param('hash') hash: string) {
-    const page = await this._pageListService.findDraftByHash(hash);
+  async edit(@Param('id') id: string) {
+    const page = await this._pageListService.findDraftByHashOrId(id);
     return {
       page,
     };
   }
 
-  @Post(':hash/settings')
+  @Post(':id/settings')
   @CheckAbilities([Action.Update, 'PageEntity'])
   async save(
-    @Param('hash') hash: string,
+    @Param('id') id: string,
     @Body() pageSettingsDto: PageSettingsDto,
   ) {
     const page = await this._pageListService.saveSettings(
-      hash,
+      id,
       pageSettingsDto,
     );
     return {
@@ -151,50 +169,50 @@ export class AdminPagesController {
     };
   }
 
-  @Post(':hash/publish')
+  @Post(':id/publish')
   @CheckAbilities([Action.Update, 'PageEntity'])
-  async publish(@Param('hash') hash: string) {
-    let draft = await this._pageListService.findDraftByHash(hash);
+  async publish(@Param('id') id: string) {
+    let draft = await this._pageListService.findDraftByHashOrId(id);
     draft = await this._pageListService.publish(draft);
     return {
       page: draft,
     };
   }
 
-  @Post(':hash/featured-image')
+  @Post(':id/featured-image')
   @CheckAbilities([Action.Update, 'PageEntity'])
   @UseInterceptors(FileInterceptor('image'))
   async addFeaturedImage(
     @Req() req: any,
-    @Param('hash') hash: string,
+    @Param('id') id: string,
     @UploadedFile(FEATURED_IMAGE_UPLOAD_PIPE_BUILDER)
     image: Express.Multer.File,
   ) {
-    const page = await this._pageListService.findDraftByHash(hash);
+    const page = await this._pageListService.findDraftByHashOrId(id);
     return {
       page: await this._pageListService.addFeaturedImage(page, image, req.user),
     };
   }
 
-  @Delete(':hash/featured-image')
+  @Delete(':id/featured-image')
   @CheckAbilities([Action.Update, 'PageEntity'])
-  async deleteFeaturedImage(@Param('hash') hash: string) {
-    const page = await this._pageListService.findDraftByHash(hash);
+  async deleteFeaturedImage(@Param('id') id: string) {
+    const page = await this._pageListService.findDraftByHashOrId(id);
     return {
       page: await this._pageListService.deleteFeaturedImage(page),
     };
   }
 
-  @Post(':hash/upload/image')
+  @Post(':id/upload/image')
   @CheckAbilities([Action.Update, 'PageEntity'])
   @UseInterceptors(FileInterceptor('image'))
   async addImage(
     @Req() req: any,
-    @Param('hash') hash: string,
+    @Param('id') id: string,
     @UploadedFile(FEATURED_IMAGE_UPLOAD_PIPE_BUILDER)
     image: Express.Multer.File,
   ) {
-    const draft = await this._pageListService.findDraftByHash(hash);
+    const draft = await this._pageListService.findDraftByHashOrId(id);
     const { file, page } = await this._pageListService.addImage(
       draft,
       image,

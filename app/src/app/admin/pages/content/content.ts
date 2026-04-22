@@ -47,7 +47,7 @@ export class Content {
       uploadFn: (file: File, base64: string) => {
         return new Promise((resolve, reject) => {
           this.api
-            .uploadInlineImage(this.editRoot.pageHash(), file)
+            .uploadInlineImage(this.editRoot.pageId(), file)
             .subscribe((res: any) => {
               resolve(res.file.url);
             });
@@ -72,7 +72,7 @@ export class Content {
           blocksContent: res.page.blocksContent
         });
         this.blocksContent.set(res.page.blocksContent);
-        this._initAutoSave(hash);
+        this._initAutoSave();
         this.loaded.set(true);
       },
       error: () => {
@@ -87,9 +87,9 @@ export class Content {
       return;
     }
     this.editRoot.saving.set(true);
-    const hash = this.editRoot.pageHash();
+    const id = this.editRoot.pageId();
     this.featuredImageUploading.set(true);
-    this.api.uploadFeaturedImage(hash, file).subscribe({
+    this.api.uploadFeaturedImage(id, file).subscribe({
       next: (res: any) => {
         this.page.set(res.page);
         this.editRoot.page.set(res.page);
@@ -106,9 +106,9 @@ export class Content {
   }
 
   deleteFeaturedImage() {
-    const hash = this.editRoot.pageHash();
+    const id = this.editRoot.pageId();
     this.editRoot.saving.set(true);
-    this.api.deleteFeaturedImage(hash).subscribe({
+    this.api.deleteFeaturedImage(id).subscribe({
       next: (res: any) => {
         this.page.set(res.page);
         this.editRoot.page.set(res.page);
@@ -124,7 +124,7 @@ export class Content {
     this.form.get('blocksContent')?.setValue(value);
   }
 
-  private _initAutoSave(hash: string) {
+  private _initAutoSave() {
     this.form.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(value => {
@@ -135,7 +135,7 @@ export class Content {
           if (this.form.invalid) {
             return;
           }
-          this.api.saveContent(hash, value).subscribe({
+          this.api.saveContent(this.editRoot.pageId(), value).subscribe({
             next: (res: any) => {
               this.page.set(res.page);
               this.editRoot.page.set(res.page);

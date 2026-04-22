@@ -9,6 +9,7 @@ import { PageContentDto } from '@/pages/application/dtos/page-content.dto';
 import { PageSettingsDto } from '@/pages/application/dtos/page-settings.dto';
 import { ContentBlocksToTextConverter } from '@/common/application/services/content-blocks-to-text-converter.service';
 import { SettingsService } from '@/settings/application/services/settings.service';
+import { TextQualityQueue } from '@/text-quality/text-quality.queue';
 import * as crypto from 'crypto';
 
 @Injectable()
@@ -19,6 +20,7 @@ export class PageListService {
     private _fileStorage: FileStorageService,
     private contentBlocksToTextConverter: ContentBlocksToTextConverter,
     private settingsService: SettingsService,
+    private textQualityQueue: TextQualityQueue,
   ) {}
 
   async getCountByStatusType(statusType: string, search = ''): Promise<number> {
@@ -95,6 +97,49 @@ export class PageListService {
     });
   }
 
+  async findOneByHashOrId(id: string): Promise<Page> {
+    return this._prisma.page.findFirst({
+      where: {
+        OR: [{ id }, { hash: id }],
+      },
+      include: {
+        author: true,
+        status: true,
+      },
+    });
+  }
+
+  async findDraftByHashOrId(id: string) {
+    const page = await this._prisma.page.findFirstOrThrow({
+      where: {
+        OR: [{ id }, { hash: id }],
+      },
+      include: {
+        featuredImage: true,
+        status: true,
+        author: true,
+        drafts: {
+          orderBy: { version: 'desc' },
+          take: 1,
+        },
+      },
+    });
+
+    const draft = page.drafts?.[0]?.draft as any;
+    if (draft) {
+      return {
+        ...page,
+        title: draft.title ?? page.title,
+        textContent: draft.textContent ?? page.textContent,
+        blocksContent: draft.blocksContent ?? page.blocksContent,
+        featuredImageUrl: draft.featuredImageUrl !== undefined ? draft.featuredImageUrl : page.featuredImageUrl,
+        featuredImageId: draft.featuredImageId !== undefined ? draft.featuredImageId : page.featuredImageId,
+      };
+    }
+
+    return page;
+  }
+
   async findPaginated(
     pageSize: number,
     pageNumber: number,
@@ -157,30 +202,7 @@ export class PageListService {
   }
 
   async delete(id: string): Promise<void> {
-    const page = await this.findOneById(id);
-
-    if (!page) {
-      return;
-    }
-
-    const status = await this._prisma.pageStatus.findUniqueOrThrow({
-      where: {
-        type: 'archived',
-      },
-    });
-
-    await this._prisma.page.update({
-      where: {
-        id: page.id,
-      },
-      data: {
-        status: {
-          connect: {
-            id: status.id,
-          },
-        },
-      },
-    });
+    await this.forceDelete(id);
   }
 
   async forceDelete(id: string): Promise<void> {
@@ -201,6 +223,12 @@ export class PageListService {
       });
     }
 
+    await this._prisma.pageDraft.deleteMany({
+      where: {
+        pageId: page.id,
+      },
+    });
+
     await this._prisma.page.delete({
       where: {
         id: page.id,
@@ -214,36 +242,6 @@ export class PageListService {
     }
   }
 
-  async findDraftByHash(hash: string) {
-    const page = await this._prisma.page.findFirstOrThrow({
-      where: {
-        hash,
-      },
-      include: {
-        featuredImage: true,
-        status: true,
-        author: true,
-        drafts: {
-          orderBy: { version: 'desc' },
-          take: 1,
-        },
-      },
-    });
-
-    const draft = page.drafts?.[0]?.draft as any;
-    if (draft) {
-      return {
-        ...page,
-        title: draft.title ?? page.title,
-        textContent: draft.textContent ?? page.textContent,
-        blocksContent: draft.blocksContent ?? page.blocksContent,
-        featuredImageUrl: draft.featuredImageUrl !== undefined ? draft.featuredImageUrl : page.featuredImageUrl,
-        featuredImageId: draft.featuredImageId !== undefined ? draft.featuredImageId : page.featuredImageId,
-      };
-    }
-
-    return page;
-  }
 
   private async updateDraftSnapshot(page: any, data: any) {
     const latestDraft = page.drafts?.[0];
@@ -298,8 +296,8 @@ export class PageListService {
     return draftData;
   }
 
-  async saveContent(hash: string, pageDto: PageContentDto) {
-    const page = await this.findDraftByHash(hash);
+  async saveContent(id: string, pageDto: PageContentDto) {
+    const page = await this.findDraftByHashOrId(id);
     const textContent = this.contentBlocksToTextConverter.convert(
       pageDto.blocksContent as any[],
     );
@@ -340,8 +338,8 @@ export class PageListService {
     };
   }
 
-  async saveSettings(hash: string, pageSettingsDto: PageSettingsDto) {
-    const page = await this.findDraftByHash(hash);
+  async saveSettings(id: string, pageSettingsDto: PageSettingsDto) {
+    const page = await this.findDraftByHashOrId(id);
 
     if (pageSettingsDto.slug) {
       await this.assertPageSlugUnique(pageSettingsDto.slug, page.id);
@@ -466,7 +464,7 @@ export class PageListService {
       }
     }
 
-    return this._prisma.page.update({
+    const updatedPage = await this._prisma.page.update({
       where: {
         id: page.id,
       },
@@ -484,6 +482,10 @@ export class PageListService {
         },
       },
     });
+
+    await this.textQualityQueue.analyzePage(updatedPage.id);
+
+    return updatedPage;
   }
 
   async addFeaturedImage(

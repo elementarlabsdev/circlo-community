@@ -18,6 +18,7 @@ export type PagePrimitives = {
   createdAt: Date;
   updatedAt: Date | null;
   publishedAt: Date | null;
+  qualityScore: unknown | null;
 };
 
 export class PageEntity {
@@ -58,6 +59,7 @@ export class PageEntity {
       createdAt: now,
       updatedAt: props.updatedAt ?? null,
       publishedAt: props.publishedAt ?? null,
+      qualityScore: null,
     };
     return new PageEntity(entity);
   }
@@ -84,6 +86,7 @@ export class PageEntity {
       createdAt: model.createdAt,
       updatedAt: model.updatedAt ?? null,
       publishedAt: model.publishedAt ?? null,
+      qualityScore: model.qualityScore ?? null,
     };
     return new PageEntity(entity);
   }

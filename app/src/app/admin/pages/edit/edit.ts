@@ -10,6 +10,7 @@ import { Tooltip } from '@ngstarter/components/tooltip';
 import { Icon } from '@ngstarter/components/icon';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
+import { Chip } from '@ngstarter/components/chips';
 
 export const ADMIN_PAGE_EDIT_ROOT = new InjectionToken('ADMIN_PAGE_EDIT_ROOT');
 
@@ -29,7 +30,8 @@ export const ADMIN_PAGE_EDIT_ROOT = new InjectionToken('ADMIN_PAGE_EDIT_ROOT');
     RouterOutlet,
     TimeAgoPipe,
     TranslocoPipe,
-    Tooltip
+    Tooltip,
+    Chip
   ],
   providers: [
     {
@@ -51,6 +53,9 @@ export class Edit {
   readonly saving = signal<any>(false);
   readonly pageHash = computed(() => {
     return this.activatedRoute.snapshot.params['hash'];
+  });
+  readonly pageId = computed(() => {
+    return this.page()?.id;
   });
   loaded = signal(false);
 

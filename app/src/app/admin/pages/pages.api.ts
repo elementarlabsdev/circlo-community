@@ -32,54 +32,54 @@ export class PagesApi {
   }
 
   createNew() {
-    return this.api.post<{ page: { hash: string } }>(`${this.base}/create-new`, {});
+    return this.api.post<{ page: { id: string, hash: string } }>(`${this.base}/create-new`, {});
   }
 
-  getPage(hash: string) {
-    return this.api.get<{ page: any }>(`${this.base}/${hash}`);
+  getPage(id: string) {
+    return this.api.get<{ page: any }>(`${this.base}/${id}`);
   }
 
-  getContent(hash: string) {
-    return this.api.get<{ page: any }>(`${this.base}/${hash}/content`);
+  getContent(id: string) {
+    return this.api.get<{ page: any }>(`${this.base}/${id}/content`);
   }
 
-  saveContent(hash: string, payload: any) {
-    return this.api.post<{ page: any }>(`${this.base}/${hash}/content`, payload);
+  saveContent(id: string, payload: any) {
+    return this.api.post<{ page: any }>(`${this.base}/${id}/content`, payload);
   }
 
-  getSettings(hash: string) {
-    return this.api.get<{ page: any }>(`${this.base}/${hash}/settings`);
+  getSettings(id: string) {
+    return this.api.get<{ page: any }>(`${this.base}/${id}/settings`);
   }
 
-  saveSettings(hash: string, payload: any) {
-    return this.api.post<{ page: any }>(`${this.base}/${hash}/settings`, payload);
+  saveSettings(id: string, payload: any) {
+    return this.api.post<{ page: any }>(`${this.base}/${id}/settings`, payload);
   }
 
-  publish(hash: string) {
-    return this.api.post<{ page: any }>(`${this.base}/${hash}/publish`);
+  publish(id: string) {
+    return this.api.post<{ page: any }>(`${this.base}/${id}/publish`);
   }
 
-  unpublish(hash: string) {
-    return this.api.post<{ page: any }>(`${this.base}/${hash}/unpublish`);
+  unpublish(id: string) {
+    return this.api.post<{ page: any }>(`${this.base}/${id}/unpublish`);
   }
 
-  delete(hash: string) {
-    return this.api.delete(`${this.base}/${hash}/delete`);
+  delete(id: string) {
+    return this.api.delete(`${this.base}/${id}/delete`);
   }
 
-  uploadFeaturedImage(hash: string, file: File) {
+  uploadFeaturedImage(id: string, file: File) {
     const formData = new FormData();
     formData.append('image', file);
-    return this.api.post<{ page: any }>(`${this.base}/${hash}/featured-image`, formData);
+    return this.api.post<{ page: any }>(`${this.base}/${id}/featured-image`, formData);
   }
 
-  deleteFeaturedImage(hash: string) {
-    return this.api.delete(`${this.base}/${hash}/featured-image`);
+  deleteFeaturedImage(id: string) {
+    return this.api.delete(`${this.base}/${id}/featured-image`);
   }
 
-  uploadInlineImage(hash: string, file: File) {
+  uploadInlineImage(id: string, file: File) {
     const formData = new FormData();
     formData.append('image', file);
-    return this.api.post(`${this.base}/${hash}/upload/image`, formData);
+    return this.api.post(`${this.base}/${id}/upload/image`, formData);
   }
 }

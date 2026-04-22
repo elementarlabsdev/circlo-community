@@ -124,26 +124,26 @@ export class ListComponent {
 
   createNew() {
     this.api.createNew().subscribe(({page}) => {
-      this.router.navigate(['/admin/pages/edit', page.hash]);
+      this.router.navigate(['/admin/pages/edit', page.hash, 'content']);
     });
   }
 
   edit(page: any) {
-    this.router.navigate(['/admin/pages/edit', page.hash]);
+    this.router.navigate(['/admin/pages/edit', page.hash, 'content']);
   }
 
   delete(page: any) {
     const confirmDef = this.confirmManager.open({
-      title: 'Delete page',
-      description: 'Deletion is not reversible. This page will be completely deleted.'
+      title: this.translate.instant('admin.pages.list.deleteConfirmTitle'),
+      description: this.translate.instant('admin.pages.list.deleteConfirmDescription')
     });
     confirmDef.confirmed.subscribe(() => {
-      this.api.delete(page.hash).subscribe({
+      this.api.delete(page.id).subscribe({
         next: () => {
-          this.snack.open('Deleted!', 'OK', { duration: 2000 });
+          this.snack.open(this.translate.instant('admin.pages.list.deleted'), this.translate.instant('admin.pages.list.ok'), { duration: 2000 });
           (this.datatable()?.api as any)?.refresh();
         },
-        error: () => this.snack.open('Delete failed', undefined, { duration: 3000 })
+        error: () => this.snack.open(this.translate.instant('admin.pages.list.deleteFailed'), undefined, { duration: 3000 })
       });
     });
   }

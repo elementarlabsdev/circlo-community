@@ -31,6 +31,9 @@ export class TextQualityWorker extends WorkerHost {
         case 'analyze-thread':
           await this.processThread(id);
           break;
+        case 'analyze-page':
+          await this.processPage(id);
+          break;
         default:
           this.logger.warn(`Unknown job name: ${job.name}`);
       }
@@ -80,6 +83,21 @@ export class TextQualityWorker extends WorkerHost {
 
     const score = await this.textQualityService.analyze(thread.textContent);
     await this.prisma.thread.update({
+      where: { id },
+      data: { qualityScore: score as any },
+    });
+  }
+
+  private async processPage(id: string) {
+    const page = await this.prisma.page.findUnique({
+      where: { id },
+      select: { textContent: true },
+    });
+
+    if (!page) return;
+
+    const score = await this.textQualityService.analyze(page.textContent);
+    await this.prisma.page.update({
       where: { id },
       data: { qualityScore: score as any },
     });

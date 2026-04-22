@@ -33,4 +33,8 @@ export class TextQualityQueue {
   async analyzeThread(id: string) {
     await this.queue.add('analyze-thread', { id }, await this.getOptions());
   }
+
+  async analyzePage(id: string) {
+    await this.queue.add('analyze-page', { id }, await this.getOptions());
+  }
 }
