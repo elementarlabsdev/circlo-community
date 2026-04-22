@@ -115,7 +115,7 @@ export class Captcha {
 
     const dialogRef = this._dialog.open(dialogComponent, {
       data: provider,
-      width: '800px',
+      width: '560px',
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.isConfigured) {

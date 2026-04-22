@@ -99,9 +99,14 @@ export class AnalyticsComponent {
         dialogComponent = null;
     }
 
-    if (!dialogComponent) return;
+    if (!dialogComponent) {
+      return;
+    }
 
-    const dialogRef = this._dialog.open(dialogComponent, {data: provider.config, width: '800px'});
+    const dialogRef = this._dialog.open(dialogComponent, {
+      data: provider.config,
+      width: '460px'
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.isConfigured) {
         const payload = {type: provider.type, isEnabled: result.isEnabled ?? true, config: result.formData} as any;
