@@ -36,7 +36,7 @@
 
         <main class="border border-border rounded-3xl bg-surface-container-lowest overflow-hidden">
           @if (publication.featuredImageUrl) {
-            <div class="hidden lg:flex items-center justify-center h-[440px] max-h-[440px] relative overflow-hidden bg-surface-container">
+            <div class="hidden lg:flex items-center justify-center h-[400px] max-h-[400px] relative overflow-hidden bg-surface-container">
               <img [alt]="publication.title" class="bg-cover lazyload"
                    [attr.data-src]="publication.featuredImageUrl | imageProxy:'880x430,q80'">
             </div>

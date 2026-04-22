@@ -1,6 +1,6 @@
 @if (readingTime().minutes === 0) {
   {{ 'readingTime.less-than-a-minute-read' | transloco }}
 } @else {
-  {{ readingTime().minutes }} {{ 'readingTimeInMinutes' | transloco:{ count: readingTime().minutes } }}
+  {{ 'readingTimeInMinutes' | transloco:{ count: readingTime().minutes } }}
   {{ 'read' | transloco }}
 }
