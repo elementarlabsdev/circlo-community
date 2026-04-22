@@ -96,7 +96,6 @@ export class AppComponent implements OnInit {
           ReportAbuseDialogComponent, { targetType: string; targetId: string; reportedUrl?: string },
           ReportAbuseDialogResult
         >(ReportAbuseDialogComponent, {
-          width: '640px',
           data: payload
         });
       });
