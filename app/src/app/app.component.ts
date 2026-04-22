@@ -61,6 +61,9 @@ export class AppComponent implements OnInit {
     this._translate.setActiveLang(environment.locale);
 
     afterNextRender(() => {
+      this._analyticsService.init();
+      this._adsenseService.init();
+
       // Scroll a page to top if url changed
       this._router.events
         .pipe(
@@ -80,8 +83,6 @@ export class AppComponent implements OnInit {
     this._setHtmlLocale();
     this._setFavicon();
     this.setFontFamily();
-    this._analyticsService.trackPageViews();
-    this._adsenseService.init();
     this._seoService.trackCanonicalChanges(this._envService.getValue('siteUrl'));
     this.notificationService.initialize();
     this.actionManager

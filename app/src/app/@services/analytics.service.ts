@@ -1,10 +1,15 @@
-import { inject, Injectable, isDevMode } from '@angular/core';
+import { inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
 import { filter } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { AppStore } from '@store/app.store';
 
-declare const gtag: any;
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +18,15 @@ export class AnalyticsService {
   private _appStore = inject(AppStore);
   private _router = inject(Router);
   private _document = inject(DOCUMENT);
+  private platformId = inject(PLATFORM_ID);
+  private loaded = false;
+  private googleAnalyticsId: string;
 
-  trackPageViews(): void {
+  init() {
+    if (!isPlatformBrowser(this.platformId) || this.loaded) {
+      return;
+    }
+
     const analyticsProvider = this._appStore.analyticsProvider();
     let googleAnalyticsId = null;
 
@@ -26,31 +38,36 @@ export class AnalyticsService {
       return;
     }
 
-    try {
-      const url = 'https://www.googletagmanager.com/gtag/js?id=';
-      const gTagScript = this._document.createElement('script');
-      gTagScript.async = true;
-      gTagScript.src = `${url}${googleAnalyticsId}`;
-      this._document.head.appendChild(gTagScript);
-      const dataLayerScript = this._document.createElement('script');
-      dataLayerScript.innerHTML = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${googleAnalyticsId}');`
-      ;
-      this._document.head.appendChild(dataLayerScript);
-      this._router.events.pipe(
-        filter((event) => event instanceof NavigationEnd),
-      ).subscribe((event: any) => {
-        gtag('event', 'page_view', {
-            page_title: this._document.head.title,
-            page_path: event.urlAfterRedirects,
-            page_location: this._document.location.href
-          });
-        })
-      ;
-    } catch (e) {
+    this.googleAnalyticsId = googleAnalyticsId;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`;
+
+    this._document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    };
+
+    window.gtag('js', new Date());
+    window.gtag('config', googleAnalyticsId);
+
+    this.loaded = true;
+
+    this._router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.pageView(event.urlAfterRedirects);
+      });
+  }
+
+  pageView(url: string): void {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('config', this.googleAnalyticsId, {
+        page_path: url
+      });
     }
   }
 }
