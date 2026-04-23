@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnInit } from '@angular/core';
+import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
 import { EditComponent } from '@/studio/publications/edit/edit.component';
 import { PUBLICATION_EDIT_ROOT } from '@/studio/publications/types';
 import { ApiService } from '@services/api.service';
@@ -37,6 +37,8 @@ export class Publish implements OnInit {
   private editRoot = inject<EditComponent>(PUBLICATION_EDIT_ROOT);
   private api = inject(ApiService);
 
+  publishing = signal(false);
+
   publication = computed(() => this.editRoot.publication());
   scheduledAt = model<Date | null>(null);
 
@@ -74,16 +76,19 @@ export class Publish implements OnInit {
   }
 
   publish(): void {
+    this.publishing.set(true);
     const payload: any = {};
+
     if (this.scheduledAt()) {
       payload.scheduledAt = this.scheduledAt();
     }
+
     this.api
       .post(`studio/publication/${this.editRoot.publicationHash()}/publish`, payload)
       .subscribe((res: any) => {
         this.editRoot.publication.set(res.publication);
-      })
-    ;
+        this.publishing.set(false);
+      });
   }
 
   cancelSchedule(): void {
@@ -91,7 +96,6 @@ export class Publish implements OnInit {
       .post(`studio/publication/${this.editRoot.publicationHash()}/cancel-schedule`, {})
       .subscribe((res: any) => {
         this.editRoot.publication.set(res.publication);
-      })
-    ;
+      });
   }
 }

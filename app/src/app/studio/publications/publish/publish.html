@@ -38,6 +38,7 @@
     }
   } @else {
     <button ngsButton="filled" (click)="publish()"
-            [disabled]="!publication().hasChanges">Publish Changes</button>
+            [disabled]="!publication().hasChanges"
+            [loading]="publishing()">Publish Changes</button>
   }
 </div>

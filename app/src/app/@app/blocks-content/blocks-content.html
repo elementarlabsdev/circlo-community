@@ -41,7 +41,7 @@
     @case ('image') {
       <ngs-image-zoom-viewer>
         <img [src]="block.content.src | imageProxy:'1000x,q80'"
-             [alt]="block.content.alt" class="max-w-full" ngsImageZoomViewerImage>
+             [alt]="block.content.alt" class="max-w-full not-prose" ngsImageZoomViewerImage>
       </ngs-image-zoom-viewer>
     }
     @case ('code') {
@@ -116,7 +116,7 @@
 <!--      }-->
 <!--    }-->
     @case ('table') {
-      <div class="border border-border rounded-2xl overflow-hidden">
+      <div class="border border-border rounded-2xl overflow-hidden my-7">
         <table ngs-native-table class="not-prose">
           <tbody>
             @for (row of block['content']; track row; let last = $last) {
