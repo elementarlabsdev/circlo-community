@@ -25,7 +25,7 @@ export class UpdateCaptchaProviderUseCase {
     provider.update(data);
 
     if (type === 'local' && provider.siteKey && provider.secretKey) {
-      await this.capJsService.registerSite(provider.siteKey, provider.secretKey);
+      // Manual registration in Cap dashboard is required for version 2.x
     }
 
     const providers = await this.repo.findAll();

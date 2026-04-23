@@ -783,6 +783,7 @@
   "captchaProvider.local.title": "Local Captcha",
   "captchaProvider.local.siteKey": "Site Key",
   "captchaProvider.local.secretKey": "Secret Key",
+  "captchaProvider.local.adminKey": "Admin Key",
   "captchaProvider.isEnabled": "Enabled",
   "captchaProvider.recaptcha.title": "reCAPTCHA",
   "captchaProvider.recaptcha.siteKey": "Site Key",

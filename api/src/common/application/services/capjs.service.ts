@@ -59,33 +59,4 @@ export class CapJsService {
       );
     }
   }
-
-  async registerSite(siteKey: string, secretKey: string): Promise<void> {
-    const adminKey = this.configService.get<string>('CAP_ADMIN_KEY');
-    if (!adminKey) {
-      return;
-    }
-
-    const captchaHostUrl =
-      this.configService.get<string>('CAPTCHA_HOST_URL') || 'http://cap:3001';
-
-    try {
-      await lastValueFrom(
-        this.httpService.post(
-          `${captchaHostUrl}/api/site`,
-          {
-            site_key: siteKey,
-            secret_key: secretKey,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${adminKey}`,
-            },
-          },
-        ),
-      );
-    } catch (error) {
-      console.error('Failed to register site in CapJS service', error);
-    }
-  }
 }

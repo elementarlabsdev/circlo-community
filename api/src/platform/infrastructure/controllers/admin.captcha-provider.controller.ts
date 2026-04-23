@@ -7,6 +7,7 @@ import { SettingsService } from '@/settings/application/services/settings.servic
 import { PlatformService } from '@/platform/application/services/platform.service';
 import { UpdateCaptchaProviderDto } from '@/platform/application/dtos/update-captcha-provider.dto';
 import { SetDefaultCaptchaProviderDto } from '@/platform/application/dtos/set-default-captcha-provider.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('admin/settings/captcha')
 @UseGuards(AuthGuard, AbilitiesGuard)
@@ -14,6 +15,7 @@ export class AdminCaptchaProviderController {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly platformService: PlatformService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Get()
@@ -25,6 +27,14 @@ export class AdminCaptchaProviderController {
     return {
       settings,
       captchaProviders,
+    };
+  }
+
+  @Get('admin-key')
+  @CheckAbilities([Action.Read, 'AdminPanel'])
+  async getAdminKey() {
+    return {
+      adminKey: this.configService.get<string>('CAP_ADMIN_KEY'),
     };
   }
 

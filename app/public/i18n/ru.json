@@ -781,6 +781,7 @@
   "captchaProvider.local.title": "Локальная капча",
   "captchaProvider.local.siteKey": "Ключ сайта",
   "captchaProvider.local.secretKey": "Секретный ключ",
+  "captchaProvider.local.adminKey": "Ключ администратора",
   "captchaProvider.isEnabled": "Включено",
   "captchaProvider.recaptcha.title": "reCAPTCHA",
   "captchaProvider.recaptcha.siteKey": "Ключ сайта",

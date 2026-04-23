@@ -10,12 +10,22 @@
       <input ngsInput formControlName="secretKey" />
     </ngs-form-field>
   </form>
-  @if (_data.adminPanelUrl) {
-    <div>
-      <a [href]="_data.adminPanelUrl" target="_blank" class="text-primary hover:underline flex items-center gap-1">
-        {{ 'captchaProvider.local.getKeys' | transloco }}
-        <ngs-icon name="fluent:open-24-regular"/>
-      </a>
+
+  <div>
+    <a [href]="_data.adminPanelUrl" target="_blank" class="text-primary hover:underline flex items-center gap-1">
+      {{ 'captchaProvider.local.getKeys' | transloco }}
+      <ngs-icon name="fluent:open-24-regular"/>
+    </a>
+  </div>
+
+  @if (adminKey()) {
+    <div class="mt-4 p-3 bg-surface-container-low rounded-2xl">
+      <div class="text-xs font-semibold uppercase text-neutral-500 mb-2">
+        {{ 'captchaProvider.local.adminKey' | transloco }}
+      </div>
+      <div class="font-mono text-sm break-all select-all">
+        {{ adminKey() }}
+      </div>
     </div>
   }
 </ngs-dialog-content>
