@@ -29,15 +29,6 @@
       "@directives/*": [
         "./src/app/@directives/*"
       ],
-      "@elementar-uix/components/content-editor": [
-        "./projects/content-editor"
-      ],
-      "@elementar-uix/components/course-builder": [
-        "./projects/course-builder"
-      ],
-      "@elementar-uix/components/video-player": [
-        "./projects/video-player"
-      ],
       "@/*": [
         "./src/app/*"
       ]

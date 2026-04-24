@@ -6,7 +6,7 @@ import { Button } from '@ngstarter/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Icon } from '@ngstarter/components/icon';
 import { Tooltip } from '@ngstarter/components/tooltip';
-import { ContentBuilderComponent } from '@elementar-uix/components/content-editor';
+import { ContentBuilderComponent } from '@ngstarter/components/content-editor';
 import { TUTORIAL_EDIT_ROOT } from '@/studio/tutorials/types';
 import { EditComponent } from '@/studio/tutorials/edit/edit.component';
 import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';

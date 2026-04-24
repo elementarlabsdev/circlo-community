@@ -5,7 +5,7 @@ import { ApiService } from '@services/api.service';
 import { Publication } from '@model/interfaces';
 import { PUBLICATION_EDIT_ROOT } from '@/studio/publications/types';
 import { EditComponent } from '@/studio/publications/edit/edit.component';
-import { ContentBuilderComponent, ContentEditorBlock } from '@elementar-uix/components/content-editor';
+import { ContentBuilderComponent, ContentEditorBlock } from '@ngstarter/components/content-editor';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { Button } from '@ngstarter/components/button';
 import { UploadArea, UploadTriggerDirective } from '@ngstarter/components/upload';

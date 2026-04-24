@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angu
 import { SnackBar } from '@ngstarter/components/snack-bar';
 import { PagesApi } from '../pages.api';
 import { ADMIN_PAGE_EDIT_ROOT, Edit } from '@/admin/pages/edit/edit';
-import { ContentBuilderComponent, ContentEditorBlock } from '@elementar-uix/components/content-editor';
+import { ContentBuilderComponent, ContentEditorBlock } from '@ngstarter/components/content-editor';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { Button } from '@ngstarter/components/button';

@@ -28,7 +28,7 @@ import { ConfirmManager } from '@ngstarter/components/confirm';
 import { ThreadService } from '@services/thread.service';
 import { SnackBar } from '@ngstarter/components/snack-bar';
 import { ThreadNumberOfReplies } from '@app/thread-number-of-replies/thread-number-of-replies';
-import { VideoPlayer } from '@elementar-uix/components/video-player';
+import { VideoPlayer } from '@ngstarter/components/video-player';
 import { Dialog } from '@ngstarter/components/dialog';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ThreadDialogService } from '@services/thread-dialog.service';
