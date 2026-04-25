@@ -30,7 +30,6 @@ import { SnackBar } from '@ngstarter/components/snack-bar';
 import { ThreadNumberOfReplies } from '@app/thread-number-of-replies/thread-number-of-replies';
 import { VideoPlayer } from '@ngstarter/components/video-player';
 import { Carousel, CarouselCard } from '@ngstarter/components/carousel';
-import { Dialog } from '@ngstarter/components/dialog';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ThreadDialogService } from '@services/thread-dialog.service';
 import { AppStore } from '@store/app.store';
@@ -85,7 +84,6 @@ export class ThreadItemComponent implements OnInit {
   private _confirmManager = inject(ConfirmManager);
   private _threadService = inject(ThreadService);
   private _snack = inject(SnackBar);
-  private _dialog = inject(Dialog);
   private _transloco = inject(TranslocoService);
   private _threadDialogService = inject(ThreadDialogService);
   private _appStore = inject(AppStore);

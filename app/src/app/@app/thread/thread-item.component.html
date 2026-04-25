@@ -54,13 +54,13 @@
         <div class="mt-5">
           <ngs-carousel>
             @for (mediaItem of thread().mediaItems; track mediaItem.id) {
-              <ngs-carousel-card class="h-[250px] block">
+              <ngs-carousel-card class="h-[270px] block">
                 <div
                   class="rounded-2xl overflow-hidden border border-border bg-surface-container-low h-full">
                   @if (mediaItem.type === 'image') {
-                    <ngs-image-zoom-viewer class="h-[250px]">
+                    <ngs-image-zoom-viewer class="h-[270px]">
                       <img [src]="mediaItem.url | imageProxy: '1000x1000,q90'"
-                           class="w-full h-full max-h-[250px] object-cover block"
+                           class="w-full h-full max-h-[270px] object-cover block"
                            [alt]="mediaItem.name" ngsImageZoomViewerImage>
                     </ngs-image-zoom-viewer>
                   } @else if (mediaItem.type === 'video') {
