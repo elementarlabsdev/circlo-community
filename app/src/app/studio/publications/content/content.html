@@ -1,6 +1,6 @@
 @if (loaded()) {
   <div #scrollContainer class="absolute inset-0 editor-scrollable-element">
-    <div class="w-[900px] mx-auto py-10" [formGroup]="form">
+    <div class="md:w-[780px] mx-auto pt-10 pb-2" [formGroup]="form">
       <div>
         @if (publication()!.featuredImageUrl) {
           <div class="bg-surface-container-low mb-10 overflow-hidden rounded-2xl relative flex
@@ -32,11 +32,9 @@
                                  overflow-hidden resize-none font-bold bg-transparent"></textarea>
         </div>
     </div>
-    <div class="bg-surface-container-lowest rounded-3xl mt-7">
-      <ngs-content-builder [content]="blocksContent()"
-                           [options]="options()"
-                           (contentChanged)="onContentChanged($event)"/>
-    </div>
+    <ngs-content-builder [content]="blocksContent()"
+                         [options]="options()"
+                         (contentChanged)="onContentChanged($event)"/>
   </div>
 } @else {
   <div class="p-12">Loading...</div>
