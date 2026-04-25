@@ -1,6 +1,6 @@
 FROM node:22-slim AS builder
 WORKDIR /app
-RUN apt-get update && apt-get install -y python3 make g++ curl
+RUN apt-get update && apt-get install -y python3 make g++ curl ffmpeg
 COPY ./api/package*.json ./
 COPY ./api/prisma ./prisma/
 COPY ./api/prisma.config.ts ./
@@ -11,7 +11,7 @@ RUN npm run build
 
 FROM node:22-slim
 WORKDIR /app
-RUN apt-get update && apt-get install -y curl python3 make g++
+RUN apt-get update && apt-get install -y curl python3 make g++ ffmpeg
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma ./prisma/
 COPY --from=builder /app/src ./src/
