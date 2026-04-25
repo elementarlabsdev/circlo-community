@@ -1,5 +1,18 @@
-<div class="[&.root]:border [&.root]:border-border [&.root]:rounded-3xl bg-surface-container-lowest overflow-hidden"
+<div class="[&.root]:border [&.root]:border-border relative group [&.root]:rounded-3xl bg-surface-container-lowest overflow-hidden"
      [class.root]="!nested()">
+  @if (canDelete()) {
+    <div class="absolute w-max top-1 right-1 z-10 opacity-0 group-hover:opacity-100">
+      <button ngsIconButton [ngsMenuTriggerFor]="actionsMenu">
+        <ngs-icon name="fluent:more-vertical-24-regular"/>
+      </button>
+    </div>
+    <ngs-menu #actionsMenu="ngsMenu">
+      <button ngs-menu-item (click)="deleteThread()">
+        <ngs-icon name="fluent:delete-24-regular"/>
+        {{ 'common.delete' | transloco }}
+      </button>
+    </ngs-menu>
+  }
   <div class="px-5 pt-5 pb-3">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
@@ -13,7 +26,8 @@
     </div>
     @if (thread().htmlContent) {
       <div class="mt-5">
-        <ngs-markdown [data]="thread().htmlContent" [routerLink]="['/thread', thread().id]"
+        <ngs-markdown [data]="thread().htmlContent"
+                      [routerLink]="['/thread', thread().id]"
                       class="cursor-pointer block"/>
       </div>
     }
@@ -37,22 +51,28 @@
           </div>
         </div>
       } @else {
-        <div class="mt-5 columns-2 gap-2">
-          @for (mediaItem of thread().mediaItems; track mediaItem.id) {
-            <div
-              class="rounded-2xl overflow-hidden border border-border bg-surface-container-low mb-2 break-inside-avoid">
-              @if (mediaItem.type === 'image') {
-                <img [src]="mediaItem.url | imageProxy: '1000x1000,q90'"
-                     class="w-full h-auto block"
-                     [alt]="mediaItem.name">
-              } @else if (mediaItem.type === 'video') {
-                <ngs-video-player [src]="mediaItem.url"
-                                  [payload]="mediaItem.payload"
-                                  class="w-full block">
-                </ngs-video-player>
-              }
-            </div>
-          }
+        <div class="mt-5">
+          <ngs-carousel>
+            @for (mediaItem of thread().mediaItems; track mediaItem.id) {
+              <ngs-carousel-card class="h-[250px] block">
+                <div
+                  class="rounded-2xl overflow-hidden border border-border bg-surface-container-low h-full">
+                  @if (mediaItem.type === 'image') {
+                    <ngs-image-zoom-viewer class="h-[250px]">
+                      <img [src]="mediaItem.url | imageProxy: '1000x1000,q90'"
+                           class="w-full h-full max-h-[250px] object-cover block"
+                           [alt]="mediaItem.name" ngsImageZoomViewerImage>
+                    </ngs-image-zoom-viewer>
+                  } @else if (mediaItem.type === 'video') {
+                    <ngs-video-player [src]="mediaItem.url"
+                                      [payload]="mediaItem.payload"
+                                      class="w-full h-full block">
+                    </ngs-video-player>
+                  }
+                </div>
+              </ngs-carousel-card>
+            }
+          </ngs-carousel>
         </div>
       }
     }
@@ -75,16 +95,15 @@
         }
       </div>
       <div class="flex items-center gap-3 relative -end-2">
-        @if (canDelete()) {
-          <button ngsIconButton (click)="deleteThread()" [ngsTooltip]="'common.delete' | transloco">
-            <ngs-icon name="fluent:delete-24-regular"/>
-          </button>
-        }
+        <!--        @if (canDelete()) {-->
+        <!--          <button ngsIconButton (click)="deleteThread()" [ngsTooltip]="'common.delete' | transloco">-->
+        <!--            <ngs-icon name="fluent:delete-24-regular"/>-->
+        <!--          </button>-->
+        <!--        }-->
         <app-bookmark-button targetType="thread" [targetId]="thread().id"/>
       </div>
     </div>
   </div>
-
   @if (thread().replies && thread().replies!.length > 0 && depth() < 1) {
     <div>
       @for (reply of thread().replies; track reply.id) {

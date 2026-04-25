@@ -23,7 +23,9 @@
             <div class="flex flex-col gap-1 items-center justify-center group cursor-pointer">
               <app-bookmark-button targetType="publication" [targetId]="publication.id"/>
             </div>
-            <button ngsIconButton [ngsMenuTriggerFor]="extraActions"><ngs-icon name="fluent:more-vertical-24-regular"/></button>
+            <button ngsIconButton [ngsMenuTriggerFor]="extraActions">
+              <ngs-icon name="fluent:more-vertical-24-regular"/>
+            </button>
           </div>
         }
       </div>
@@ -36,7 +38,8 @@
 
         <main class="border border-border rounded-3xl bg-surface-container-lowest overflow-hidden">
           @if (publication.featuredImageUrl) {
-            <div class="hidden lg:flex items-center justify-center h-[400px] max-h-[400px] relative overflow-hidden bg-surface-container">
+            <div
+              class="hidden lg:flex items-center justify-center h-[400px] max-h-[400px] relative overflow-hidden bg-surface-container">
               <img [alt]="publication.title" class="bg-cover lazyload"
                    [attr.data-src]="publication.featuredImageUrl | imageProxy:'880x430,q80'">
             </div>
@@ -72,11 +75,12 @@
               <app-subscription [targetId]="publication.author.id" targetType="user"/>
             </div>
 
-            <h1 class="text-2xl md:text-3xl lg:text-5xl font-extrabold lg:leading-tight mt-6">{{ publication.title }}</h1>
+            <h1
+              class="text-2xl md:text-3xl lg:text-5xl font-extrabold lg:leading-tight mt-6">{{ publication.title }}</h1>
 
             <div class="flex items-center flex-wrap justify-between gap-4 mt-6">
               @if (publication.reactionsCount > 0) {
-                <app-reaction-list [reactions]="reactions" size="large" />
+                <app-reaction-list [reactions]="reactions" size="large"/>
               }
               <div class="flex items-center flex-wrap gap-4">
                 <div class="text-xs whitespace-nowrap">{{ publication.publishedAt | timeAgo }}</div>
@@ -94,13 +98,15 @@
             @if (publication.canonicalUrl) {
               <ngs-alert variant="informative" class="mt-7 overflow-hidden overflow-ellipsis whitespace-nowrap">
                 <span class="font-medium">{{ 'publicationView.originallyPublishedAt' | transloco }}</span>:
-                <a [href]="publication.canonicalUrl" class="text-primary hover:underline underline-offset-1">{{ publication.canonicalUrl }}</a>
+                <a [href]="publication.canonicalUrl"
+                   class="text-primary hover:underline underline-offset-1">{{ publication.canonicalUrl }}</a>
               </ngs-alert>
             }
 
             <article class="prose-sm lg:prose lg:max-w-full mt-12 dark:prose-invert space-y-8 relative">
               @if (!hasAccess()) {
-                <div class="bg-surface-container-low rounded-3xl p-8 lg:p-12 flex flex-col items-center text-center border-2 border-dashed border-border/50">
+                <div
+                  class="bg-surface-container-low rounded-3xl p-8 lg:p-12 flex flex-col items-center text-center border-2 border-dashed border-border/50">
                   <div class="size-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
                     <ngs-icon name="fluent:lock-closed-24-regular" class="text-4xl text-primary"/>
                   </div>
@@ -228,7 +234,8 @@
         <div class="bg-surface-container-low rounded-2xl p-8 space-y-5">
           <div class="font-medium">
             {{ 'publication.moreFrom' | transloco }}
-            <a [routerLink]="['/channel', publication.channel.slug]" class="text-primary">{{ publication.channel.name }}</a>
+            <a [routerLink]="['/channel', publication.channel.slug]"
+               class="text-primary">{{ publication.channel.name }}</a>
           </div>
           <div class="space-y-5">
             @for (publicationOfChannel of morePublicationsOfChannel; track publicationOfChannel) {

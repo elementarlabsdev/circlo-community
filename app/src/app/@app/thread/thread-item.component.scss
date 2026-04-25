@@ -6,4 +6,8 @@
   .has-reaction {
     color: theme(--color-red-500);
   }
+
+  ngs-carousel {
+    --ngs-carousel-gap: --spacing(4);
+  }
 }

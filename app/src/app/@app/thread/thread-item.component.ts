@@ -29,6 +29,7 @@ import { ThreadService } from '@services/thread.service';
 import { SnackBar } from '@ngstarter/components/snack-bar';
 import { ThreadNumberOfReplies } from '@app/thread-number-of-replies/thread-number-of-replies';
 import { VideoPlayer } from '@ngstarter/components/video-player';
+import { Carousel, CarouselCard } from '@ngstarter/components/carousel';
 import { Dialog } from '@ngstarter/components/dialog';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ThreadDialogService } from '@services/thread-dialog.service';
@@ -36,6 +37,9 @@ import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
 import { CommentLikesCountComponent } from '@app/comment-likes-count/comment-likes-count.component';
 import { MarkdownComponent } from '@app/markdown/markdown.component';
+import {ImageZoomViewer, ImageZoomViewerImage} from "@ngstarter/components/image-zoom-viewer";
+import {AddComplaintDirective} from "@directives/add-complaint.directive";
+import {Menu, MenuItem, MenuTrigger} from "@ngstarter/components/menu";
 
 @Component({
   selector: 'app-thread-item',
@@ -49,10 +53,18 @@ import { MarkdownComponent } from '@app/markdown/markdown.component';
     Button,
     ThreadNumberOfReplies,
     VideoPlayer,
+    Carousel,
+    CarouselCard,
     CommentLikesCountComponent,
     MarkdownComponent,
     Tooltip,
     TranslocoPipe,
+    ImageZoomViewer,
+    ImageZoomViewerImage,
+    AddComplaintDirective,
+    Menu,
+    MenuItem,
+    MenuTrigger,
   ],
   templateUrl: './thread-item.component.html',
   styleUrl: './thread-item.component.scss',
