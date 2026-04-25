@@ -66,6 +66,7 @@
                   } @else if (mediaItem.type === 'video') {
                     <ngs-video-player [src]="mediaItem.url"
                                       [payload]="mediaItem.payload"
+                                      [minimalControls]="true"
                                       class="w-full h-full block">
                     </ngs-video-player>
                   }
