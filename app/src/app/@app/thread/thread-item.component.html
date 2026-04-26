@@ -35,9 +35,10 @@
       @if (thread().mediaItems!.length === 1) {
         <div class="mt-5">
           @let mediaItem = thread().mediaItems![0];
-          <div class="rounded-2xl overflow-hidden border border-border bg-surface-container-low"
-               [class.max-w-2xl]="mediaItem.payload?.orientation === 'landscape'"
-               [class.max-w-sm]="mediaItem.payload?.orientation === 'portrait'">
+          <div class="rounded-2xl overflow-hidden border border-border bg-surface-container-low
+                      [&.is-portrait]:max-w-[300px]"
+               [class.max-w-2xl]="mediaItem.orientation === 'landscape'"
+               [class.is-portrait]="mediaItem.orientation === 'portrait'">
             @if (mediaItem.type === 'image') {
               <img [src]="mediaItem.url | imageProxy: '1600x1600,q90'"
                    class="w-full h-auto block"
@@ -45,7 +46,9 @@
             } @else if (mediaItem.type === 'video') {
               <ngs-video-player [src]="mediaItem.url"
                                 [payload]="mediaItem.payload"
-                                class="w-full block">
+                                [orientation]="mediaItem.orientation"
+                                class="w-full block [&.is-portrait]:max-w-[300px]"
+                                [class.is-portrait]="mediaItem.orientation === 'portrait'">
               </ngs-video-player>
             }
           </div>
@@ -65,6 +68,7 @@
                     </ngs-image-zoom-viewer>
                   } @else if (mediaItem.type === 'video') {
                     <ngs-video-player [src]="mediaItem.url"
+                                      [orientation]="mediaItem.orientation"
                                       [payload]="mediaItem.payload"
                                       [minimalControls]="true"
                                       class="w-full h-full block">

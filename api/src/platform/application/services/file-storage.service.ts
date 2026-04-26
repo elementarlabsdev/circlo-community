@@ -45,7 +45,7 @@ export class FileStorageService {
     this._storage = this.getStorageInstance(fileStorageProvider);
   }
 
-  private getStorageInstance(
+  public getStorageInstance(
     fileStorageProvider: FileStorageProvider,
   ): FileStorage {
     let storage = new FileStorage(this._options.adapters['local']);
@@ -85,38 +85,6 @@ export class FileStorageService {
       {};
 
     const orientation = payload.orientation;
-
-    if (category === FileCategory.Video && this.videoTranscoder) {
-      const transcodeResult = await this.videoTranscoder.transcodeBufferToDash(
-        uploadedFile.buffer,
-        extension,
-      );
-      if (transcodeResult) {
-        const { tempDir, dashDir, mpdFile } = transcodeResult;
-        const dashFiles = fs.readdirSync(dashDir);
-        const dashTargetFolder = 'dash-' + crypto.randomUUID();
-
-        payload.dash = {
-          manifest: '',
-          files: [],
-        };
-
-        for (const file of dashFiles) {
-          const filePath = join(dashDir, file);
-          const fileBuffer = fs.readFileSync(filePath);
-          const targetPath = join(dashTargetFolder, file);
-          await this._storage.write(targetPath, fileBuffer, writeOptions);
-
-          if (file === mpdFile) {
-            const publicUrl = await this._storage.publicUrl(targetPath);
-            payload.dash.manifest = publicUrl.replace(/\\/g, '/');
-          }
-        }
-        // Cleanup temp files
-        fs.rmSync(tempDir, { recursive: true, force: true });
-      }
-    }
-
     const mediaItem = await this._prisma.mediaItem.create({
       data: {
         name: uploadedFile.originalname || crypto.randomUUID(),
@@ -141,6 +109,12 @@ export class FileStorageService {
         },
       },
     });
+
+    if (category === FileCategory.Video && this.videoTranscodingQueue) {
+      await this.videoTranscodingQueue.add('video-transcoding', {
+        mediaItemId: mediaItem.id,
+      });
+    }
 
     return mediaItem;
   }

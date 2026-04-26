@@ -124,17 +124,28 @@ export class ThreadsService {
   async deleteThread(id: string): Promise<void> {
     const thread = await this.repository.findByIdOrFail(id);
 
-    // 1. Delete media items and physical files
-    if (thread.mediaItems && thread.mediaItems.length > 0) {
-      for (const mediaItem of thread.mediaItems) {
-        await this.fileStorage.delete(mediaItem.id);
-      }
-    }
+    // 1. Delete media items and physical files (recursively for all children)
+    await this.deleteThreadMediaRecursive(thread);
 
     // 2. Delete the thread itself from database
     await this.repository.deleteById(id);
 
     // 3. Remove from feed if it exists (idempotent)
     await this.feed.onRemoved({ targetType: 'thread', targetId: id });
+  }
+
+  private async deleteThreadMediaRecursive(thread: Thread): Promise<void> {
+    // 1. Delete media items of current thread
+    if (thread.mediaItems && thread.mediaItems.length > 0) {
+      for (const mediaItem of thread.mediaItems) {
+        await this.fileStorage.delete(mediaItem.id);
+      }
+    }
+
+    // 2. Recursively delete media items of children
+    const children = await this.repository.findChildren(thread.id);
+    for (const child of children) {
+      await this.deleteThreadMediaRecursive(child);
+    }
   }
 }

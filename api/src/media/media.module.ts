@@ -9,6 +9,12 @@ import { AdminMediaController } from '@/media/infrastructure/controllers/admin.m
 import { BullModule } from '@nestjs/bullmq';
 import { VideoTranscoderService } from '@/media/application/services/video-transcoder.service';
 import { VideoTranscodingProcessor } from '@/media/application/queue-processors/video-transcoding.processor';
+import { ListStudioMediaUseCase } from '@/media/application/use-cases/list-studio-media.use-case';
+import { QueryStudioMediaTableUseCase } from '@/media/application/use-cases/query-studio-media-table.use-case';
+import { SaveMediaViewUseCase } from '@/media/application/use-cases/save-media-view.use-case';
+import { UploadStudioMediaUseCase } from '@/media/application/use-cases/upload-studio-media.use-case';
+import { DownloadStudioMediaUseCase } from '@/media/application/use-cases/download-studio-media.use-case';
+import { DeleteStudioMediaUseCase } from '@/media/application/use-cases/delete-studio-media.use-case';
 
 @Global()
 @Module({
@@ -22,6 +28,12 @@ import { VideoTranscodingProcessor } from '@/media/application/queue-processors/
     MediaItemsDataTableService,
     VideoTranscoderService,
     VideoTranscodingProcessor,
+    ListStudioMediaUseCase,
+    QueryStudioMediaTableUseCase,
+    SaveMediaViewUseCase,
+    UploadStudioMediaUseCase,
+    DownloadStudioMediaUseCase,
+    DeleteStudioMediaUseCase,
     { provide: MEDIA_ITEM_REPOSITORY, useClass: MediaItemsPrismaRepository },
     { provide: MEDIA_STAR_REPOSITORY, useClass: MediaStarsPrismaRepository },
   ],

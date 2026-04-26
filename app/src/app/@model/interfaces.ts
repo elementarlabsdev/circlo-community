@@ -301,6 +301,7 @@ export interface MediaItem {
   type: string;
   mimeType: string;
   createdAt: string;
+  orientation?: 'portrait' | 'landscape' | 'square';
   payload?: {
     width?: number;
     height?: number;

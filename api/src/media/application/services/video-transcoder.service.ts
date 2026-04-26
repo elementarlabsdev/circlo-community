@@ -77,10 +77,61 @@ export class VideoTranscoderService {
   }
 
   async transcodeToDash(mediaItemId: string) {
-    // This method is now obsolete as transcoding is done during upload
-    this.logger.warn(
-      `transcodeToDash called for ${mediaItemId}, but it's now obsolete`,
+    const mediaItem = await this.prisma.mediaItem.findUnique({
+      where: { id: mediaItemId },
+      include: { fileStorageProvider: true },
+    });
+
+    if (!mediaItem || mediaItem.category !== 'Video') {
+      return;
+    }
+
+    const storage = await this.fileStorage.getStorageInstance(
+      mediaItem.fileStorageProvider,
     );
-    return;
+    const fileContent = await storage.readToBuffer(mediaItem.path);
+
+    const transcodeResult = await this.transcodeBufferToDash(
+      fileContent,
+      mediaItem.extension,
+    );
+
+    if (transcodeResult) {
+      const { tempDir, dashDir, mpdFile } = transcodeResult;
+      const dashFiles = fs.readdirSync(dashDir);
+      const dashTargetFolder = 'dash-' + crypto.randomUUID();
+
+      const payload = (mediaItem.payload as any) || {};
+      payload.dash = {
+        manifest: '',
+        files: [],
+      };
+
+      const writeOptions = mediaItem.fileStorageProvider.useAcl
+        ? {
+            visibility: 'public' as any,
+          }
+        : null;
+
+      for (const file of dashFiles) {
+        const filePath = join(dashDir, file);
+        const fileBuffer = fs.readFileSync(filePath);
+        const targetPath = join(dashTargetFolder, file);
+        await storage.write(targetPath, fileBuffer, writeOptions);
+
+        if (file === mpdFile) {
+          const publicUrl = await storage.publicUrl(targetPath);
+          payload.dash.manifest = publicUrl.replace(/\\/g, '/');
+        }
+      }
+
+      await this.prisma.mediaItem.update({
+        where: { id: mediaItemId },
+        data: { payload },
+      });
+
+      // Cleanup temp files
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
   }
 }

@@ -10,8 +10,6 @@ export class VideoTranscodingProcessor extends WorkerHost {
 
   async process(job: Job<{ mediaItemId: string }, any, string>): Promise<any> {
     const { mediaItemId } = job.data;
-    // Transcoding is now done during upload in FileStorageService
-    // This processor is kept for backward compatibility or if needed for re-transcoding
-    // await this.transcoderService.transcodeToDash(mediaItemId);
+    await this.transcoderService.transcodeToDash(mediaItemId);
   }
 }
