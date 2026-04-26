@@ -39,6 +39,7 @@ import { MarkdownComponent } from '@app/markdown/markdown.component';
 import {ImageZoomViewer, ImageZoomViewerImage} from "@ngstarter/components/image-zoom-viewer";
 import {AddComplaintDirective} from "@directives/add-complaint.directive";
 import {Menu, MenuItem, MenuTrigger} from "@ngstarter/components/menu";
+import {VideoViewerDirective, VideoViewerVideoDirective} from "@ngstarter/components/video-viewer";
 
 @Component({
   selector: 'app-thread-item',
@@ -64,6 +65,8 @@ import {Menu, MenuItem, MenuTrigger} from "@ngstarter/components/menu";
     Menu,
     MenuItem,
     MenuTrigger,
+    VideoViewerDirective,
+    VideoViewerVideoDirective,
   ],
   templateUrl: './thread-item.component.html',
   styleUrl: './thread-item.component.scss',

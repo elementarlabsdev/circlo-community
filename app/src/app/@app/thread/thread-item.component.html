@@ -67,12 +67,24 @@
                            [alt]="mediaItem.name" ngsImageZoomViewerImage>
                     </ngs-image-zoom-viewer>
                   } @else if (mediaItem.type === 'video') {
-                    <ngs-video-player [src]="mediaItem.url"
-                                      [orientation]="mediaItem.orientation"
-                                      [payload]="mediaItem.payload"
-                                      [minimalControls]="true"
-                                      class="w-full h-full block">
-                    </ngs-video-player>
+                    <div ngsVideoViewer>
+                      <div ngsVideoViewerVideo
+                           [sourceUrl]="mediaItem.url"
+                           [muted]="true"
+                           [autoPlay]="true"
+                           [showPlayButton]="false"
+                           [showFullscreen]="false"
+                           [orientation]="mediaItem.orientation"
+                           class="h-[270px] cursor-pointer">
+                        <ngs-video-player [src]="mediaItem.url"
+                                          [orientation]="mediaItem.orientation"
+                                          [payload]="mediaItem.payload"
+                                          [muted]="true"
+                                          [showFullscreen]="false"
+                                          [showPlayButton]="false"
+                                          class="pointer-events-none w-full h-full block"/>
+                      </div>
+                    </div>
                   }
                 </div>
               </ngs-carousel-card>
