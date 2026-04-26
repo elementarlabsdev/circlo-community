@@ -1,18 +1,22 @@
 <div class="[&.root]:border [&.root]:border-border relative group [&.root]:rounded-3xl bg-surface-container-lowest overflow-hidden"
      [class.root]="!nested()">
-  @if (canDelete()) {
-    <div class="absolute w-max top-1 right-1 z-10 opacity-0 group-hover:opacity-100">
-      <button ngsIconButton [ngsMenuTriggerFor]="actionsMenu">
-        <ngs-icon name="fluent:more-vertical-24-regular"/>
-      </button>
-    </div>
-    <ngs-menu #actionsMenu="ngsMenu">
+  <div class="absolute w-max top-1 right-1 z-10 opacity-0 group-hover:opacity-100">
+    <button ngsIconButton [ngsMenuTriggerFor]="actionsMenu">
+      <ngs-icon name="fluent:more-vertical-24-regular"/>
+    </button>
+  </div>
+  <ngs-menu #actionsMenu="ngsMenu">
+    @if (canDelete()) {
       <button ngs-menu-item (click)="deleteThread()">
         <ngs-icon name="fluent:delete-24-regular"/>
         {{ 'common.delete' | transloco }}
       </button>
-    </ngs-menu>
-  }
+    }
+    <button ngs-menu-item addComplaint targetType="thread" [targetId]="thread().id" [reportedUrl]="'/thread/' + thread().id">
+      <ngs-icon name="fluent:warning-24-regular"/>
+      {{ 'common.report' | transloco }}
+    </button>
+  </ngs-menu>
   <div class="px-5 pt-5 pb-3">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
@@ -26,9 +30,10 @@
     </div>
     @if (thread().htmlContent) {
       <div class="mt-5">
-        <ngs-markdown [data]="thread().htmlContent"
-                      [routerLink]="['/thread', thread().id]"
-                      class="cursor-pointer block"/>
+        <a [routerLink]="['/thread', thread().id]">
+          <ngs-markdown [data]="thread().htmlContent"
+                        class="cursor-pointer block"/>
+        </a>
       </div>
     }
     @if (thread().mediaItems && thread().mediaItems!.length > 0) {
