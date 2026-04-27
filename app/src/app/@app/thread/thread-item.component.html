@@ -52,6 +52,10 @@
               <ngs-video-player [src]="mediaItem.url"
                                 [payload]="mediaItem.payload"
                                 [orientation]="mediaItem.orientation"
+                                [showFullscreen]="false"
+                                [showPlayButton]="false"
+                                [muted]="true"
+                                [showDurationSlider]="false"
                                 class="w-full block [&.is-portrait]:max-w-[300px]"
                                 [class.is-portrait]="mediaItem.orientation === 'portrait'">
               </ngs-video-player>
@@ -75,6 +79,7 @@
                     <div ngsVideoViewer>
                       <div ngsVideoViewerVideo
                            [sourceUrl]="mediaItem.url"
+                           [payload]="mediaItem.payload"
                            [muted]="true"
                            [autoPlay]="true"
                            [showPlayButton]="false"
@@ -85,6 +90,7 @@
                                           [orientation]="mediaItem.orientation"
                                           [payload]="mediaItem.payload"
                                           [muted]="true"
+                                          [showDurationSlider]="false"
                                           [showFullscreen]="false"
                                           [showPlayButton]="false"
                                           class="pointer-events-none w-full h-full block"/>

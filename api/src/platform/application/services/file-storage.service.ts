@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, Optional } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { FileStorage, Visibility } from '@flystorage/file-storage';
 import { dirname, extname, join } from 'path';
 import * as crypto from 'crypto';
@@ -22,6 +22,7 @@ import { VideoTranscoderService } from '@/media/application/services/video-trans
 
 @Injectable()
 export class FileStorageService {
+  private readonly logger = new Logger(FileStorageService.name);
   private _storage: FileStorage | null = null;
   private fileStorageProvider: FileStorageProvider;
 
@@ -111,9 +112,15 @@ export class FileStorageService {
     });
 
     if (category === FileCategory.Video && this.videoTranscodingQueue) {
-      await this.videoTranscodingQueue.add('video-transcoding', {
-        mediaItemId: mediaItem.id,
-      });
+      this.logger.log(`Adding video transcoding job for media item: ${mediaItem.id}`);
+      try {
+        await this.videoTranscodingQueue.add('video-transcoding', {
+          mediaItemId: mediaItem.id,
+        });
+        this.logger.log(`Video transcoding job added successfully: ${mediaItem.id}`);
+      } catch (error) {
+        this.logger.error(`Failed to add video transcoding job for media item: ${mediaItem.id}. Error: ${error.message}`);
+      }
     }
 
     return mediaItem;

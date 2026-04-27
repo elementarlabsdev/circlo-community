@@ -308,6 +308,9 @@ export interface MediaItem {
     orientation?: 'portrait' | 'landscape' | 'square';
     aspectRatio?: number;
     duration?: number;
+    dash?: {
+      manifest: string;
+    };
   };
 }
 

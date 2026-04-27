@@ -2,13 +2,14 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  effect,
   inject,
   input,
   output,
   untracked,
   PLATFORM_ID,
-  signal
+  signal,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { PublicationComponent } from '@app/publication/publication.component';
 import { TutorialPreview } from '@app/tutorial-preview/tutorial-preview';
@@ -29,7 +30,7 @@ import { Thread } from '@model/interfaces';
   templateUrl: './feed-items.html',
   styleUrl: './feed-items.scss',
 })
-export class FeedItems {
+export class FeedItems implements OnChanges {
   private webSocket = inject(WebSocketService);
   private destroyRef = inject(DestroyRef);
   private platformId = inject(PLATFORM_ID);
@@ -42,24 +43,14 @@ export class FeedItems {
   displayItems = signal<any[]>([]);
 
   constructor() {
-    effect(() => {
-      const items = this.items();
-      untracked(() => {
-        console.log('FeedItems: items updated from input', items.length);
-        this.displayItems.set(items);
-      });
-    });
-
     if (isPlatformBrowser(this.platformId)) {
       this.webSocket.listen('removeFeedItem')
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((params: any) => {
-          console.log('FeedItems: WebSocket removeFeedItem', params);
           this.displayItems.update(items => {
             const filtered = items.filter(item =>
               !(item.targetType === params.targetType && String(item.targetId) === String(params.targetId))
             );
-            console.log('FeedItems: WS displayItems count before:', items.length, 'after:', filtered.length);
             return filtered;
           });
           this.deleted.emit(params);
@@ -67,13 +58,17 @@ export class FeedItems {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['items']) {
+      this.displayItems.set(this.items());
+    }
+  }
+
   onItemDeleted(targetId: string, targetType: string) {
-    console.log('FeedItems: onItemDeleted', { targetId, targetType });
     this.displayItems.update(items => {
       const filtered = items.filter(item =>
         !(item.targetType === targetType && String(item.targetId) === String(targetId))
       );
-      console.log('FeedItems: displayItems count before:', items.length, 'after:', filtered.length);
       return filtered;
     });
     this.deleted.emit({ targetId: String(targetId), targetType });

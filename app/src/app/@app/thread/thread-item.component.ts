@@ -36,10 +36,10 @@ import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
 import { CommentLikesCountComponent } from '@app/comment-likes-count/comment-likes-count.component';
 import { MarkdownComponent } from '@app/markdown/markdown.component';
-import {ImageZoomViewer, ImageZoomViewerImage} from "@ngstarter/components/image-zoom-viewer";
-import {AddComplaintDirective} from "@directives/add-complaint.directive";
-import {Menu, MenuItem, MenuTrigger} from "@ngstarter/components/menu";
-import {VideoViewerDirective, VideoViewerVideoDirective} from "@ngstarter/components/video-viewer";
+import { ImageZoomViewer, ImageZoomViewerImage } from "@ngstarter/components/image-zoom-viewer";
+import { AddComplaintDirective } from "@directives/add-complaint.directive";
+import { Menu, MenuItem, MenuTrigger } from "@ngstarter/components/menu";
+import { VideoViewerDirective, VideoViewerVideoDirective } from "@ngstarter/components/video-viewer";
 
 @Component({
   selector: 'app-thread-item',
@@ -93,24 +93,7 @@ export class ThreadItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _ability = inject(Ability);
 
-  hasReaction = signal(false);
-  reactionItem: ReactionItem | undefined;
-
-  constructor() {
-    effect(() => {
-      this.thread();
-      this.reactions();
-      this._appStore.reactions();
-      untracked(() => {
-        this._initializeReactions();
-      });
-    });
-  }
-
-  ngOnInit() {
-  }
-
-  private _initializeReactions() {
+  hasReaction = computed(() => {
     const threadReactions = this.thread().reactions;
     const inputReactions = this.reactions() || [];
     const globalReactions = this._appStore.reactions() || [];
@@ -119,12 +102,53 @@ export class ThreadItemComponent implements OnInit {
     if (Array.isArray(threadReactions) && threadReactions.length > 0) {
       if ('reaction' in threadReactions[0]) {
         // It's ReactionItem[]
-        this.reactionItem = (threadReactions as ReactionItem[]).find(ri => ri.reaction.type === 'like');
+        const ri = (threadReactions as ReactionItem[]).find(ri => ri.reaction.type === 'like');
+        if (ri) return ri.hasReaction;
+      } else {
+        // It's Reaction[]
+        const foundR = (threadReactions as Reaction[]).find(r => r.type === 'like');
+        if (foundR) return false;
+      }
+    }
+
+    // 2. Try finding in input reactions
+    if (inputReactions.length > 0) {
+      if ('reaction' in inputReactions[0]) {
+        // It's ReactionItem[]
+        const foundRi = (inputReactions as unknown as ReactionItem[]).find(ri => ri.reaction.type === 'like');
+        if (foundRi) return foundRi.hasReaction;
+      } else {
+        // It's Reaction[]
+        const foundR = (inputReactions as Reaction[]).find(r => r.type === 'like');
+        if (foundR) return false;
+      }
+    }
+
+    // 3. Try finding in global store
+    if (Array.isArray(globalReactions)) {
+      const likeReaction = globalReactions.find(r => r.type === 'like');
+      if (likeReaction) return false;
+    }
+
+    return false;
+  });
+
+  reactionItem = computed(() => {
+    const threadReactions = this.thread().reactions;
+    const inputReactions = this.reactions() || [];
+    const globalReactions = this._appStore.reactions() || [];
+
+    // 1. Try finding in thread().reactions (highest priority for thread state)
+    if (Array.isArray(threadReactions) && threadReactions.length > 0) {
+      if ('reaction' in threadReactions[0]) {
+        // It's ReactionItem[]
+        const ri = (threadReactions as ReactionItem[]).find(ri => ri.reaction.type === 'like');
+        if (ri) return ri;
       } else {
         // It's Reaction[]
         const foundR = (threadReactions as Reaction[]).find(r => r.type === 'like');
         if (foundR) {
-          this.reactionItem = {
+          return {
             reaction: foundR,
             totalCount: 0,
             hasReaction: false
@@ -133,32 +157,21 @@ export class ThreadItemComponent implements OnInit {
       }
     }
 
-    if (this.reactionItem) {
-      this.hasReaction.set(this.reactionItem.hasReaction);
-      return;
-    }
-
     // 2. Try finding in input reactions
     if (inputReactions.length > 0) {
       if ('reaction' in inputReactions[0]) {
         // It's ReactionItem[]
         const foundRi = (inputReactions as unknown as ReactionItem[]).find(ri => ri.reaction.type === 'like');
-        if (foundRi) {
-          this.reactionItem = foundRi;
-          this.hasReaction.set(foundRi.hasReaction);
-          return;
-        }
+        if (foundRi) return foundRi;
       } else {
         // It's Reaction[]
         const foundR = (inputReactions as Reaction[]).find(r => r.type === 'like');
         if (foundR) {
-          this.reactionItem = {
+          return {
             reaction: foundR,
             totalCount: 0,
             hasReaction: false
           };
-          this.hasReaction.set(false);
-          return;
         }
       }
     }
@@ -167,15 +180,20 @@ export class ThreadItemComponent implements OnInit {
     if (Array.isArray(globalReactions)) {
       const likeReaction = globalReactions.find(r => r.type === 'like');
       if (likeReaction) {
-        this.reactionItem = {
+        return {
           reaction: likeReaction,
           totalCount: 0,
           hasReaction: false
         };
-        this.hasReaction.set(false);
       }
     }
-  }
+
+    return undefined;
+  });
+
+  constructor() {}
+
+  ngOnInit() {}
 
   toggleReaction(): void {
     if (!this._appStore.isLogged()) {
@@ -183,27 +201,42 @@ export class ThreadItemComponent implements OnInit {
       return;
     }
 
-    if (!this.reactionItem) {
+    if (!this.reactionItem()) {
       this._snack.open(this._transloco.translate('thread.reactionNotFound'), 'OK', { duration: 3000 });
       return;
     }
 
     const currentHasReaction = this.hasReaction();
-    this.hasReaction.set(!currentHasReaction);
+    const newHasReaction = !currentHasReaction;
 
-    if (this.hasReaction()) {
+    if (newHasReaction) {
       this.thread().reactionsCount += 1;
+      const ri = this.reactionItem();
+      if (ri) {
+        ri.hasReaction = true;
+      }
       this._api
-        .post(`reaction/thread/${this.thread().id}/${this.reactionItem.reaction.id}`)
+        .post(`reaction/thread/${this.thread().id}/${this.reactionItem()!.reaction.id}`)
         .pipe(takeUntilDestroyed(this._destroyRef))
         .subscribe();
     } else {
       this.thread().reactionsCount -= 1;
+      const ri = this.reactionItem();
+      if (ri) {
+        ri.hasReaction = false;
+      }
       this._api
-        .delete(`reaction/thread/${this.thread().id}/${this.reactionItem.reaction.id}`)
+        .delete(`reaction/thread/${this.thread().id}/${this.reactionItem()!.reaction.id}`)
         .pipe(takeUntilDestroyed(this._destroyRef))
         .subscribe();
     }
+
+    // Update the reaction item in the thread if possible
+    // Since reactionItem is computed from thread(), and thread() is an input (object reference),
+    // we can update the property on the object, and computed should re-evaluate if it's watching deeply or if we replace the object.
+    // However, thread() is an input signal, changing properties inside the object won't trigger the signal unless the object reference changes.
+    // Given the current architecture, we might need a local state if we want immediate UI update without re-fetching.
+    // But the issue was the recursive tick during deletion.
   }
 
   canDelete = computed(() => {
@@ -227,7 +260,11 @@ export class ThreadItemComponent implements OnInit {
           .subscribe({
             next: () => {
               this._snack.open(this._transloco.translate('thread.deleted'), 'OK', { duration: 3000 });
-              this.deleted.emit(this.thread().id);
+              // Use queueMicrotask to ensure we are out of the current change detection cycle
+              // but still relatively fast.
+              queueMicrotask(() => {
+                this.deleted.emit(this.thread().id);
+              });
             },
             error: () => {
               this._snack.open(this._transloco.translate('thread.failedToDelete'), 'OK', { duration: 3000 });

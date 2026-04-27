@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { FileStorageService } from '@/platform/application/services/file-storage.service';
 import { PrismaService } from '@/platform/application/services/prisma.service';
+import { FileCategory } from '@/platform/application/utils/get-file-category';
 
 @Injectable()
 export class VideoTranscoderService {
@@ -37,7 +38,9 @@ export class VideoTranscoderService {
     const mpdPath = join(outputDir, 'stream.mpd');
 
     try {
-      this.logger.log(`Starting transcoding for buffer...`);
+      this.logger.log(
+        `Starting transcoding for buffer (extension: ${extension}, size: ${buffer.length})...`,
+      );
 
       await new Promise((resolve, reject) => {
         ffmpeg(inputPath)
@@ -77,12 +80,16 @@ export class VideoTranscoderService {
   }
 
   async transcodeToDash(mediaItemId: string) {
+    this.logger.log(`Starting transcodeToDash for media item: ${mediaItemId}`);
     const mediaItem = await this.prisma.mediaItem.findUnique({
       where: { id: mediaItemId },
       include: { fileStorageProvider: true },
     });
 
-    if (!mediaItem || mediaItem.category !== 'Video') {
+    if (!mediaItem || mediaItem.category !== FileCategory.Video) {
+      this.logger.warn(
+        `Media item ${mediaItemId} not found or is not a video. Category: ${mediaItem?.category}`,
+      );
       return;
     }
 
@@ -101,10 +108,11 @@ export class VideoTranscoderService {
       const dashFiles = fs.readdirSync(dashDir);
       const dashTargetFolder = 'dash-' + crypto.randomUUID();
 
-      const payload = (mediaItem.payload as any) || {};
-      payload.dash = {
-        manifest: '',
-        files: [],
+      const payload = {
+        ...((mediaItem.payload as any) || {}),
+        dash: {
+          manifest: '',
+        },
       };
 
       const writeOptions = mediaItem.fileStorageProvider.useAcl
@@ -113,17 +121,23 @@ export class VideoTranscoderService {
           }
         : null;
 
+      this.logger.log(`DASH files found: ${dashFiles.join(', ')}`);
+      this.logger.log(`Targeting manifest: ${mpdFile}`);
+
       for (const file of dashFiles) {
         const filePath = join(dashDir, file);
         const fileBuffer = fs.readFileSync(filePath);
-        const targetPath = join(dashTargetFolder, file);
+        const targetPath = join(dashTargetFolder, file).replace(/\\/g, '/');
         await storage.write(targetPath, fileBuffer, writeOptions);
 
         if (file === mpdFile) {
           const publicUrl = await storage.publicUrl(targetPath);
+          this.logger.log(`MPD Public URL: ${publicUrl}`);
           payload.dash.manifest = publicUrl.replace(/\\/g, '/');
         }
       }
+
+      this.logger.log(`Final payload: ${JSON.stringify(payload)}`);
 
       await this.prisma.mediaItem.update({
         where: { id: mediaItemId },

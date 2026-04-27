@@ -55,7 +55,6 @@ export class Content {
           this.api
             .post(this.imageUploadUrl, formData)
             .subscribe((res: any) => {
-              console.log('Image upload response:', res);
               resolve(res.file.url);
             });
         })

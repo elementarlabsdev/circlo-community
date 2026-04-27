@@ -16,6 +16,7 @@
       [thread]="rootThread()!"
       [reactions]="rootThread()!.reactions || []"
       [depth]="depth()"
+      (deleted)="onThreadDeleted($event)"
     />
   </div>
 } @else {

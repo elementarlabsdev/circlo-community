@@ -1,5 +1,5 @@
 import { Component, inject, signal, PLATFORM_ID, DestroyRef } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import { isPlatformBrowser } from '@angular/common';
 import { ThreadComponent } from '@app/thread/thread.component';
@@ -20,6 +20,7 @@ import { AppStore } from '@store/app.store';
 })
 export class ThreadDiscussion {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private api = inject(ApiService);
   private platformId = inject(PLATFORM_ID);
   private webSocket = inject(WebSocketService);
@@ -98,6 +99,46 @@ export class ThreadDiscussion {
       }
     }
     return false;
+  }
+
+  onThreadDeleted(id: string) {
+    if (this.rootThread()?.id === id) {
+      this.router.navigate(['/']);
+    } else {
+      this.rootThread.update(t => {
+        if (!t) return null;
+        this._removeReplyRecursive(t, id);
+        const newCount = this._countNestedReplies(t);
+        return { ...t, nestedRepliesCount: newCount };
+      });
+    }
+  }
+
+  private _removeReplyRecursive(current: Thread, id: string): boolean {
+    if (!current.replies) return false;
+
+    const index = current.replies.findIndex(r => r.id === id);
+    if (index !== -1) {
+      current.replies.splice(index, 1);
+      current.repliesCount = (current.repliesCount || 1) - 1;
+      return true;
+    }
+
+    for (const r of current.replies) {
+      if (this._removeReplyRecursive(r, id)) return true;
+    }
+
+    return false;
+  }
+
+  private _countNestedReplies(thread: Thread): number {
+    let count = thread.replies?.length || 0;
+    if (thread.replies) {
+      for (const r of thread.replies) {
+        count += this._countNestedReplies(r);
+      }
+    }
+    return count;
   }
 
   fetch(id: string) {

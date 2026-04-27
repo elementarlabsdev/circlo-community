@@ -81,13 +81,10 @@ export class Feed {
   }
 
   onItemDeleted(params: { targetId: string, targetType: string }): void {
-    console.log('Feed: onItemDeleted', params);
-
     this.items.update(items => {
       const filtered = items.filter(item =>
         !(item.targetType === params.targetType && String(item.targetId) === String(params.targetId))
       );
-      console.log('Feed: items count before:', items.length, 'after:', filtered.length);
       return filtered;
     });
   }
