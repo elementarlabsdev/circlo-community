@@ -881,6 +881,38 @@ export class PublicationsService {
     };
   }
 
+  async addVideo(
+    publication: any,
+    video: Express.Multer.File,
+    uploadedBy: User,
+  ) {
+    const file = await this._fileStorage.save(video, uploadedBy);
+    publication = await this._prisma.publication.update({
+      where: {
+        id: publication.id,
+      },
+      data: {
+        updatedAt: new Date(),
+        version: publication.version + 1,
+        hasChanges: true,
+      },
+      include: {
+        channel: true,
+        featuredImage: true,
+        status: true,
+        author: true,
+        topics: true,
+      },
+    });
+
+    await this.textQualityQueue.analyzePublication(publication.id);
+
+    return {
+      file,
+      publication,
+    };
+  }
+
   async deleteFeaturedImage(publication: any) {
     const draftData = await this.updateDraftSnapshot(publication, {
       featuredImageUrl: null,

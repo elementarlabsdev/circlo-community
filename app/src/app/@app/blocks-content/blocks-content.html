@@ -44,6 +44,9 @@
              [alt]="block.content.alt" class="max-w-full not-prose" ngsImageZoomViewerImage>
       </ngs-image-zoom-viewer>
     }
+    @case ('video') {
+      <ngs-video-player [src]="block.content.src"/>
+    }
     @case ('code') {
       <ngs-code-highlighter [code]="block.content" [language]="block.settings.language"/>
 <!--      <div [innerHTML]="block.content | convertCode:block.settings.language | async"></div>-->

@@ -59,11 +59,28 @@ export class Content {
             });
         })
       }
+    },
+    video: {
+      uploadFn: (file: File, base64: string) => {
+        return new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append('video', file);
+          this.api
+            .post(this.videoUploadUrl, formData)
+            .subscribe((res: any) => {
+              resolve(res.file.url);
+            });
+        })
+      }
     }
   });
 
   get imageUploadUrl() {
     return `studio/publication/edit/${this.editRoot.publicationHash()}/upload/image`;
+  }
+
+  get videoUploadUrl() {
+    return `studio/publication/edit/${this.editRoot.publicationHash()}/upload/video`;
   }
 
   ngOnInit() {

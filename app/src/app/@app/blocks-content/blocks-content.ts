@@ -6,6 +6,7 @@ import { ContentEditorBlock } from '@ngstarter/components/content-editor';
 import { CodeHighlighter } from '@ngstarter/components/code-highlighter';
 import { ImageZoomViewer, ImageZoomViewerImage } from '@ngstarter/components/image-zoom-viewer';
 import { NativeTable } from '@ngstarter/components/table';
+import {VideoPlayer} from "@ngstarter/components/video-player";
 
 @Component({
   selector: 'app-blocks-content',
@@ -17,7 +18,8 @@ import { NativeTable } from '@ngstarter/components/table';
     CodeHighlighter,
     ImageZoomViewer,
     NativeTable,
-    ImageZoomViewerImage
+    ImageZoomViewerImage,
+    VideoPlayer
   ],
   templateUrl: './blocks-content.html',
   styleUrl: './blocks-content.scss',

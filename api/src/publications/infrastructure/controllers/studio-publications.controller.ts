@@ -20,6 +20,7 @@ import { TopicsService } from '@/topics/application/services/topics.service';
 import { ChannelsService } from '@/channels/application/services/channels.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FEATURED_IMAGE_UPLOAD_PIPE_BUILDER } from '@/common/infrastructure/validators/featured-image-upload.pipe-builder';
+import { VIDEO_UPLOAD_PIPE_BUILDER } from '@/common/infrastructure/validators/video-upload.pipe-builder';
 import { GetUser } from '@/common/infrastructure/decorators/get-user.decorator';
 import { PublicationsService } from '@/publications/application/services/publications.service';
 import { StudioPublicationListService } from '@/publications/application/services/studio-publication-list.service';
@@ -173,6 +174,34 @@ export class StudioPublicationsController {
     const { file, publication } = await this.publicationsService.addImage(
       draft,
       image,
+      user,
+    );
+    return {
+      success: true,
+      file: { url: file.url },
+      publication,
+    };
+  }
+
+  @Post('studio/publication/edit/:hash/upload/video')
+  @UseGuards(AuthGuard, PublicationResourceGuard, PoliciesGuard)
+  @CheckPolicies((ability, ctx) =>
+    ability.can(
+      Action.Update,
+      (ctx.switchToHttp().getRequest() as any).resource,
+    ),
+  )
+  @UseInterceptors(FileInterceptor('video'))
+  async addVideo(
+    @GetUser() user: any,
+    @Param('hash') hash: string,
+    @UploadedFile(VIDEO_UPLOAD_PIPE_BUILDER)
+    video: Express.Multer.File,
+  ) {
+    const draft = await this.publicationsService.findDraftByHash(hash);
+    const { file, publication } = await this.publicationsService.addVideo(
+      draft,
+      video,
       user,
     );
     return {
