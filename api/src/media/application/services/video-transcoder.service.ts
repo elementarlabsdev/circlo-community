@@ -60,7 +60,7 @@ export class VideoTranscoderService {
       await new Promise((resolve, reject) => {
         ffmpeg(inputPath)
           .screenshots({
-            timestamps: ['00:00:01'],
+            timestamps: ['00:00:00'],
             filename: thumbnailFile,
             folder: tempDir,
             size: thumbnailSize,

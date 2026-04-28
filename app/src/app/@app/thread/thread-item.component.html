@@ -57,7 +57,7 @@
                                 [muted]="true"
                                 [showDurationSlider]="false"
                                 [thumbnailUrl]="mediaItem.thumbnailUrl | imageProxy: getMediaImageSize(mediaItem)"
-                                class="w-full block [&.is-portrait]:max-w-[300px]"
+                                class="[&.is-portrait]:max-w-[300px]"
                                 [class.is-portrait]="mediaItem.orientation === 'portrait'">
               </ngs-video-player>
             }
@@ -95,7 +95,7 @@
                                           [showFullscreen]="false"
                                           [showPlayButton]="false"
                                           [thumbnailUrl]="mediaItem.thumbnailUrl | imageProxy: getMediaImageSize(mediaItem)"
-                                          class="pointer-events-none w-full h-full block"/>
+                                          class="w-full h-full block"/>
                       </div>
                     </div>
                   }
