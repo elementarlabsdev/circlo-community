@@ -3,6 +3,7 @@ export interface MediaItemProps {
   extension: string;
   path: string;
   url: string;
+  thumbnailUrl?: string | null;
   name: string;
   size: number;
   category: string;
@@ -21,6 +22,7 @@ export class MediaItemEntity {
   public extension: string;
   public path: string;
   public url: string;
+  public thumbnailUrl?: string | null;
   public name: string;
   public size: number;
   public category: string;
@@ -38,6 +40,7 @@ export class MediaItemEntity {
     this.extension = props.extension;
     this.path = props.path;
     this.url = props.url;
+    this.thumbnailUrl = props.thumbnailUrl ?? null;
     this.name = props.name;
     this.size = props.size;
     this.category = props.category;
@@ -73,6 +76,7 @@ export class MediaItemEntity {
       extension: this.extension,
       path: this.path,
       url: this.url,
+      thumbnailUrl: this.thumbnailUrl ?? null,
       name: this.name,
       size: this.size,
       category: this.category,

@@ -15,7 +15,7 @@ import {
 import { Ability } from '@casl/ability';
 import { Action } from '@services/ability.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Reaction, ReactionItem, Thread } from '@model/interfaces';
+import { MediaItem, Reaction, ReactionItem, Thread } from '@model/interfaces';
 import { Dicebear } from '@ngstarter/components/avatar';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { RouterLink } from '@angular/router';
@@ -193,7 +193,9 @@ export class ThreadItemComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.thread().mediaItems);
+  }
 
   toggleReaction(): void {
     if (!this._appStore.isLogged()) {
@@ -279,5 +281,15 @@ export class ThreadItemComponent implements OnInit {
       .subscribe(() => {
         this.replyAdded.emit();
       });
+  }
+
+  getMediaImageSize(mediaItem: MediaItem, baseSize: number = 270): string {
+    if (mediaItem.orientation === 'portrait') {
+      return `${baseSize}x${Math.round(baseSize * 1.5)},q90`;
+    }
+    if (mediaItem.orientation === 'landscape') {
+      return `${Math.round(baseSize * 1.5)}x${baseSize},q90`;
+    }
+    return `${baseSize}x${baseSize},q90`;
   }
 }

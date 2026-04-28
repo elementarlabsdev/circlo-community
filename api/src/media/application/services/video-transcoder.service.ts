@@ -20,7 +20,13 @@ export class VideoTranscoderService {
   async transcodeBufferToDash(
     buffer: Buffer,
     extension: string,
-  ): Promise<{ tempDir: string; dashDir: string; mpdFile: string } | null> {
+    dimensions?: { width: number; height: number },
+  ): Promise<{
+    tempDir: string;
+    dashDir: string;
+    mpdFile: string;
+    thumbnailFile: string | null;
+  } | null> {
     const transcodingId = crypto.randomUUID();
     const tempDir = join(process.cwd(), 'temp', 'transcoding', transcodingId);
     if (fs.existsSync(tempDir)) {
@@ -36,11 +42,38 @@ export class VideoTranscoderService {
       fs.mkdirSync(outputDir, { recursive: true });
     }
     const mpdPath = join(outputDir, 'stream.mpd');
+    const thumbnailFile = 'thumbnail.jpg';
+    const thumbnailPath = join(tempDir, thumbnailFile);
 
     try {
       this.logger.log(
         `Starting transcoding for buffer (extension: ${extension}, size: ${buffer.length})...`,
       );
+
+      // Generate thumbnail
+      const thumbnailSize = dimensions
+        ? dimensions.width >= dimensions.height
+          ? '1280x?'
+          : '?x1280'
+        : '1280x720';
+
+      await new Promise((resolve, reject) => {
+        ffmpeg(inputPath)
+          .screenshots({
+            timestamps: ['00:00:01'],
+            filename: thumbnailFile,
+            folder: tempDir,
+            size: thumbnailSize,
+          })
+          .on('end', () => {
+            this.logger.log(`Thumbnail generated: ${thumbnailPath}`);
+            resolve(true);
+          })
+          .on('error', (err) => {
+            this.logger.error(`Thumbnail generation error: ${err.message}`);
+            resolve(false); // Non-critical error
+          });
+      });
 
       await new Promise((resolve, reject) => {
         ffmpeg(inputPath)
@@ -71,6 +104,7 @@ export class VideoTranscoderService {
         tempDir,
         dashDir: outputDir,
         mpdFile: 'stream.mpd',
+        thumbnailFile: fs.existsSync(thumbnailPath) ? thumbnailFile : null,
       };
     } catch (error) {
       this.logger.error(`Failed to transcode buffer: ${error.message}`);
@@ -98,18 +132,25 @@ export class VideoTranscoderService {
     );
     const fileContent = await storage.readToBuffer(mediaItem.path);
 
+    const payload = (mediaItem.payload as any) || {};
+    const dimensions =
+      payload.width && payload.height
+        ? { width: payload.width, height: payload.height }
+        : undefined;
+
     const transcodeResult = await this.transcodeBufferToDash(
       fileContent,
       mediaItem.extension,
+      dimensions,
     );
 
     if (transcodeResult) {
-      const { tempDir, dashDir, mpdFile } = transcodeResult;
+      const { tempDir, dashDir, mpdFile, thumbnailFile } = transcodeResult;
       const dashFiles = fs.readdirSync(dashDir);
       const dashTargetFolder = 'dash-' + crypto.randomUUID();
 
-      const payload = {
-        ...((mediaItem.payload as any) || {}),
+      const updatedPayload = {
+        ...payload,
         dash: {
           manifest: '',
         },
@@ -133,15 +174,31 @@ export class VideoTranscoderService {
         if (file === mpdFile) {
           const publicUrl = await storage.publicUrl(targetPath);
           this.logger.log(`MPD Public URL: ${publicUrl}`);
-          payload.dash.manifest = publicUrl.replace(/\\/g, '/');
+          updatedPayload.dash.manifest = publicUrl.replace(/\\/g, '/');
         }
       }
 
-      this.logger.log(`Final payload: ${JSON.stringify(payload)}`);
+      let thumbnailUrl = mediaItem.thumbnailUrl;
+      if (thumbnailFile) {
+        const thumbnailPath = join(tempDir, thumbnailFile);
+        const thumbnailBuffer = fs.readFileSync(thumbnailPath);
+        const targetThumbnailPath = join(
+          dashTargetFolder,
+          thumbnailFile,
+        ).replace(/\\/g, '/');
+        await storage.write(targetThumbnailPath, thumbnailBuffer, writeOptions);
+        thumbnailUrl = (await storage.publicUrl(targetThumbnailPath)).replace(
+          /\\/g,
+          '/',
+        );
+        this.logger.log(`Thumbnail Public URL: ${thumbnailUrl}`);
+      }
+
+      this.logger.log(`Final payload: ${JSON.stringify(updatedPayload)}`);
 
       await this.prisma.mediaItem.update({
         where: { id: mediaItemId },
-        data: { payload },
+        data: { payload: updatedPayload, thumbnailUrl },
       });
 
       // Cleanup temp files

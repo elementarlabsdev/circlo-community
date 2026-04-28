@@ -295,6 +295,7 @@ export interface MediaItem {
   extension: string;
   path: string;
   url: string;
+  thumbnailUrl?: string;
   name: string;
   size: number;
   category: string;
