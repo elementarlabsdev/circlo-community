@@ -45,7 +45,7 @@
                [class.max-w-2xl]="mediaItem.orientation === 'landscape'"
                [class.is-portrait]="mediaItem.orientation === 'portrait'">
             @if (mediaItem.type === 'image') {
-              <img [src]="mediaItem.url | imageProxy: getMediaImageSize(mediaItem, 1600)"
+              <img [src]="mediaItem.url | imageProxy: getMediaImageSize(mediaItem, 300)"
                    class="w-full h-auto block"
                    [alt]="mediaItem.name">
             } @else if (mediaItem.type === 'video') {
@@ -56,6 +56,7 @@
                                 [showPlayButton]="false"
                                 [muted]="true"
                                 [showDurationSlider]="false"
+                                [thumbnailUrl]="mediaItem.thumbnailUrl | imageProxy: getMediaImageSize(mediaItem)"
                                 class="w-full block [&.is-portrait]:max-w-[300px]"
                                 [class.is-portrait]="mediaItem.orientation === 'portrait'">
               </ngs-video-player>
