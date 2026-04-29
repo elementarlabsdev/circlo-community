@@ -56,7 +56,6 @@
                                 [showPlayButton]="false"
                                 [muted]="true"
                                 [showDurationSlider]="false"
-                                [thumbnailUrl]="mediaItem.thumbnailUrl | imageProxy: getMediaImageSize(mediaItem)"
                                 class="[&.is-portrait]:max-w-[300px]"
                                 [class.is-portrait]="mediaItem.orientation === 'portrait'">
               </ngs-video-player>
@@ -95,7 +94,6 @@
                                           [showFullscreen]="false"
                                           [showPlayButton]="false"
                                           [disableClickToPlay]="true"
-                                          [thumbnailUrl]="mediaItem.thumbnailUrl | imageProxy: getMediaImageSize(mediaItem)"
                                           class="w-full h-full block"/>
                       </div>
                     </div>
