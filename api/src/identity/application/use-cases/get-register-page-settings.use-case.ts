@@ -37,7 +37,9 @@ export class GetRegisterPageSettingsUseCase {
     }
 
     const captchaProviders = await this.captchaProviderRepository.findAll();
-    const defaultCaptcha = captchaProviders.find((p) => p.isDefault);
+    const defaultCaptcha = captchaProviders.find(
+      (p) => p.isDefault && p.isConfigured,
+    );
 
     return {
       registrationEnabled,

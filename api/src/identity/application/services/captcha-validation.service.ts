@@ -26,7 +26,9 @@ export class CaptchaValidationService {
     remoteIp?: string,
   ): Promise<void> {
     const captchaProviders = await this.captchaProviderRepository.findAll();
-    const defaultCaptcha = captchaProviders.find((p) => p.isDefault);
+    const defaultCaptcha = captchaProviders.find(
+      (p) => p.isDefault && p.isConfigured,
+    );
 
     if (defaultCaptcha) {
       if (defaultCaptcha.type === 'local') {
