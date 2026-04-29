@@ -200,8 +200,11 @@ export class HeaderComponent {
   onAnnouncementClosed() {
     const announcementId = this.announcement().id;
     this._appStore.setAnnouncement(null);
-    this._apiService
-      .post(`announcements/${announcementId}/dismiss`)
-      .subscribe();
+
+    if (this._appStore.isLogged()) {
+      this._apiService
+        .post(`announcements/${announcementId}/dismiss`)
+        .subscribe();
+    }
   }
 }
