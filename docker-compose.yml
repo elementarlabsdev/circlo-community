@@ -47,16 +47,13 @@ services:
       - circlo
 
   cap:
-    image: tiago2/cap:2.2.1
+    image: tiago2/cap:latest
     container_name: cap
     environment:
       - ADMIN_KEY=${CAP_ADMIN_KEY:?CAP_ADMIN_KEY is required}
       - SERVER_PORT=3001
       - ENABLE_ASSETS_SERVER=true
-      - REDIS_URL=${REDIS_URL:?REDIS_URL is required}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
     depends_on:
       redis:
         condition: service_healthy

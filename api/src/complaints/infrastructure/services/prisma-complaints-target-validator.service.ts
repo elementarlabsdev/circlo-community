@@ -16,6 +16,8 @@ export class PrismaComplaintsTargetValidator
         !!(await this.prisma.tutorial.findUnique({ where: { id } })),
       publication: async (id: string) =>
         !!(await this.prisma.publication.findUnique({ where: { id } })),
+      thread: async (id: string) =>
+        !!(await this.prisma.thread.findUnique({ where: { id } })),
     };
   }
 

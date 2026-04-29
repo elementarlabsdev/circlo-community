@@ -56,6 +56,44 @@ export class ComplaintNotificationService {
           }
         : undefined;
 
+      // Пытаемся получить имя контента, на который подана жалоба
+      let targetName = `${complaint.targetType}: ${complaint.targetId}`;
+      try {
+        if (complaint.targetType === 'publication') {
+          const pub = await this.prisma.publication.findUnique({
+            where: { id: complaint.targetId },
+            select: { title: true },
+          });
+          if (pub) targetName = pub.title;
+        } else if (complaint.targetType === 'comment') {
+          const comment = await this.prisma.comment.findUnique({
+            where: { id: complaint.targetId },
+            select: { textContent: true },
+          });
+          if (comment)
+            targetName =
+              comment.textContent.substring(0, 30) +
+              (comment.textContent.length > 30 ? '...' : '');
+        } else if (complaint.targetType === 'user') {
+          const user = await this.prisma.user.findUnique({
+            where: { id: complaint.targetId },
+            select: { name: true, username: true },
+          });
+          if (user) targetName = user.name || user.username;
+        } else if (complaint.targetType === 'thread') {
+          const thread = await this.prisma.thread.findUnique({
+            where: { id: complaint.targetId },
+            select: { textContent: true },
+          });
+          if (thread)
+            targetName =
+              thread.textContent.substring(0, 30) +
+              (thread.textContent.length > 30 ? '...' : '');
+        }
+      } catch (e) {
+        this.logger.error(`Failed to fetch target name: ${e.message}`);
+      }
+
       for (const admin of admins) {
         await this.notificationsManager.createOrUpdateNotification({
           userId: admin.id,
@@ -64,7 +102,13 @@ export class ComplaintNotificationService {
           entity: {
             id: complaint.id,
             type: 'complaint',
-            name: complaint.reason.name,
+            name: targetName,
+          },
+          additionalData: {
+            complaintReason: complaint.reason.name,
+            complaintDetails: complaint.details,
+            targetType: complaint.targetType,
+            targetId: complaint.targetId,
           },
         });
       }

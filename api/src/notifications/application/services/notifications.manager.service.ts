@@ -36,7 +36,11 @@ export class NotificationsManagerService {
   async createOrUpdateNotification(
     payload: CreateNotificationPayload,
   ): Promise<Notification> {
-    if (payload.actor && payload.userId == payload.actor.id) {
+    if (
+      payload.actor &&
+      payload.userId == payload.actor.id &&
+      payload.type !== NotificationType.NEW_COMPLAINT
+    ) {
       return;
     }
 

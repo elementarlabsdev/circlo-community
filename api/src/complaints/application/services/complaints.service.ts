@@ -116,6 +116,10 @@ export class ComplaintsService {
           },
         });
         if (existing) {
+          // Re-trigger notification for existing complaint if the user complains again
+          this.notifications
+            .notifyComplaintCreated({ complaintId: existing.id })
+            .catch(() => void 0);
           return existing as any;
         }
       }
@@ -143,6 +147,14 @@ export class ComplaintsService {
             internalNotes: true,
           },
         });
+
+        if (existing) {
+          // Re-trigger notification for existing complaint if the user complains again
+          this.notifications
+            .notifyComplaintCreated({ complaintId: existing.id })
+            .catch(() => void 0);
+        }
+
         return existing as any;
       }
     }
@@ -165,7 +177,7 @@ export class ComplaintsService {
         attachmentIds: [],
       });
       const saved = await this.complaintsRepo.create(complaintEntity);
-      // fire-and-forget notification stub
+      // fire-and-forget notification
       this.notifications
         .notifyComplaintCreated({ complaintId: saved.id })
         .catch(() => void 0);
@@ -199,6 +211,14 @@ export class ComplaintsService {
             internalNotes: true,
           },
         });
+
+        if (existing) {
+          // Re-trigger notification for existing complaint if the user complains again
+          this.notifications
+            .notifyComplaintCreated({ complaintId: existing.id })
+            .catch(() => void 0);
+        }
+
         return existing as any;
       }
       throw e;
