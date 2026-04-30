@@ -17,6 +17,45 @@ export class VideoTranscoderService {
     private readonly prisma: PrismaService,
   ) {}
 
+  async optimizeVideo(buffer: Buffer, extension: string): Promise<Buffer> {
+    const transcodingId = crypto.randomUUID();
+    const tempDir = join(process.cwd(), 'temp', 'optimize', transcodingId);
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    const inputPath = join(tempDir, `input.${extension}`);
+    const outputPath = join(tempDir, `output.${extension}`);
+    fs.writeFileSync(inputPath, buffer);
+
+    try {
+      this.logger.log(`Optimizing video: ${inputPath}`);
+      await new Promise((resolve, reject) => {
+        ffmpeg(inputPath)
+          .outputOptions(['-c copy', '-movflags +faststart'])
+          .save(outputPath)
+          .on('end', () => {
+            this.logger.log(`Optimization finished: ${outputPath}`);
+            resolve(true);
+          })
+          .on('error', (err) => {
+            this.logger.error(`Optimization error: ${err.message}`);
+            reject(err);
+          });
+      });
+
+      const optimizedBuffer = fs.readFileSync(outputPath);
+      return optimizedBuffer;
+    } catch (error) {
+      this.logger.error(`Failed to optimize video: ${error.message}`);
+      return buffer; // Return original buffer if optimization fails
+    } finally {
+      if (fs.existsSync(tempDir)) {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    }
+  }
+
   async transcodeBufferToDash(
     buffer: Buffer,
     extension: string,

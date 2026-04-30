@@ -1,8 +1,13 @@
-import { forwardRef, Inject, Injectable, Logger, Optional } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+  Optional,
+} from '@nestjs/common';
 import { FileStorage, Visibility } from '@flystorage/file-storage';
-import { dirname, extname, join } from 'path';
+import { extname } from 'path';
 import * as crypto from 'crypto';
-import * as fs from 'fs';
 import { PrismaService } from '@/platform/application/services/prisma.service';
 import { AwsS3StorageAdapter } from '@flystorage/aws-s3';
 import { S3Client } from '@aws-sdk/client-s3';
@@ -73,17 +78,28 @@ export class FileStorageService {
       extension = uploadedFile.mimetype.toLowerCase().split('/')[1];
     }
     const newFilePath = crypto.randomUUID() + '.' + extension;
+    const category = getFileCategoryByMimeType(uploadedFile.mimetype);
+
+    let fileBuffer = uploadedFile.buffer;
+    if (category === FileCategory.Video && this.videoTranscoder) {
+      this.logger.log(
+        `Optimizing video before upload: ${uploadedFile.originalname}`,
+      );
+      fileBuffer = await this.videoTranscoder.optimizeVideo(
+        fileBuffer,
+        extension,
+      );
+    }
+
     const writeOptions = this.fileStorageProvider.useAcl
       ? {
           visibility: Visibility.PUBLIC,
         }
       : null;
-    await this._storage.write(newFilePath, uploadedFile.buffer, writeOptions);
-    const category = getFileCategoryByMimeType(uploadedFile.mimetype);
+    await this._storage.write(newFilePath, fileBuffer, writeOptions);
 
     const payload: any =
-      (await getMediaMetadata(uploadedFile.buffer, uploadedFile.mimetype)) ||
-      {};
+      (await getMediaMetadata(fileBuffer, uploadedFile.mimetype)) || {};
 
     const orientation = payload.orientation;
     const mediaItem = await this._prisma.mediaItem.create({
@@ -92,7 +108,7 @@ export class FileStorageService {
         mimeType: uploadedFile.mimetype,
         category,
         type: category,
-        size: uploadedFile.size,
+        size: fileBuffer.length,
         payload: payload || null,
         orientation,
         fileStorageProvider: {
@@ -111,15 +127,26 @@ export class FileStorageService {
       },
     });
 
-    if (category === FileCategory.Video && this.videoTranscodingQueue) {
-      this.logger.log(`Adding video transcoding job for media item: ${mediaItem.id}`);
+    const maxSizeForTranscoding = 50 * 1024 * 1024; // 50MB
+    if (
+      category === FileCategory.Video &&
+      fileBuffer.length > maxSizeForTranscoding &&
+      this.videoTranscodingQueue
+    ) {
+      this.logger.log(
+        `Adding video transcoding job for media item: ${mediaItem.id}`,
+      );
       try {
         await this.videoTranscodingQueue.add('video-transcoding', {
           mediaItemId: mediaItem.id,
         });
-        this.logger.log(`Video transcoding job added successfully: ${mediaItem.id}`);
+        this.logger.log(
+          `Video transcoding job added successfully: ${mediaItem.id}`,
+        );
       } catch (error) {
-        this.logger.error(`Failed to add video transcoding job for media item: ${mediaItem.id}. Error: ${error.message}`);
+        this.logger.error(
+          `Failed to add video transcoding job for media item: ${mediaItem.id}. Error: ${error.message}`,
+        );
       }
     }
 

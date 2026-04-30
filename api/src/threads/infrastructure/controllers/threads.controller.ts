@@ -71,7 +71,10 @@ export class ThreadsController {
   }
 
   @Get(':id/discussion')
-  async getDiscussion(@Param('id') id: string, @GetUser() user: User | undefined) {
+  async getDiscussion(
+    @Param('id') id: string,
+    @GetUser() user: User | undefined,
+  ) {
     if (user) {
       await this.recommendationQueue.add('update-user-interests', {
         userId: user.id,
@@ -93,7 +96,11 @@ export class ThreadsController {
   ): Promise<any> {
     const thread = await this.threadsService.getThread(threadId);
     const primitives = thread.toPrimitives();
-    const reactions = await this.targetReactionsService.getReactions(threadId, 'thread', user);
+    const reactions = await this.targetReactionsService.getReactions(
+      threadId,
+      'thread',
+      user,
+    );
 
     let replies = [];
     let nestedRepliesCount = 0;
@@ -101,7 +108,9 @@ export class ThreadsController {
     if (currentDepth < maxDepth) {
       const children = await this.threadsService.listChildren(threadId);
       replies = await Promise.all(
-        children.map((c) => this.buildDiscussionTree(c.id, user, currentDepth + 1, maxDepth)),
+        children.map((c) =>
+          this.buildDiscussionTree(c.id, user, currentDepth + 1, maxDepth),
+        ),
       );
       // Calculate total number of nested (descendant) replies based on what was loaded
       nestedRepliesCount = replies.reduce(
