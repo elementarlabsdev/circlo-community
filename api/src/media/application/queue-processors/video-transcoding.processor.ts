@@ -17,7 +17,7 @@ export class VideoTranscodingProcessor extends WorkerHost {
       `Processing video transcoding job for media item: ${mediaItemId}`,
     );
     try {
-      await this.transcoderService.transcodeToDash(mediaItemId);
+      await this.transcoderService.transcodeToHls(mediaItemId);
       this.logger.log(
         `Video transcoding job completed for media item: ${mediaItemId}`,
       );

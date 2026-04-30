@@ -73,7 +73,9 @@ import { CaslModule } from '@/casl/casl.module';
       useFactory: (configService: ConfigService) => ({
         fallbackLanguage: configService.getOrThrow('LOCALE'),
         loaderOptions: {
-          path: join(__dirname, '../i18n/'),
+          path: configService.getOrThrow('ENV') === 'dev'
+            ? join(process.cwd(), 'src/i18n/')
+            : join(process.cwd(), 'dist/i18n/'),
           watch: configService.getOrThrow('ENV') === 'dev',
         },
       }),
