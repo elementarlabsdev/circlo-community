@@ -65,7 +65,7 @@
         </div>
       } @else {
         <div class="mt-5">
-          <ngs-carousel>
+          <ngs-carousel [stopPropagation]="true">
             @for (mediaItem of thread().mediaItems; track mediaItem.id) {
               <ngs-carousel-card class="h-[270px] block">
                 <div

@@ -24,9 +24,15 @@
       ]
     }
   },
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "prisma/**/*"
+  ],
   "exclude": [
     "public",
     "dist",
-    "node_modules"
+    "node_modules",
+    "temp"
   ]
 }

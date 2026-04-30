@@ -25,6 +25,8 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { VideoTranscoderService } from '@/media/application/services/video-transcoder.service';
 
+import { SettingsService } from '@/settings/application/services/settings.service';
+
 @Injectable()
 export class FileStorageService {
   private readonly logger = new Logger(FileStorageService.name);
@@ -39,6 +41,7 @@ export class FileStorageService {
     private readonly videoTranscodingQueue?: Queue,
     @Inject(forwardRef(() => VideoTranscoderService))
     private readonly videoTranscoder?: VideoTranscoderService,
+    private readonly settings?: SettingsService,
   ) {}
 
   private async ensureStorage(): Promise<void> {
@@ -127,8 +130,14 @@ export class FileStorageService {
       },
     });
 
-    const maxSizeForTranscoding = 10 * 1024 * 1024; // 100MB
-    const maxDurationForTranscoding = 10 * 60; // 10 minutes
+    const maxSizeForTranscodingMb = this.settings
+      ? await this.settings.findValueByName('maxSizeForTranscoding', 100)
+      : 100;
+    const maxDurationForTranscodingMin = this.settings
+      ? await this.settings.findValueByName('maxDurationForTranscoding', 10)
+      : 10;
+    const maxSizeForTranscoding = maxSizeForTranscodingMb * 1024 * 1024;
+    const maxDurationForTranscoding = maxDurationForTranscodingMin * 60;
     const isLargeFile = fileBuffer.length > maxSizeForTranscoding;
     const isLongVideo = payload?.duration > maxDurationForTranscoding;
 

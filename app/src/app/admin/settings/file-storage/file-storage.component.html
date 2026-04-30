@@ -19,7 +19,27 @@
                 <ngs-label>{{ 'admin.settings.fileStorage.maxUploadVideoSize' | transloco }}</ngs-label>
                 <input ngsInput type="number" formControlName="maxUploadVideoSize">
               </ngs-form-field>
-              <button ngsButton="filled" type="submit" [loading]="settingsSaving()">
+
+              <div class="mt-4 p-6 rounded-xl border border-border bg-neutral-50 dark:bg-neutral-900">
+                <h3 class="font-semibold mb-2">{{ 'admin.settings.fileStorage.transcodingSettings' | transloco }}</h3>
+                <p class="text-sm text-neutral-600 mb-4">
+                  {{ 'admin.settings.fileStorage.transcodingDescription' | transloco }}
+                </p>
+
+                <div class="flex flex-col gap-4">
+                  <ngs-form-field class="w-full">
+                    <ngs-label>{{ 'admin.settings.fileStorage.maxSizeForTranscoding' | transloco }}</ngs-label>
+                    <input ngsInput type="number" formControlName="maxSizeForTranscoding">
+                  </ngs-form-field>
+
+                  <ngs-form-field class="w-full">
+                    <ngs-label>{{ 'admin.settings.fileStorage.maxDurationForTranscoding' | transloco }}</ngs-label>
+                    <input ngsInput type="number" formControlName="maxDurationForTranscoding">
+                  </ngs-form-field>
+                </div>
+              </div>
+
+              <button ngsButton="filled" type="submit" [loading]="settingsSaving()" class="mt-2">
                 {{ 'common.save' | transloco }}
               </button>
             </form>

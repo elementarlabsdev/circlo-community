@@ -70,6 +70,8 @@ export class FileStorageComponent implements OnInit {
   form = new FormGroup({
     maxUploadImageSize: new FormControl<number>(0),
     maxUploadVideoSize: new FormControl<number>(0),
+    maxSizeForTranscoding: new FormControl<number>(0),
+    maxDurationForTranscoding: new FormControl<number>(0),
   });
 
   constructor() {
@@ -110,6 +112,8 @@ export class FileStorageComponent implements OnInit {
           this.form.patchValue({
             maxUploadImageSize: res.settings.maxUploadImageSize,
             maxUploadVideoSize: res.settings.maxUploadVideoSize,
+            maxSizeForTranscoding: res.settings.maxSizeForTranscoding,
+            maxDurationForTranscoding: res.settings.maxDurationForTranscoding,
           });
         }
         this.loaded.set(true);

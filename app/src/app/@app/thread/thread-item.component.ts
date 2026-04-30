@@ -192,7 +192,7 @@ export class ThreadItemComponent implements OnInit {
   });
 
   ngOnInit() {
-    console.log(this.thread().mediaItems);
+    // console.log(this.thread().mediaItems);
   }
 
   toggleReaction(): void {
