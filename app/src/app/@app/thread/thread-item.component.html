@@ -105,10 +105,11 @@
         </div>
       }
     }
-    <div class="flex items-center justify-between mt-4">
-      <div class="flex items-center relative -start-2">
+    <a [routerLink]="['/thread', thread().id]" class="flex items-center justify-between mt-4">
+      <div class="flex items-center relative -start-2" (click)="$event.stopPropagation(); $event.preventDefault()">
         <app-thread-number-of-replies [count]="thread().repliesCount"
-                                      (click)="onReplyClick()" class="cursor-pointer"/>
+                                      (click)="onReplyClick()"
+                                      class="cursor-pointer"/>
 
         @if (thread().reactionsCount > 0) {
           <button ngsButton (click)="toggleReaction()">
@@ -123,15 +124,10 @@
           </button>
         }
       </div>
-      <div class="flex items-center gap-3 relative -end-2">
-        <!--        @if (canDelete()) {-->
-        <!--          <button ngsIconButton (click)="deleteThread()" [ngsTooltip]="'common.delete' | transloco">-->
-        <!--            <ngs-icon name="fluent:delete-24-regular"/>-->
-        <!--          </button>-->
-        <!--        }-->
+      <div class="flex items-center gap-3 relative -end-2" (click)="$event.stopPropagation(); $event.preventDefault()">
         <app-bookmark-button targetType="thread" [targetId]="thread().id"/>
       </div>
-    </div>
+    </a>
   </div>
   @if (thread().replies && thread().replies!.length > 0 && depth() < 1) {
     <div>

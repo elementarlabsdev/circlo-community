@@ -127,10 +127,14 @@ export class FileStorageService {
       },
     });
 
-    const maxSizeForTranscoding = 50 * 1024 * 1024; // 50MB
+    const maxSizeForTranscoding = 10 * 1024 * 1024; // 100MB
+    const maxDurationForTranscoding = 10 * 60; // 10 minutes
+    const isLargeFile = fileBuffer.length > maxSizeForTranscoding;
+    const isLongVideo = payload?.duration > maxDurationForTranscoding;
+
     if (
       category === FileCategory.Video &&
-      fileBuffer.length > maxSizeForTranscoding &&
+      (isLargeFile || isLongVideo) &&
       this.videoTranscodingQueue
     ) {
       this.logger.log(
