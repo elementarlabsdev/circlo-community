@@ -39,7 +39,10 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   app.setGlobalPrefix('api/v1');
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:4200'],
+    credentials: true,
+  });
   app.use(
     express.json({
       limit: '1024mb',

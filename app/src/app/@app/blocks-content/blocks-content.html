@@ -45,7 +45,7 @@
       </ngs-image-zoom-viewer>
     }
     @case ('video') {
-      <ngs-video-player [src]="block.content.src"/>
+      <ngs-video-player [src]="block.content.src" [withCredentials]="true"/>
     }
     @case ('code') {
       <ngs-code-highlighter [code]="block.content" [language]="block.settings.language"/>

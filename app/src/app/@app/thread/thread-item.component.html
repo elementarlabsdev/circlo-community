@@ -56,6 +56,7 @@
                                 [showPlayButton]="false"
                                 [muted]="true"
                                 [showDurationSlider]="false"
+                                [withCredentials]="true"
                                 class="[&.is-portrait]:max-w-[300px]"
                                 [class.is-portrait]="mediaItem.orientation === 'portrait'">
               </ngs-video-player>
@@ -87,6 +88,7 @@
                            [orientation]="mediaItem.orientation"
                            class="h-[270px] cursor-pointer">
                         <ngs-video-player [src]="mediaItem.url"
+                                          [withCredentials]="true"
                                           [orientation]="mediaItem.orientation"
                                           [payload]="mediaItem.payload"
                                           [muted]="true"

@@ -90,11 +90,11 @@ export class VideoTranscoderService {
         `Starting transcoding to HLS for buffer (extension: ${extension}, size: ${buffer.length})...`,
       );
 
-      const metadata: any = await new Promise((resolve) => {
+      const metadata: any = await new Promise((resolve, reject) => {
         ffmpeg.ffprobe(inputPath, (err, data) => {
           if (err) {
             this.logger.error(`ffprobe error: ${err.message}`);
-            resolve({});
+            reject(err);
           } else {
             const videoStream = data.streams.find(
               (s) => s.codec_type === 'video',
@@ -180,112 +180,126 @@ export class VideoTranscoderService {
 
   async transcodeToHls(mediaItemId: string) {
     this.logger.log(`Starting transcodeToHls for media item: ${mediaItemId}`);
-    const mediaItem = await this.prisma.mediaItem.findUnique({
-      where: { id: mediaItemId },
-      include: { fileStorageProvider: true },
-    });
-
-    if (!mediaItem || mediaItem.category !== FileCategory.Video) {
-      this.logger.warn(
-        `Media item ${mediaItemId} not found or is not a video. Category: ${mediaItem?.category}`,
-      );
-      return;
-    }
-
-    const storage = await this.fileStorage.getStorageInstance(
-      mediaItem.fileStorageProvider,
-    );
-    const fileContent = await storage.readToBuffer(mediaItem.path);
-
-    const payload = (mediaItem.payload as any) || {};
-    const dimensions =
-      payload.width && payload.height
-        ? { width: payload.width, height: payload.height }
-        : undefined;
-
-    const transcodeResult = await this.transcodeBufferToHls(
-      fileContent,
-      mediaItem.extension,
-      dimensions,
-    );
-
-    if (transcodeResult) {
-      const { tempDir, hlsDir, m3u8File, thumbnailFile, metadata } =
-        transcodeResult;
-      const hlsFiles = fs.readdirSync(hlsDir);
-      const hlsTargetFolder = 'hls-' + crypto.randomUUID();
-
-      const updatedPayload = {
-        ...payload,
-        ...metadata,
-        hls: {
-          manifest: '',
-        },
-      };
-
-      const writeOptions = mediaItem.fileStorageProvider.useAcl
-        ? {
-            visibility: 'public' as any,
-          }
-        : null;
-
-      this.logger.log(`HLS files found: ${hlsFiles.join(', ')}`);
-      this.logger.log(`Targeting manifest: ${m3u8File}`);
-
-      for (const file of hlsFiles) {
-        const filePath = join(hlsDir, file);
-        const fileBuffer = fs.readFileSync(filePath);
-        const targetPath = join(hlsTargetFolder, file).replace(/\\/g, '/');
-        await storage.write(targetPath, fileBuffer, writeOptions);
-
-        if (file === m3u8File) {
-          const publicUrl = await storage.publicUrl(targetPath);
-          this.logger.log(`M3U8 Public URL: ${publicUrl}`);
-          updatedPayload.hls.manifest = publicUrl.replace(/\\/g, '/');
-        }
-      }
-
-      let thumbnailUrl = mediaItem.thumbnailUrl;
-      const manifestUrl = updatedPayload.hls.manifest;
-
-      if (thumbnailFile) {
-        const thumbnailPath = join(tempDir, thumbnailFile);
-        const thumbnailBuffer = fs.readFileSync(thumbnailPath);
-        const targetThumbnailPath = join(
-          hlsTargetFolder,
-          thumbnailFile,
-        ).replace(/\\/g, '/');
-        await storage.write(targetThumbnailPath, thumbnailBuffer, writeOptions);
-        thumbnailUrl = (await storage.publicUrl(targetThumbnailPath)).replace(
-          /\\/g,
-          '/',
-        );
-        this.logger.log(`Thumbnail Public URL: ${thumbnailUrl}`);
-      }
-
-      this.logger.log(`Final payload: ${JSON.stringify(updatedPayload)}`);
-
-      await this.prisma.mediaItem.update({
+    try {
+      const mediaItem = await this.prisma.mediaItem.findUnique({
         where: { id: mediaItemId },
-        data: {
-          payload: updatedPayload,
-          thumbnailUrl,
-          url: manifestUrl,
-        },
+        include: { fileStorageProvider: true },
       });
 
-      // Delete original file after successful transcoding
-      try {
-        await this.fileStorage.deleteMediaItem(mediaItem as any);
-        this.logger.log(`Original file deleted: ${mediaItem.path}`);
-      } catch (error) {
-        this.logger.error(
-          `Failed to delete original file ${mediaItem.path}: ${error.message}`,
+      if (!mediaItem || mediaItem.category !== FileCategory.Video) {
+        this.logger.warn(
+          `Media item ${mediaItemId} not found or is not a video. Category: ${mediaItem?.category}`,
         );
+        return;
       }
 
-      // Cleanup temp files
-      fs.rmSync(tempDir, { recursive: true, force: true });
+      const storage = await this.fileStorage.getStorageInstance(
+        mediaItem.fileStorageProvider,
+      );
+      const fileContent = await storage.readToBuffer(mediaItem.path);
+
+      const payload = (mediaItem.payload as any) || {};
+      const dimensions =
+        payload.width && payload.height
+          ? { width: payload.width, height: payload.height }
+          : undefined;
+
+      const transcodeResult = await this.transcodeBufferToHls(
+        fileContent,
+        mediaItem.extension,
+        dimensions,
+      );
+
+      if (transcodeResult) {
+        const { tempDir, hlsDir, m3u8File, thumbnailFile, metadata } =
+          transcodeResult;
+        try {
+          const hlsFiles = fs.readdirSync(hlsDir);
+          const hlsTargetFolder = 'hls-' + crypto.randomUUID();
+
+          const updatedPayload = {
+            ...payload,
+            ...metadata,
+            hls: {
+              manifest: '',
+            },
+          };
+
+          const writeOptions = mediaItem.fileStorageProvider.useAcl
+            ? {
+                visibility: 'public' as any,
+              }
+            : null;
+
+          this.logger.log(`HLS files found: ${hlsFiles.join(', ')}`);
+          this.logger.log(`Targeting manifest: ${m3u8File}`);
+
+          for (const file of hlsFiles) {
+            const filePath = join(hlsDir, file);
+            const fileBuffer = fs.readFileSync(filePath);
+            const targetPath = join(hlsTargetFolder, file).replace(/\\/g, '/');
+            await storage.write(targetPath, fileBuffer, writeOptions);
+
+            if (file === m3u8File) {
+              const publicUrl = await storage.publicUrl(targetPath);
+              this.logger.log(`M3U8 Public URL: ${publicUrl}`);
+              updatedPayload.hls.manifest = publicUrl.replace(/\\/g, '/');
+            }
+          }
+
+          let thumbnailUrl = mediaItem.thumbnailUrl;
+          const manifestUrl = updatedPayload.hls.manifest;
+
+          if (thumbnailFile) {
+            const thumbnailPath = join(tempDir, thumbnailFile);
+            const thumbnailBuffer = fs.readFileSync(thumbnailPath);
+            const targetThumbnailPath = join(
+              hlsTargetFolder,
+              thumbnailFile,
+            ).replace(/\\/g, '/');
+            await storage.write(
+              targetThumbnailPath,
+              thumbnailBuffer,
+              writeOptions,
+            );
+            thumbnailUrl = (
+              await storage.publicUrl(targetThumbnailPath)
+            ).replace(/\\/g, '/');
+            this.logger.log(`Thumbnail Public URL: ${thumbnailUrl}`);
+          }
+
+          this.logger.log(`Final payload: ${JSON.stringify(updatedPayload)}`);
+
+          await this.prisma.mediaItem.update({
+            where: { id: mediaItemId },
+            data: {
+              payload: updatedPayload,
+              thumbnailUrl,
+              url: manifestUrl,
+            },
+          });
+
+          // Delete original file after successful transcoding
+          try {
+            await this.fileStorage.deleteMediaItem(mediaItem as any);
+            this.logger.log(`Original file deleted: ${mediaItem.path}`);
+          } catch (error) {
+            this.logger.error(
+              `Failed to delete original file ${mediaItem.path}: ${error.message}`,
+            );
+          }
+        } finally {
+          // Cleanup temp files
+          if (fs.existsSync(tempDir)) {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+          }
+        }
+      }
+    } catch (error) {
+      this.logger.error(
+        `Failed to transcode media item ${mediaItemId}: ${error.message}`,
+        error.stack,
+      );
     }
   }
 }
