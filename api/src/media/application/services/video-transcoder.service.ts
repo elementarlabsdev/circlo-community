@@ -218,6 +218,8 @@ export class VideoTranscoderService {
       }
 
       let thumbnailUrl = mediaItem.thumbnailUrl;
+      const manifestUrl = updatedPayload.dash.manifest;
+
       if (thumbnailFile) {
         const thumbnailPath = join(tempDir, thumbnailFile);
         const thumbnailBuffer = fs.readFileSync(thumbnailPath);
@@ -237,8 +239,22 @@ export class VideoTranscoderService {
 
       await this.prisma.mediaItem.update({
         where: { id: mediaItemId },
-        data: { payload: updatedPayload, thumbnailUrl },
+        data: {
+          payload: updatedPayload,
+          thumbnailUrl,
+          url: manifestUrl,
+        },
       });
+
+      // Delete original file after successful transcoding
+      try {
+        await this.fileStorage.deleteMediaItem(mediaItem as any);
+        this.logger.log(`Original file deleted: ${mediaItem.path}`);
+      } catch (error) {
+        this.logger.error(
+          `Failed to delete original file ${mediaItem.path}: ${error.message}`,
+        );
+      }
 
       // Cleanup temp files
       fs.rmSync(tempDir, { recursive: true, force: true });
