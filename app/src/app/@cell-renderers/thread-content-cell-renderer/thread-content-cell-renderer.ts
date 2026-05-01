@@ -1,10 +1,12 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import {TranslocoPipe} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-thread-content-cell-renderer',
   imports: [
-    RouterLink
+    RouterLink,
+    TranslocoPipe
   ],
   templateUrl: './thread-content-cell-renderer.html',
   styleUrl: './thread-content-cell-renderer.scss',

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/platform/application/services/prisma.service';
 import { ThreadRepositoryInterface } from '../../domain/repositories/thread-repository.interface';
-import { Thread } from '../../domain/entities/thread.entity';
+import { Thread, ThreadPrimitives } from '../../domain/entities/thread.entity';
 
 @Injectable()
 export class ThreadsPrismaRepository implements ThreadRepositoryInterface {
@@ -131,15 +131,12 @@ export class ThreadsPrismaRepository implements ThreadRepositoryInterface {
         },
       });
 
-      // Update repliesCount for all ancestors
-      let currentParentId = parent.id;
-      while (currentParentId) {
-        const updatedParent = await tx.thread.update({
-          where: { id: currentParentId },
+      // Update repliesCount for direct parent
+      if (parent.id) {
+        await tx.thread.update({
+          where: { id: parent.id },
           data: { repliesCount: { increment: 1 } as any },
-          select: { respondingToId: true },
         });
-        currentParentId = updatedParent.respondingToId;
       }
 
       return created;
@@ -180,15 +177,12 @@ export class ThreadsPrismaRepository implements ThreadRepositoryInterface {
       // 3. Delete the thread itself
       await tx.thread.delete({ where: { id: row.id } });
 
-      // 4. Update repliesCount for all ancestors
-      let currentParentId = row.respondingToId;
-      while (currentParentId) {
-        const updatedParent = await tx.thread.update({
-          where: { id: currentParentId },
+      // 4. Update repliesCount for direct parent
+      if (row.respondingToId) {
+        await tx.thread.update({
+          where: { id: row.respondingToId },
           data: { repliesCount: { increment: -1 } as any },
-          select: { respondingToId: true },
         });
-        currentParentId = updatedParent.respondingToId;
       }
     });
   }
@@ -224,5 +218,31 @@ export class ThreadsPrismaRepository implements ThreadRepositoryInterface {
       where: { id: threadId },
       data: { repliesCount: { increment: delta } as any },
     });
+  }
+
+  async update(id: string, data: Partial<ThreadPrimitives>): Promise<Thread> {
+    const row = await this.prisma.thread.update({
+      where: { id },
+      data: {
+        textContent: data.textContent,
+        htmlContent: data.htmlContent,
+        reactionsCount: data.reactionsCount,
+        repliesCount: data.repliesCount,
+        isHidden: data.isHidden,
+      },
+      include: {
+        author: true,
+        respondingTo: true,
+        mainThread: true,
+        status: true,
+        mediaItems: true,
+        poll: {
+          include: {
+            options: true,
+          },
+        },
+      },
+    });
+    return this.map(row);
   }
 }

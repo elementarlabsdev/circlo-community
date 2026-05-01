@@ -3,7 +3,7 @@ import {
   THREAD_REPOSITORY,
   ThreadRepositoryInterface,
 } from '../../domain/repositories/thread-repository.interface';
-import { Thread } from '../../domain/entities/thread.entity';
+import { Thread, ThreadPrimitives } from '../../domain/entities/thread.entity';
 import { FeedService } from '@/feed/application/services/feed.service';
 import { FileStorageService } from '@/platform/application/services/file-storage.service';
 import { NotificationsManagerService } from '@/notifications/application/services/notifications.manager.service';
@@ -111,6 +111,16 @@ export class ThreadsService {
 
   async findOneByIdWithRelations(id: string): Promise<Thread> {
     return this.repository.findByIdOrFail(id);
+  }
+
+  async update(
+    id: string,
+    data: Partial<ThreadPrimitives>,
+  ): Promise<Thread> {
+    if (data.textContent) {
+      data.htmlContent = data.textContent.replace(/\n/g, '<br>');
+    }
+    return this.repository.update(id, data);
   }
 
   async listChildren(parentId: string): Promise<Thread[]> {

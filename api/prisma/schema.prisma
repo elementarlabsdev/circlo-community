@@ -1232,6 +1232,7 @@ model Thread {
   scheduleAt     DateTime?
   reactionsCount Int           @default(0)
   repliesCount   Int           @default(0)
+  isHidden       Boolean       @default(false)
   authorId       String
   respondingToId String?
   mainThreadId   String?

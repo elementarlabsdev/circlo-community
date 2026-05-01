@@ -35,7 +35,13 @@ export class ThreadsApi {
     return this.api.get<{ thread: T }>(`${this.base}/${id}`);
   }
 
-  update(id: string, payload: { content?: string; htmlContent?: string; isHidden?: boolean }) {
+  update(id: string, payload: {
+    textContent?: string;
+    htmlContent?: string;
+    isHidden?: boolean;
+    repliesCount?: number;
+    reactionsCount?: number;
+  }) {
     return this.api.put(`${this.base}/${id}`, payload);
   }
 

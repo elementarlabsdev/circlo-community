@@ -57,6 +57,8 @@ export class EditComponent implements OnInit {
   form: FormGroup = this.fb.group({
     content: ['', [Validators.required]],
     isHidden: [false],
+    repliesCount: [0, [Validators.required, Validators.min(0)]],
+    reactionsCount: [0, [Validators.required, Validators.min(0)]],
   });
 
   thread = signal<any>(null);
@@ -83,6 +85,8 @@ export class EditComponent implements OnInit {
         this.form.patchValue({
           content: thread.textContent || '',
           isHidden: !!thread.isHidden,
+          repliesCount: thread.repliesCount || 0,
+          reactionsCount: thread.reactionsCount || 0,
         });
         this.loaded.set(true);
       },
@@ -99,9 +103,14 @@ export class EditComponent implements OnInit {
     }
 
     const id  = this.route.snapshot.paramMap.get('id') || '';
-    const { content, isHidden } = this.form.value as { content: string; isHidden: boolean };
+    const { content, isHidden, repliesCount, reactionsCount } = this.form.value;
     this.saving.set(true);
-    this.api.update(id, { content: content.trim(), htmlContent: content.trim(), isHidden }).subscribe({
+    this.api.update(id, {
+      textContent: content.trim(),
+      isHidden,
+      repliesCount: Number(repliesCount),
+      reactionsCount: Number(reactionsCount)
+    }).subscribe({
       next: () => {
         this.saving.set(false);
         this.snack.open(this.translateService.instant('admin.threads.edit.saved'), '', { duration: 3000 });

@@ -36,6 +36,18 @@
             {{ 'admin.threads.edit.hidden' | transloco }}
           </ngs-slide-toggle>
         </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.threads.replies' | transloco }}</ngs-label>
+            <input ngsInput type="number" formControlName="repliesCount">
+          </ngs-form-field>
+          <ngs-form-field>
+            <ngs-label>{{ 'admin.threads.reactions' | transloco }}</ngs-label>
+            <input ngsInput type="number" formControlName="reactionsCount">
+          </ngs-form-field>
+        </div>
+
         <div class="mt-4 flex gap-2 items-center">
           <button ngsButton="tonal" type="button" (click)="delete()" [disabled]="saving() || deleting()">
             {{ 'table.action.delete' | transloco }}
