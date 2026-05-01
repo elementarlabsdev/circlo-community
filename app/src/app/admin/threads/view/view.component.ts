@@ -7,7 +7,7 @@ import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
 import { DatePipe } from '@angular/common';
 import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
 import { Divider } from '@ngstarter/components/divider';
-import { AdminCommentQualityScoreComponent } from '../../comments/view/comment-quality-score/comment-quality-score.component';
+import { AdminQualityScoreComponent } from '../../shared/quality-score/quality-score.component';
 import { SafeHtmlPipe } from '@ngstarter/components/core';
 import { Button } from '@ngstarter/components/button';
 import { Icon } from '@ngstarter/components/icon';
@@ -25,7 +25,7 @@ import { Icon } from '@ngstarter/components/icon';
     ToolbarSpacer,
     ToolbarTitle,
     Divider,
-    AdminCommentQualityScoreComponent,
+    AdminQualityScoreComponent,
     SafeHtmlPipe,
     Button,
     Icon,

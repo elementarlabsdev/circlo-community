@@ -12,6 +12,7 @@ import { SlideToggle } from '@ngstarter/components/slide-toggle';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ConfirmManager } from '@ngstarter/components/confirm';
 import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { AdminQualityScoreComponent } from '../../shared/quality-score/quality-score.component';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { TranslateService } from '@services/translate.service';
 import { TextareaAutoSize } from '@ngstarter/components/core';
@@ -34,7 +35,8 @@ import { TextareaAutoSize } from '@ngstarter/components/core';
     RouterLink,
     TimeAgoPipe,
     TranslocoPipe,
-    TextareaAutoSize
+    TextareaAutoSize,
+    AdminQualityScoreComponent
   ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'

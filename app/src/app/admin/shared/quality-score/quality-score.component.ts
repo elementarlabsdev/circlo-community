@@ -4,16 +4,16 @@ import { QualityScore } from '@model/interfaces';
 import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
-  selector: 'admin-comment-quality-score',
+  selector: 'admin-quality-score',
   standalone: true,
   imports: [
     DecimalPipe
   ],
-  templateUrl: './comment-quality-score.component.html',
-  styleUrl: './comment-quality-score.component.scss',
+  templateUrl: './quality-score.component.html',
+  styleUrl: './quality-score.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdminCommentQualityScoreComponent {
+export class AdminQualityScoreComponent {
   private readonly translate = inject(TranslocoService);
 
   qualityScore = input.required<QualityScore | null | undefined>();

@@ -21,6 +21,13 @@
         <div>{{ 'admin.complaints.view.created' | transloco }}: {{ thread().createdAt | timeAgo }}</div>
       </div>
 
+      <div class="mb-10 w-1/2">
+        <div class="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-4">
+          {{ 'admin.threads.quality_score' | transloco }}
+        </div>
+        <admin-quality-score [qualityScore]="thread().qualityScore"></admin-quality-score>
+      </div>
+
       <form [formGroup]="form" (ngSubmit)="save()" class="flex flex-col gap-4 w-1/2">
         <ngs-form-field>
           <ngs-label>{{ 'admin.complaints.view.details' | transloco }}</ngs-label>

@@ -9,12 +9,12 @@ import { Icon } from '@ngstarter/components/icon';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
 import { Divider } from '@ngstarter/components/divider';
-import { AdminCommentQualityScoreComponent } from './comment-quality-score/comment-quality-score.component';
+import { AdminQualityScoreComponent } from '../../shared/quality-score/quality-score.component';
 
 import { Comment } from '@model/interfaces';
 
 @Component({
-  selector: 'admin-comments-view',
+  selector: 'admin-comment-view',
   standalone: true,
   imports: [
     RouterLink,
@@ -29,7 +29,7 @@ import { Comment } from '@model/interfaces';
     ToolbarSpacer,
     ToolbarTitle,
     Divider,
-    AdminCommentQualityScoreComponent
+    AdminQualityScoreComponent
   ],
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
