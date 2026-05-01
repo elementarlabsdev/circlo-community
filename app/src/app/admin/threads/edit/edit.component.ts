@@ -55,7 +55,7 @@ export class EditComponent implements OnInit {
   deleting = signal(false);
 
   form: FormGroup = this.fb.group({
-    content: ['', [Validators.required]],
+    content: [''],
     isHidden: [false],
     repliesCount: [0, [Validators.required, Validators.min(0)]],
     reactionsCount: [0, [Validators.required, Validators.min(0)]],
