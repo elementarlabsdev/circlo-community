@@ -17,12 +17,11 @@
       {{ 'common.report' | transloco }}
     </button>
   </ngs-menu>
-  <div class="pt-5 pb-3" [class.px-5]="!nested()">
+  <div class="pt-5 pb-3 px-5">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <ngs-dicebear [class]="!nested() ? 'size-11' : 'size-9'"
-                      [key]="thread().author.id"
-                      [image]="thread().author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
+        <ngs-dicebear [key]="thread().author.id"
+                      [image]="thread().author.avatarUrl | imageProxy: '100x100,sc,q90'" class="size-9"/>
         <a [routerLink]="['/user', thread().author.username]"
            class="text-sm hover:text-primary hover:underline underline-offset-1 font-semibold">{{ thread().author.name }}</a>
       </div>
@@ -140,7 +139,7 @@
                     (itemAdded)="onSent()"
                     (canceled)="onCancel()"/>
 
-    <div>
+    <div class="overflow-hidden rounded-3xl border border-border">
       @for (reply of thread().replies; track reply.id) {
         <app-thread-item
           [nested]="true"

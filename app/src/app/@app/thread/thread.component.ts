@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Reaction, Thread } from '@model/interfaces';
 import { ThreadItemComponent } from './thread-item.component';
 

@@ -11,7 +11,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         @if (channel) {
-          <ngs-dicebear class="size-7"
+          <ngs-dicebear class="size-9"
                         [key]="channel.id"
                         [image]="channel.logoUrl | imageProxy: '60x60,sc,q80'"/>
           <span class="text-sm text-neutral-500">{{ 'in' | transloco }}</span>
@@ -24,7 +24,7 @@
           <a [routerLink]="['/user', tutorial().author.username]"
              class="text-sm hover:text-primary hover:underline underline-offset-1">{{ tutorial().author.name }}</a>
         } @else {
-          <ngs-dicebear class="size-7"
+          <ngs-dicebear class="size-9"
                         [key]="tutorial().author.id"
                         [image]="tutorial().author.avatarUrl | imageProxy: '60x60,sc,q80'"/>
           <a [routerLink]="['/user', tutorial().author.username]"
