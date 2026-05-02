@@ -19,25 +19,22 @@ export class WebSocketService {
 
   connect(): void {
     this.ngZone.runOutsideAngular(() => {
-      if (this.socket.ioSocket?.connected) {
-        return;
-      }
-
       const token = this.getAuthToken();
-
-      if (!token && (this.socket.ioSocket && this.socket.ioSocket.active)) {
-        this.socket.disconnect();
-      }
 
       const clientSocketInstance = this.socket.ioSocket;
 
       if (clientSocketInstance && clientSocketInstance.io) {
         (clientSocketInstance.io.opts as Partial<ManagerOptions & SocketOptions>).query = { token };
-      } else {
-        console.error(
-          "WebSocketService: Socket manager (ioSocket.io) is not available. " +
-          "The token might not be sent with the initial connection."
-        );
+      }
+
+      if (this.socket.ioSocket?.connected) {
+        // If connected but token changed, we need to reconnect
+        const currentQuery = (this.socket.ioSocket.io.opts as any).query;
+        if (currentQuery?.token !== token) {
+          this.socket.disconnect();
+          this.socket.connect();
+        }
+        return;
       }
 
       this.socket.connect();

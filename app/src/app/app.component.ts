@@ -85,6 +85,7 @@ export class AppComponent implements OnInit {
     this.setFontFamily();
     this._seoService.trackCanonicalChanges(this._envService.getValue('siteUrl'));
     this.notificationService.initialize();
+    this.notificationService.listenForAuthChanges();
     this.actionManager
       .action
       .pipe(

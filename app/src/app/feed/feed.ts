@@ -57,9 +57,8 @@ export class Feed {
       .listen<FeedItem>('addFeedItem')
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(item => {
-        this._ngZone.run(() => {
-          this.onItemAdded(item);
-        });
+        console.log('Feed item added:', item);
+        this.onItemAdded(item);
       });
   }
 

@@ -7,7 +7,7 @@
     <div class="flex items-center gap-4">
       @if (rootThread()?.respondingToId) {
         <a [routerLink]="['/thread', rootThread()?.respondingToId]" ngsIconButton>
-          <ngs-icon name="fluent:arrow-left-24-regular"></ngs-icon>
+          <ngs-icon name="fluent:arrow-left-24-regular"/>
         </a>
       }
       <h1 class="text-2xl font-bold">Thread ({{ nestedRepliesCount() }})</h1>

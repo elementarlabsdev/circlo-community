@@ -1,6 +1,6 @@
 <div class="[&.root]:border [&.root]:border-border relative group/thread [&.root]:rounded-3xl bg-surface-container-lowest overflow-hidden"
      [class.root]="!nested()">
-  <div class="absolute w-max top-1 right-1 z-10 opacity-0 group-hover/thread:opacity-100">
+  <div class="absolute w-max top-1 right-1 z-[1] opacity-0 group-hover/thread:opacity-100">
     <button ngsIconButton [ngsMenuTriggerFor]="actionsMenu">
       <ngs-icon name="fluent:more-vertical-24-regular"/>
     </button>
@@ -17,14 +17,14 @@
       {{ 'common.report' | transloco }}
     </button>
   </ngs-menu>
-  <div class="px-5 pt-5 pb-3">
+  <div class="pt-5 pb-3" [class.px-5]="!nested()">
     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <ngs-dicebear [class]="depth() === 0 ? 'size-10' : 'size-7'"
+      <div class="flex items-center gap-3">
+        <ngs-dicebear [class]="!nested() ? 'size-11' : 'size-9'"
                       [key]="thread().author.id"
                       [image]="thread().author.avatarUrl | imageProxy: '100x100,sc,q90'"/>
         <a [routerLink]="['/user', thread().author.username]"
-           class="text-sm hover:text-primary hover:underline underline-offset-1">{{ thread().author.name }}</a>
+           class="text-sm hover:text-primary hover:underline underline-offset-1 font-semibold">{{ thread().author.name }}</a>
       </div>
       <div class="text-xs">{{ thread().createdAt | timeAgo }}</div>
     </div>
@@ -131,7 +131,15 @@
       </div>
     </a>
   </div>
+</div>
+
+<div>
   @if (thread().replies && thread().replies!.length > 0 && depth() < 1) {
+    <app-thread-add class="!w-full mb-6 mt-6"
+                    [parentId]="thread().id"
+                    (itemAdded)="onSent()"
+                    (canceled)="onCancel()"/>
+
     <div>
       @for (reply of thread().replies; track reply.id) {
         <app-thread-item
@@ -140,7 +148,7 @@
           [reactions]="reply.reactions || []"
           (replyAdded)="replyAdded.emit()"
           (deleted)="deleted.emit($event)"
-          class="border-t border-border"
+          class="border-b border-border"
         />
       }
     </div>

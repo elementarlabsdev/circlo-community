@@ -58,6 +58,14 @@ export class NotificationService {
     }
   }
 
+  listenForAuthChanges() {
+    this.authService.loggedChange
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.initialize();
+      });
+  }
+
   private initializeNotifications(): void {
     if (isPlatformServer(this.platformId)) {
       return;

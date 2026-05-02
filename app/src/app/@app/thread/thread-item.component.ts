@@ -4,13 +4,10 @@ import {
   Component,
   computed,
   DestroyRef,
-  effect,
   inject,
   input,
   OnInit,
   output,
-  signal,
-  untracked
 } from '@angular/core';
 import { Ability } from '@casl/ability';
 import { Action } from '@services/ability.service';
@@ -21,7 +18,6 @@ import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { RouterLink } from '@angular/router';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { Icon } from '@ngstarter/components/icon';
-import { Tooltip } from '@ngstarter/components/tooltip';
 import { BookmarkButtonComponent } from '@app/bookmark-button/bookmark-button.component';
 import { Button } from '@ngstarter/components/button';
 import { ConfirmManager } from '@ngstarter/components/confirm';
@@ -40,6 +36,7 @@ import { ImageZoomViewer, ImageZoomViewerImage } from "@ngstarter/components/ima
 import { AddComplaintDirective } from "@directives/add-complaint.directive";
 import { Menu, MenuItem, MenuTrigger } from "@ngstarter/components/menu";
 import { VideoViewerDirective, VideoViewerVideoDirective } from "@ngstarter/components/video-viewer";
+import { ThreadAdd } from "@app/thread-add/thread-add";
 
 @Component({
   selector: 'app-thread-item',
@@ -57,7 +54,6 @@ import { VideoViewerDirective, VideoViewerVideoDirective } from "@ngstarter/comp
     CarouselCard,
     CommentLikesCountComponent,
     MarkdownComponent,
-    Tooltip,
     TranslocoPipe,
     ImageZoomViewer,
     ImageZoomViewerImage,
@@ -67,6 +63,7 @@ import { VideoViewerDirective, VideoViewerVideoDirective } from "@ngstarter/comp
     MenuTrigger,
     VideoViewerDirective,
     VideoViewerVideoDirective,
+    ThreadAdd,
   ],
   templateUrl: './thread-item.component.html',
   styleUrl: './thread-item.component.scss',
@@ -279,6 +276,14 @@ export class ThreadItemComponent implements OnInit {
       .subscribe(() => {
         this.replyAdded.emit();
       });
+  }
+
+  onSent() {
+    this.replyAdded.emit();
+  }
+
+  onCancel() {
+    // Logic for cancellation if needed
   }
 
   getMediaImageSize(mediaItem: MediaItem, baseSize: number = 270): string {

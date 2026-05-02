@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as pg from 'pg';
 import { readingTime } from 'reading-time-estimator';
-import * as bcrypt from 'bcrypt';
 import { NestFactory } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -56,7 +55,14 @@ async function main() {
   const converter = new ContentBlocksToTextConverter();
   const lang = process.env.LOCALE || 'en';
 
-  const alreadyInstalled = (await prisma.setting.count()) > 0;
+  const alreadyInstalled =
+    (await prisma.setting.count({
+      where: {
+        name: {
+          notIn: ['maxSizeForTranscoding', 'maxDurationForTranscoding'],
+        },
+      },
+    })) > 0;
 
   if (alreadyInstalled) {
     await app.close();
@@ -1515,9 +1521,12 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
     },
     {
       name: i18n.t('common.pageWidgets.recommendedChannels.title', { lang }),
-      description: i18n.t('common.pageWidgets.recommendedChannels.description', {
-        lang,
-      }),
+      description: i18n.t(
+        'common.pageWidgets.recommendedChannels.description',
+        {
+          lang,
+        },
+      ),
       type: 'recommendedChannels',
       position: 1,
       settings: {
@@ -1745,9 +1754,12 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
       name: i18n.t('common.dashboardWidgets.publishedPublications.title', {
         lang,
       }),
-      description: i18n.t('common.dashboardWidgets.publishedPublications.description', {
-        lang,
-      }),
+      description: i18n.t(
+        'common.dashboardWidgets.publishedPublications.description',
+        {
+          lang,
+        },
+      ),
       type: 'publishedPublications',
       position: 0,
     },
@@ -1788,7 +1800,9 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
               position: 0,
             },
             {
-              name: i18n.t('common.license.attributionNoDerivatives.name', { lang }),
+              name: i18n.t('common.license.attributionNoDerivatives.name', {
+                lang,
+              }),
               position: 1,
               rules: [
                 {
@@ -1798,7 +1812,9 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
               ],
             },
             {
-              name: i18n.t('common.license.attributionShareAlike.name', { lang }),
+              name: i18n.t('common.license.attributionShareAlike.name', {
+                lang,
+              }),
               position: 2,
               rules: [
                 {
@@ -1808,7 +1824,9 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
               ],
             },
             {
-              name: i18n.t('common.license.attributionNonCommercial.name', { lang }),
+              name: i18n.t('common.license.attributionNonCommercial.name', {
+                lang,
+              }),
               position: 3,
               rules: [
                 {
@@ -1818,7 +1836,10 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
               ],
             },
             {
-              name: i18n.t('common.license.attributionNonCommercialNoDerivatives.name', { lang }),
+              name: i18n.t(
+                'common.license.attributionNonCommercialNoDerivatives.name',
+                { lang },
+              ),
               position: 4,
               rules: [
                 {
@@ -1832,7 +1853,10 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
               ],
             },
             {
-              name: i18n.t('common.license.attributionNonCommercialShareAlike.name', { lang }),
+              name: i18n.t(
+                'common.license.attributionNonCommercialShareAlike.name',
+                { lang },
+              ),
               position: 5,
               rules: [
                 {
@@ -1857,7 +1881,10 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
         createMany: {
           data: [
             {
-              name: i18n.t('common.license.creativeCommonsCopyrightWaiver.name', { lang }),
+              name: i18n.t(
+                'common.license.creativeCommonsCopyrightWaiver.name',
+                { lang },
+              ),
               position: 0,
               rules: [
                 {
@@ -1890,7 +1917,10 @@ Sitemap: ${process.env.FRONTEND_URL}/sitemap-index.xml`,
 
   const statuses = [
     { type: 'draft', name: i18n.t('common.status.draft', { lang }) },
-    { type: 'unpublishedChanges', name: i18n.t('common.status.unpublishedChanges', { lang }) },
+    {
+      type: 'unpublishedChanges',
+      name: i18n.t('common.status.unpublishedChanges', { lang }),
+    },
     { type: 'scheduled', name: i18n.t('common.status.scheduled', { lang }) },
     { type: 'published', name: i18n.t('common.status.published', { lang }) },
     { type: 'archived', name: i18n.t('common.status.archived', { lang }) },
