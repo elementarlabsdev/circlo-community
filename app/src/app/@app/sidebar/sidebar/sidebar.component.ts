@@ -5,8 +5,8 @@ import { Location } from '@angular/common';
 import { ApiService } from '@services/api.service';
 import { AuthorizedOnlyPipe } from '@app/sidebar/authorized-only.pipe';
 import { AuthService } from '@services/auth.service';
-import { OrderByPipe } from '@ngstarter/components/core';
-import { Icon } from '@ngstarter/components/icon';
+import { OrderByPipe } from '@ngstarter-ui/components/core';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { NavItem, SocialMediaLink } from '@model/interfaces';
 import { AppStore } from '@store/app.store';
 import {
@@ -15,7 +15,7 @@ import {
   NavigationGroupMenu,
   NavigationGroupToggle, NavigationHeading,
   NavigationItem, NavigationItemIconDirective
-} from '@ngstarter/components/navigation';
+} from '@ngstarter-ui/components/navigation';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { LayoutSlotComponent } from '@app/layout-slot/layout-slot.component';
 import { TranslocoPipe } from '@jsverse/transloco';

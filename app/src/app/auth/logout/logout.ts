@@ -8,7 +8,7 @@ import { AUTH_TOKEN_NAME } from '@/types';
 import { AuthService } from '@services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LogoComponent } from '@app/logo/logo.component';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 
 @Component({
   selector: 'app-logout',

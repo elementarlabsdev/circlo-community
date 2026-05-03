@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { LogoComponent } from '@app/logo/logo.component';
 import { ApiService } from '@services/api.service';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 import { CommonModule } from '@angular/common';
 
 @Component({

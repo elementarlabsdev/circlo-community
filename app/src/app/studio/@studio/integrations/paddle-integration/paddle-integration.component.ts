@@ -1,11 +1,11 @@
 import { Component, inject, input } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { Card, CardContent } from '@ngstarter/components/card';
-import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
+import { Button } from '@ngstarter-ui/components/button';
+import { Card, CardContent } from '@ngstarter-ui/components/card';
+import { Menu, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Icon } from '@ngstarter/components/icon';
-import { Dialog } from '@ngstarter/components/dialog';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Dialog } from '@ngstarter-ui/components/dialog';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import {
   IntegrationSettingsComponent
 } from '@/studio/@studio/integrations/_modals/integration-settings/integration-settings.component';

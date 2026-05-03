@@ -1,19 +1,19 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Icon } from '@ngstarter/components/icon';
-import { Button } from '@ngstarter/components/button';
-import { Badge } from '@ngstarter/components/badge';
-import { Menu, MenuDivider, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
-import { Divider } from '@ngstarter/components/divider';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Badge } from '@ngstarter-ui/components/badge';
+import { Menu, MenuDivider, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { AssistantSearchComponent } from '@app/header/_assistant-search/assistant-search.component';
-import { SafeHtmlPipe, SoundEffectDirective } from '@ngstarter/components/core';
+import { SafeHtmlPipe, SoundEffectDirective } from '@ngstarter-ui/components/core';
 import { AuthService } from '@services/auth.service';
 import { LogoComponent } from '@app/logo/logo.component';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
 import { LoginDto } from '@model/interfaces';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
 import {
@@ -21,12 +21,12 @@ import {
   ColorSchemeDarkDirective,
   ColorSchemeLightDirective,
   ColorSchemeSwitcher
-} from '@ngstarter/components/color-scheme';
-import { Announcement } from '@ngstarter/components/announcement';
+} from '@ngstarter-ui/components/color-scheme';
+import { Announcement } from '@ngstarter-ui/components/announcement';
 import { ActionManager } from '@services/action-manager';
 import { CanDirective } from '@directives/can.directive';
 
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { Ability } from '@casl/ability';
 import { Action } from '@services/ability.service';
 import { MobileMenuDialogComponent } from '@modals/mobile-menu-dialog/mobile-menu-dialog.component';

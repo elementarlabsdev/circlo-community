@@ -1,24 +1,24 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActivatedRoute } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
 import { TranslateService } from '@services/translate.service';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { GithubOauthProviderComponent } from '@/admin/settings/_oauth-provider/github/github-provider.component';
 import { GoogleOauthProviderComponent } from '@/admin/settings/_oauth-provider/google/google-provider.component';
 import { FacebookOauthProviderComponent } from '@/admin/settings/_oauth-provider/facebook/facebook-provider.component';
 import { XOauthProviderComponent } from '@/admin/settings/_oauth-provider/x/x-provider.component';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Icon } from '@ngstarter/components/icon';
-import { Card, CardActions, CardContent, CardTitle } from '@ngstarter/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Card, CardActions, CardContent, CardTitle } from '@ngstarter-ui/components/card';
 
 interface IdentitySettings {
   isPublicCommunity: boolean;

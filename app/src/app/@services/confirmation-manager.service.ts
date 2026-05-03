@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { Observable } from 'rxjs';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../@shared/confirm-dialog.component';
 

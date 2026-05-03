@@ -2,19 +2,19 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AnnouncementsApi } from '../announcements.api';
 import { Router, RouterLink } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { Select, Option } from '@ngstarter/components/select';
-import { Checkbox } from '@ngstarter/components/checkbox';
-import { Error, FormField, Label, Suffix } from '@ngstarter/components/form-field';
-import { Datepicker, DatepickerInput, DatepickerToggle } from '@ngstarter/components/datepicker';
-import { Input } from '@ngstarter/components/input';
-import { Timepicker, TimepickerInput, TimepickerToggle } from '@ngstarter/components/timepicker';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { Select, Option } from '@ngstarter-ui/components/select';
+import { Checkbox } from '@ngstarter-ui/components/checkbox';
+import { Error, FormField, Label, Suffix } from '@ngstarter-ui/components/form-field';
+import { Datepicker, DatepickerInput, DatepickerToggle } from '@ngstarter-ui/components/datepicker';
+import { Input } from '@ngstarter-ui/components/input';
+import { Timepicker, TimepickerInput, TimepickerToggle } from '@ngstarter-ui/components/timepicker';
 
 @Component({
   standalone: true,

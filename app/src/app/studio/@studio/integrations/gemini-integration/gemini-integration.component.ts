@@ -1,13 +1,13 @@
 import { Component, inject, input } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { Card, CardContent } from '@ngstarter/components/card';
-import { Icon } from '@ngstarter/components/icon';
-import { Dialog } from '@ngstarter/components/dialog';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Card, CardContent } from '@ngstarter-ui/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Dialog } from '@ngstarter-ui/components/dialog';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import {
   IntegrationSettingsComponent
 } from '@/studio/@studio/integrations/_modals/integration-settings/integration-settings.component';
-import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
+import { Menu, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
 
 @Component({
   selector: 'app-gemini-integration',

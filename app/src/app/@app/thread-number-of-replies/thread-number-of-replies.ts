@@ -1,6 +1,6 @@
 import { Component, input, numberAttribute } from '@angular/core';
-import { Icon } from '@ngstarter/components/icon';
-import { Button } from '@ngstarter/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
 
 @Component({
   selector: 'app-thread-number-of-replies',

@@ -1,9 +1,9 @@
 import { Component, input, OnInit, output } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card, CardActions, CardContent, CardHeader, CardImage, CardTitle } from '@ngstarter/components/card';
-import { ImagePlaceholder } from '@ngstarter/components/image-placeholder';
+import { Card, CardActions, CardContent, CardHeader, CardImage, CardTitle } from '@ngstarter-ui/components/card';
+import { ImagePlaceholder } from '@ngstarter-ui/components/image-placeholder';
 
 @Component({
   selector: 'app-image-design-card',

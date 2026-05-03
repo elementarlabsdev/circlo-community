@@ -2,15 +2,15 @@ import { CdkDrag, CdkDragHandle, CdkDropList, CdkDragDrop, moveItemInArray } fro
 
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { Icon } from '@ngstarter/components/icon';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { ApiService } from '@services/api.service';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 

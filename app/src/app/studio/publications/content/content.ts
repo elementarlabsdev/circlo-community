@@ -5,13 +5,13 @@ import { ApiService } from '@services/api.service';
 import { Publication } from '@model/interfaces';
 import { PUBLICATION_EDIT_ROOT } from '@/studio/publications/types';
 import { EditComponent } from '@/studio/publications/edit/edit.component';
-import { ContentBuilderComponent, ContentEditorBlock } from '@ngstarter/components/content-editor';
+import { ContentBuilderComponent, ContentEditorBlock } from '@ngstarter-ui/components/content-editor';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Button } from '@ngstarter/components/button';
-import { UploadArea, UploadTriggerDirective } from '@ngstarter/components/upload';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { UploadArea, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   imports: [

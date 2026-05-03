@@ -1,13 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ComplaintsApi } from '../complaints.api';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 
 @Component({
   selector: 'admin-complaint-view',

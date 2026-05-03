@@ -1,19 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { PublicationsApi } from '../publications.api';
 import { FormsModule } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { ConfirmManager } from '@ngstarter/components/confirm';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import {
   DataView,
   DataViewColumnDef,
   DataViewDatasource,
   cellRenderer, DataViewGetRowsParams, DataViewAPI
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 import { AppStore } from '@store/app.store';
 import { TranslateService } from '@services/translate.service';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({

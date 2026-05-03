@@ -6,18 +6,18 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+} from '@ngstarter-ui/components/data-view';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import { UsersApi } from '../users.api';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 
 import { FormsModule } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'admin-users-list',

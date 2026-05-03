@@ -1,7 +1,7 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { FormsModule } from '@angular/forms';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';
 import { Router } from '@angular/router';
 import {
@@ -10,11 +10,11 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+} from '@ngstarter-ui/components/data-view';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import { CommentsApi } from '../comments.api';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Toolbar, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Toolbar, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'admin-comments-list',

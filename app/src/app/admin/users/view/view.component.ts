@@ -1,16 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UsersApi } from '../users.api';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoModule } from '@jsverse/transloco';
 import { DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
-import { Divider } from '@ngstarter/components/divider';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 
 @Component({

@@ -1,19 +1,19 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import {
   cellRenderer,
   DataView,
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 import { LayoutsApi } from '../layouts.api';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslateService } from '@services/translate.service';
-import { Toolbar, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Toolbar, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'admin-layout-list',

@@ -1,21 +1,21 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Hint, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { Icon } from '@ngstarter/components/icon';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
-import { Option, Select } from '@ngstarter/components/select';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
+import { Option, Select } from '@ngstarter-ui/components/select';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
-import { Accordion, ExpansionPanel, ExpansionPanelHeader, ExpansionPanelTitle } from '@ngstarter/components/expansion';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { Accordion, ExpansionPanel, ExpansionPanelHeader, ExpansionPanelTitle } from '@ngstarter-ui/components/expansion';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'app-cookie-consent',

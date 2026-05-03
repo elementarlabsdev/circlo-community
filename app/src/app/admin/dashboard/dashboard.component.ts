@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import {
   BreadcrumbsStore
-} from '@ngstarter/components/breadcrumbs';
+} from '@ngstarter-ui/components/breadcrumbs';
 import { AppStore } from '@store/app.store';
 import { ActivatedRoute } from '@angular/router';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslateService } from '@services/translate.service';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { GettingStartedWidget } from '@/dashboard/admin/widgets/getting-started-widget/getting-started-widget';
 import {
   PublicationsWidgetComponent
@@ -20,9 +20,9 @@ import {
 } from '@/dashboard/admin/widgets/latest-publications-widget/latest-publications-widget';
 import { LatestTutorialsWidget } from '@/dashboard/admin/widgets/latest-tutorials-widget/latest-tutorials-widget';
 import { ActivityWidgetComponent } from '@/dashboard/admin/widgets/activity-widget/activity-widget.component';
-import { Tile, TileHandleDirective, Tiles } from '@ngstarter/components/tiles';
-import { Icon } from '@ngstarter/components/icon';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { Tile, TileHandleDirective, Tiles } from '@ngstarter-ui/components/tiles';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 
 export interface DashboardItem {
   id: string;

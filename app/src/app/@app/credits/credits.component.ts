@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { Router } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import { TranslocoPipe } from '@jsverse/transloco';

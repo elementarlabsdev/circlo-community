@@ -1,10 +1,10 @@
 import { Component, computed, input } from '@angular/core';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import {
   NotificationActor,
   NotificationAvatarDirective,
   Notification, NotificationContent, NotificationMessage, NotificationTime
-} from '@ngstarter/components/notifications';
+} from '@ngstarter-ui/components/notifications';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { RouterLink } from '@angular/router';
 

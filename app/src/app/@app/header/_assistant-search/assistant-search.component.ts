@@ -1,13 +1,13 @@
 import {
   Component, inject, model,
 } from '@angular/core';
-import { Icon } from '@ngstarter/components/icon';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { FormsModule } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { FormField, IconButtonSuffix, IconPrefix } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { FormField, IconButtonSuffix, IconPrefix } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 
 @Component({
   selector: 'app-assistant-search',

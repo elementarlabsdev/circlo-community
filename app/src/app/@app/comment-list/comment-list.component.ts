@@ -16,7 +16,7 @@ import { CommentComponent } from '@app/comment/comment.component';
 import { Comment } from '@model/interfaces';
 import {
   Skeleton,
-} from '@ngstarter/components/skeleton';
+} from '@ngstarter-ui/components/skeleton';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { WebSocketService } from '@services/web-socket.service';

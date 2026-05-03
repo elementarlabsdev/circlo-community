@@ -1,32 +1,32 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import {  Button } from '@ngstarter/components/button';
-import { Error, FormField, Hint, Label, Suffix } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
+import {  Button } from '@ngstarter-ui/components/button';
+import { Error, FormField, Hint, Label, Suffix } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { channelUniqueSlugValidator, slugValidator } from '@/@validators';
 import { Channel, ChannelRule, User } from '@model/interfaces';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import {
   Accordion,
   ExpansionPanel,
   ExpansionPanelHeader,
   ExpansionPanelTitle
-} from '@ngstarter/components/expansion';
-import { Dialog } from '@ngstarter/components/dialog';
+} from '@ngstarter-ui/components/expansion';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { NewComponent as NewRuleComponent } from '../_rule/new/new.component';
 import { EditComponent as EditRuleComponent } from '../_rule/edit/edit.component';
-import { Icon } from '@ngstarter/components/icon';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 import { UserSelectModal } from '../_modals/user-select/user-select.modal';
-import { Select, Option } from '@ngstarter/components/select';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Select, Option } from '@ngstarter-ui/components/select';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { OnInit, signal } from '@angular/core';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 

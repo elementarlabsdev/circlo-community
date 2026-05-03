@@ -1,11 +1,11 @@
 import { Component, ElementRef, inject, OnInit, Signal, signal, viewChild } from '@angular/core';
 import { ROUTER_OUTLET_DATA } from '@angular/router';
 import { ApiService } from '@services/api.service';
-import { FormConfig } from '@ngstarter/components/form-renderer';
+import { FormConfig } from '@ngstarter-ui/components/form-renderer';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Icon } from '@ngstarter/components/icon';
+import { Icon } from '@ngstarter-ui/components/icon';
 import {
   UploadAllowedTypes,
   UploadArea,
@@ -16,9 +16,9 @@ import {
   UploadFileSelectedEvent,
   UploadMaxFileSize,
   UploadTriggerDirective
-} from '@ngstarter/components/upload';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+} from '@ngstarter-ui/components/upload';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
@@ -26,19 +26,19 @@ import {
   AutocompleteTrigger,
   Option,
   AutocompleteSelectedEvent,
-} from '@ngstarter/components/autocomplete';
-import { Optgroup } from '@ngstarter/components/option';
-import { Select } from '@ngstarter/components/select';
-import { Checkbox, CheckboxGroup } from '@ngstarter/components/checkbox';
-import { ChipGrid, ChipInput, ChipRemove, ChipRow, ChipInputEvent } from '@ngstarter/components/chips';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Hint, Label } from '@ngstarter/components/form-field';
+} from '@ngstarter-ui/components/autocomplete';
+import { Optgroup } from '@ngstarter-ui/components/option';
+import { Select } from '@ngstarter-ui/components/select';
+import { Checkbox, CheckboxGroup } from '@ngstarter-ui/components/checkbox';
+import { ChipGrid, ChipInput, ChipRemove, ChipRow, ChipInputEvent } from '@ngstarter-ui/components/chips';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
 import findRecursive from '@/_utils/find-recursive';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { debounceTime } from 'rxjs';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TextareaAutoSize } from '@ngstarter/components/core';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 
 @Component({
   imports: [

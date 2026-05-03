@@ -1,16 +1,16 @@
 import { Component, inject, OnInit, PLATFORM_ID, signal, computed } from '@angular/core';
-import { DIALOG_DATA, DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter/components/dialog';
+import { DIALOG_DATA, DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter-ui/components/dialog';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Label } from '@ngstarter/components/form-field';
+import { Button } from '@ngstarter-ui/components/button';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { AppStore } from '@store/app.store';
-import { Alert } from '@ngstarter/components/alert';
+import { Alert } from '@ngstarter-ui/components/alert';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { RadioButton, RadioGroup } from '@ngstarter/components/radio';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { RadioButton, RadioGroup } from '@ngstarter-ui/components/radio';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 import { CaptchaService, CaptchaResult } from '@services/captcha.service';
 
 declare const grecaptcha: any;

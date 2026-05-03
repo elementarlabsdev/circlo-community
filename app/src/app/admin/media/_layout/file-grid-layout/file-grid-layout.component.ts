@@ -1,22 +1,22 @@
 import { Component, inject, input, InputSignal, OnInit, output } from '@angular/core';
 import { File, FileSelectedEvent } from '../../types';
-import { Option } from '@ngstarter/components/autocomplete';
+import { Option } from '@ngstarter-ui/components/autocomplete';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { Divider } from '@ngstarter/components/divider';
-import { Menu, MenuHeading, MenuItem, MenuOptionGroupDirective, MenuTrigger } from '@ngstarter/components/menu';
-import { Checkbox, CheckboxChange } from '@ngstarter/components/checkbox';
-import { Ripple } from '@ngstarter/components/core';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Button } from '@ngstarter-ui/components/button';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { Menu, MenuHeading, MenuItem, MenuOptionGroupDirective, MenuTrigger } from '@ngstarter-ui/components/menu';
+import { Checkbox, CheckboxChange } from '@ngstarter-ui/components/checkbox';
+import { Ripple } from '@ngstarter-ui/components/core';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 import { SelectionModel } from '@angular/cdk/collections';
-import { FormatFileSizePipe } from '@ngstarter/components/core';
+import { FormatFileSizePipe } from '@ngstarter-ui/components/core';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import {
   EmptyState,
   EmptyStateContent, EmptyStateIcon
-} from '@ngstarter/components/empty-state';
-import { Icon } from '@ngstarter/components/icon';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+} from '@ngstarter-ui/components/empty-state';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '@services/api.service';

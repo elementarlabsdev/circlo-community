@@ -2,13 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Page } from '@model/interfaces';
-import { SeoService } from '@ngstarter/components/core';
+import { SeoService } from '@ngstarter-ui/components/core';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import {
   BreadcrumbItem,
   Breadcrumbs,
   BreadcrumbSeparator
-} from '@ngstarter/components/breadcrumbs';
+} from '@ngstarter-ui/components/breadcrumbs';
 import { BlocksContent } from '@app/blocks-content/blocks-content';
 
 @Component({

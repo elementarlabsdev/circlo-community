@@ -5,11 +5,11 @@ import {
   DialogContent,
   DialogRef,
   DialogTitle
-} from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
+} from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
 import { ApiService } from '@services/api.service';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Label } from '@ngstarter/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
 import { Channel } from '@model/interfaces';
 import { FormsModule } from '@angular/forms';
 import {
@@ -17,9 +17,9 @@ import {
   Panel,
   PanelFooter,
   PanelHeader
-} from '@ngstarter/components/panel';
-import { Paginator, PageEvent } from '@ngstarter/components/paginator';
-import { ListOption, SelectionList } from '@ngstarter/components/list';
+} from '@ngstarter-ui/components/panel';
+import { Paginator, PageEvent } from '@ngstarter-ui/components/paginator';
+import { ListOption, SelectionList } from '@ngstarter-ui/components/list';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 

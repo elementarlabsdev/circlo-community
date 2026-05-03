@@ -1,23 +1,23 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ApiService } from '@services/api.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MyProfile } from '@model/interfaces';
-import { Error, FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
+import { Error, FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { usernameValidator } from '@/@validators/username.validator';
 import { uniqueUsernameValidator } from '@/@validators/unique-username.validator';
 import { AppStore } from '@store/app.store';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   standalone: true,

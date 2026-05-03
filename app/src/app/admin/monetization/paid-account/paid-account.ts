@@ -1,17 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label, TextSuffix } from '@ngstarter/components/form-field';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
-import { Input } from '@ngstarter/components/input';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label, TextSuffix } from '@ngstarter-ui/components/form-field';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
+import { Input } from '@ngstarter-ui/components/input';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Alert } from '@ngstarter/components/alert';
+import { Alert } from '@ngstarter-ui/components/alert';
 
 @Component({
   selector: 'app-paid-account',

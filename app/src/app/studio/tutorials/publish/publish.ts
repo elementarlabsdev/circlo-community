@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, Signal, signal, computed } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ApiService } from '@services/api.service';
 import { ROUTER_OUTLET_DATA } from '@angular/router';
@@ -7,10 +7,10 @@ import { DatePipe } from '@angular/common';
 import { TUTORIAL_EDIT_ROOT } from '@/studio/tutorials/types';
 import { EditComponent } from '@/studio/tutorials/edit/edit.component';
 import { FormsModule } from '@angular/forms';
-import { Timepicker, TimepickerInput, TimepickerToggle } from '@ngstarter/components/timepicker';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Hint, Label, Suffix } from '@ngstarter/components/form-field';
-import { Datepicker, DatepickerInput, DatepickerToggle } from '@ngstarter/components/datepicker';
+import { Timepicker, TimepickerInput, TimepickerToggle } from '@ngstarter-ui/components/timepicker';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Hint, Label, Suffix } from '@ngstarter-ui/components/form-field';
+import { Datepicker, DatepickerInput, DatepickerToggle } from '@ngstarter-ui/components/datepicker';
 
 @Component({
   selector: 'app-publish',

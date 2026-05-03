@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { AppStore } from '@store/app.store';
 import { ActivatedRoute } from '@angular/router';
-import { Icon } from '@ngstarter/components/icon';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { ApiService } from '@services/api.service';
 import {
   PublicationsWidgetComponent
@@ -17,7 +17,7 @@ import {
   LatestPublicationsWidget
 } from '@/dashboard/studio/widgets/latest-publications-widget/latest-publications-widget';
 import { LatestTutorialsWidget } from '@/dashboard/studio/widgets/latest-tutorials-widget/latest-tutorials-widget';
-import { Tile, TileHandleDirective, Tiles } from '@ngstarter/components/tiles';
+import { Tile, TileHandleDirective, Tiles } from '@ngstarter-ui/components/tiles';
 import { ActivityWidgetComponent } from '@/dashboard/studio/widgets/activity-widget/activity-widget.component';
 
 export interface DashboardItem {

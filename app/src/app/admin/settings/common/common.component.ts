@@ -3,12 +3,12 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { Location } from '@angular/common';
 import { filter } from 'rxjs';
 import { NavItem } from '@model/interfaces';
-import { Navigation, NavigationItem } from '@ngstarter/components/navigation';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { Navigation, NavigationItem } from '@ngstarter-ui/components/navigation';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Sidenav, SidenavContainer, SidenavContent } from '@ngstarter/components/sidenav';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Sidenav, SidenavContainer, SidenavContent } from '@ngstarter-ui/components/sidenav';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 
 @Component({
   imports: [

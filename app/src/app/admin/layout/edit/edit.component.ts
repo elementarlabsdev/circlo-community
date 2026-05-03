@@ -1,12 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '@services/api.service';
-import { Card, CardContent, CardTitle } from '@ngstarter/components/card';
+import { Card, CardContent, CardTitle } from '@ngstarter-ui/components/card';
 import { DndDraggableDirective, DndDropEvent, DndDropzoneDirective } from 'ngx-drag-drop';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@services/translate.service';
 import { TranslocoModule } from '@jsverse/transloco';

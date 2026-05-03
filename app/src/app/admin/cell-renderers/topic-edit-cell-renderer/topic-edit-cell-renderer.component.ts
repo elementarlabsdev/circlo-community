@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
-import { DataViewCellRenderer } from '@ngstarter/components/data-view';
+import { DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
 import { RouterLink } from '@angular/router';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 
 @Component({

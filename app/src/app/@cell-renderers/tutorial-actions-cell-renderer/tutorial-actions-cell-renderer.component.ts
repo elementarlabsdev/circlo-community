@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
-import { DataViewCellRenderer } from '@ngstarter/components/data-view';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { CanDirective } from '@directives/can.directive';
 import { Action } from '@services/ability.service';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 
 @Component({
   selector: 'app-tutorial-actions-cell-renderer',

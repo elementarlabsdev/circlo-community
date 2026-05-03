@@ -1,14 +1,14 @@
 import { Component, inject, signal, Signal } from '@angular/core';
-import {  Button } from '@ngstarter/components/button';
-import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
-import { Skeleton, } from '@ngstarter/components/skeleton';
+import {  Button } from '@ngstarter-ui/components/button';
+import { Menu, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
+import { Skeleton, } from '@ngstarter-ui/components/skeleton';
 import { ApiService } from '@services/api.service';
 import { ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
-import { Icon } from '@ngstarter/components/icon';
-import { InlineTextEdit } from '@ngstarter/components/inline-text-edit';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { InlineTextEdit } from '@ngstarter-ui/components/inline-text-edit';
 import { TUTORIAL_EDIT_ROOT } from '@/studio/tutorials/types';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 

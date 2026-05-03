@@ -1,6 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
-import { GRID, Grid } from '@ngstarter/components/grid';
+import { GRID, Grid } from '@ngstarter-ui/components/grid';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import {
   Timeline,
@@ -8,11 +8,11 @@ import {
   TimelineItem,
   TimelineTimestamp,
   TimelineTitle
-} from '@ngstarter/components/timeline';
+} from '@ngstarter-ui/components/timeline';
 import { RouterLink } from '@angular/router';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { Icon } from '@ngstarter/components/icon';
-import { Card, CardContent, CardHeader, CardTitle } from '@ngstarter/components/card';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Card, CardContent, CardHeader, CardTitle } from '@ngstarter-ui/components/card';
 
 @Component({
   selector: 'app-activity-widget',

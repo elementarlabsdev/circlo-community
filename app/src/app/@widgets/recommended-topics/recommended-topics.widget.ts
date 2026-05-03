@@ -1,5 +1,5 @@
 import { Component, input, OnInit } from '@angular/core';
-import { Ripple } from '@ngstarter/components/core';
+import { Ripple } from '@ngstarter-ui/components/core';
 import { RouterLink } from '@angular/router';
 import { Widget } from '@model/interfaces';
 import { TranslocoPipe } from '@jsverse/transloco';

@@ -1,23 +1,23 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import {
   cellRenderer,
   DataView,
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 import { PagesApi } from '../pages.api';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslateService } from '@services/translate.service';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 import { Ability } from '@casl/ability';
 import { Action } from '@services/ability.service';
 

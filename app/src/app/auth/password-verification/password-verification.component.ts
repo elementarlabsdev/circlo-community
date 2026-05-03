@@ -1,14 +1,14 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { PinInput } from '@ngstarter/components/pin-input';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { PinInput } from '@ngstarter-ui/components/pin-input';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LogoComponent } from '@app/logo/logo.component';
 import { ApiService } from '@services/api.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 
 @Component({
   imports: [

@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import {  Button } from '@ngstarter/components/button';
+import {  Button } from '@ngstarter-ui/components/button';
 import { RouterLink } from '@angular/router';
 import { LogoComponent } from '@app/logo/logo.component';
 import { ApiService } from '@services/api.service';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 
 @Component({
   selector: 'app-password-restored',

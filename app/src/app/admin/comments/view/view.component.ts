@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommentsApi } from '../comments.api';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { DatePipe, TitleCasePipe } from '@angular/common';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
-import { Divider } from '@ngstarter/components/divider';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { AdminQualityScoreComponent } from '../../shared/quality-score/quality-score.component';
 
 import { Comment } from '@model/interfaces';

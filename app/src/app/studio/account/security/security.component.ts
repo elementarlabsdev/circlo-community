@@ -1,20 +1,20 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { ApiService } from '@services/api.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActivatedRoute } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { AppStore } from '@store/app.store';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { Dialog } from '@ngstarter/components/dialog';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { AuthService } from '@services/auth.service';
 import { ChangePasswordDialogComponent } from './change-password.dialog';
 import { ChangeEmailDialogComponent } from './change-email.dialog';
-import { Card, CardActions, CardContent, CardHeader } from '@ngstarter/components/card';
-import { Icon } from '@ngstarter/components/icon';
+import { Card, CardActions, CardContent, CardHeader } from '@ngstarter-ui/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
 
 @Component({
   imports: [

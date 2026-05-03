@@ -5,12 +5,12 @@ import {
   DialogContent,
   DialogRef,
   DialogTitle
-} from '@ngstarter/components/dialog';
-import { Input } from '@ngstarter/components/input';
+} from '@ngstarter-ui/components/dialog';
+import { Input } from '@ngstarter-ui/components/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Button } from '@ngstarter/components/button';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Button } from '@ngstarter-ui/components/button';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'app-edit',

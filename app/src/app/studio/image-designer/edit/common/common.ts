@@ -1,14 +1,14 @@
 import { Component, effect, inject, OnInit, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { LayoutContent, Layout, LayoutHeader } from '@ngstarter/components/layout';
-import { Icon } from '@ngstarter/components/icon';
-import { Button } from '@ngstarter/components/button';
+import { LayoutContent, Layout, LayoutHeader } from '@ngstarter-ui/components/layout';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 import { ApiService } from '@services/api.service';
 import { debounceTime, map, Subject, tap } from 'rxjs';
-import { AssetsDataSource, ImageDesigner, ImageDesignerPhoto } from '@ngstarter/components/image-designer';
+import { AssetsDataSource, ImageDesigner, ImageDesignerPhoto } from '@ngstarter-ui/components/image-designer';
 
 @Component({
   imports: [

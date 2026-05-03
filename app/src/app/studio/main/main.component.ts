@@ -8,36 +8,36 @@ import {
   LayoutContent,
   Layout,
   LayoutTopbar
-} from '@ngstarter/components/layout';
-import { Icon } from '@ngstarter/components/icon';
-import { Sidenav, SidenavContainer, SidenavContent } from '@ngstarter/components/sidenav';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { Announcement } from '@ngstarter/components/announcement';
+} from '@ngstarter-ui/components/layout';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Sidenav, SidenavContainer, SidenavContent } from '@ngstarter-ui/components/sidenav';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Announcement } from '@ngstarter-ui/components/announcement';
 import {
   BreadcrumbItemIconDefDirective,
   BreadcrumbItemNameDefDirective,
   BreadcrumbsGlobal
-} from '@ngstarter/components/breadcrumbs';
-import { Button } from '@ngstarter/components/button';
+} from '@ngstarter-ui/components/breadcrumbs';
+import { Button } from '@ngstarter-ui/components/button';
 import {
   ColorScheme, ColorSchemeDarkDirective,
   ColorSchemeLightDirective,
   ColorSchemeSwitcher
-} from '@ngstarter/components/color-scheme';
-import { Dicebear } from '@ngstarter/components/avatar';
+} from '@ngstarter-ui/components/color-scheme';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Menu, MenuDivider, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
-import { SafeHtmlPipe, SoundEffectDirective } from '@ngstarter/components/core';
+import { Menu, MenuDivider, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
+import { SafeHtmlPipe, SoundEffectDirective } from '@ngstarter-ui/components/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
 import { AuthService } from '@services/auth.service';
 import { LoginDto } from '@model/interfaces';
-import { Tooltip } from '@ngstarter/components/tooltip';
-import { Badge } from '@ngstarter/components/badge';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
+import { Badge } from '@ngstarter-ui/components/badge';
 import { ActionManager } from '@services/action-manager';
-import { Divider } from '@ngstarter/components/divider';
-import { Toolbar, ToolbarSpacer } from '@ngstarter/components/toolbar';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { Toolbar, ToolbarSpacer } from '@ngstarter-ui/components/toolbar';
 import { SettingsService } from '@services/settings.service';
 import { CanDirective } from '@directives/can.directive';
 

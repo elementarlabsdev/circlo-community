@@ -6,7 +6,7 @@ import { AuthService } from '@services/auth.service';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
 
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 import { SettingsService } from '@services/settings.service';
 

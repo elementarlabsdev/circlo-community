@@ -2,18 +2,18 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { ApiService } from '@services/api.service';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateService } from '@services/translate.service';
-import { Button } from '@ngstarter/components/button';
-import { Input } from '@ngstarter/components/input';
-import { Icon } from '@ngstarter/components/icon';
-import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
+import { Button } from '@ngstarter-ui/components/button';
+import { Input } from '@ngstarter-ui/components/input';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Menu, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { AppStore } from '@store/app.store';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 
 @Component({
   selector: 'app-meta-tags',

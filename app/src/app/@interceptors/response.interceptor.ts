@@ -2,7 +2,7 @@ import { HttpInterceptorFn, HttpStatusCode } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { inject, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '@services/auth.service';
 

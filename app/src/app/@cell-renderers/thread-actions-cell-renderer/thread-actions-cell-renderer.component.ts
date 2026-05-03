@@ -1,7 +1,7 @@
 import { Component, inject, input } from '@angular/core';
-import { DATA_VIEW, DataViewCellRenderer } from '@ngstarter/components/data-view';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { DATA_VIEW, DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({

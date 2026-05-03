@@ -4,8 +4,8 @@ import {
   BreadcrumbItem,
   Breadcrumbs,
   BreadcrumbSeparator
-} from '@ngstarter/components/breadcrumbs';
-import { Dicebear } from '@ngstarter/components/avatar';
+} from '@ngstarter-ui/components/breadcrumbs';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { FollowersCountComponent } from '@app/followers-count/followers-count.component';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { PaginatorComponent } from '@app/paginator';
@@ -13,15 +13,15 @@ import { PublicationsCountComponent } from '@app/publications-count/publications
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { ApiService } from '@services/api.service';
-import { SeoService } from '@ngstarter/components/core';
+import { SeoService } from '@ngstarter-ui/components/core';
 import { SubscriptionStore } from '@store/subscription.store';
 import { BookmarkStore } from '@store/bookmark.store';
 import { AppStore } from '@store/app.store';
 import { FeedItem, Pagination, Publication, User } from '@model/interfaces';
 import { PublicationSkeletonComponent } from '@app/publication-skeleton/publication-skeleton.component';
-import { Skeleton } from '@ngstarter/components/skeleton';
+import { Skeleton } from '@ngstarter-ui/components/skeleton';
 import { TutorialsCount } from '@app/tutorials-count/tutorials-count';
 import { FeedItems } from '@app/feed-items/feed-items';
 import { ThreadAdd } from '@app/thread-add/thread-add';

@@ -1,21 +1,21 @@
 import { Component, inject, signal } from '@angular/core';
 import { BlocksContent } from '@app/blocks-content/blocks-content';
 import { CommentListComponent } from '@app/comment-list/comment-list.component';
-import { Dicebear } from '@ngstarter/components/avatar';
-import { Icon } from '@ngstarter/components/icon';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { LayoutSlotComponent } from '@app/layout-slot/layout-slot.component';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, Router, ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
 import { TutorialInterface } from '@model/interfaces';
 import { environment } from '../../../environments/environment';
 import { AppStore } from '@store/app.store';
-import { SeoService } from '@ngstarter/components/core';
+import { SeoService } from '@ngstarter-ui/components/core';
 import { ReadingTime } from '@app/reading-time/reading-time';
 import { ViewsCount } from '@app/views-count/views-count';
 

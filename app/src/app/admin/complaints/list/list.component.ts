@@ -1,19 +1,19 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import {
   cellRenderer,
   DataView,
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 import { ComplaintsApi } from '../complaints.api';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
 
 // Row type for Admin Complaints DataTable
 export interface AdminComplaintRow {

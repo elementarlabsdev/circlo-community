@@ -1,25 +1,25 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {  Button } from '@ngstarter/components/button';
+import {  Button } from '@ngstarter-ui/components/button';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import {
   Accordion,
   ExpansionPanel,
   ExpansionPanelHeader,
   ExpansionPanelTitle
-} from '@ngstarter/components/expansion';
+} from '@ngstarter-ui/components/expansion';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { Menu } from '@model/interfaces';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslateService } from '@services/translate.service';
 import { TranslocoModule } from '@jsverse/transloco';
 

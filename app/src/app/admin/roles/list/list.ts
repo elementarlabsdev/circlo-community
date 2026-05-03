@@ -5,18 +5,18 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   cellRenderer, DataViewGetRowsParams, DataViewAPI
-} from '@ngstarter/components/data-view';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { ConfirmManager } from '@ngstarter/components/confirm';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+} from '@ngstarter-ui/components/data-view';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AppStore } from '@store/app.store';
 import { TranslateService } from '@services/translate.service';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'app-roles-list',

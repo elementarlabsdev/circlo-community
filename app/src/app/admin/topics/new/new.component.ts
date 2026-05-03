@@ -2,22 +2,22 @@ import { Component, inject } from '@angular/core';
 import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { slugValidator, topicUniqueSlugValidator } from '@/@validators';
 import { Topic } from '@model/interfaces';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
-import {  Button } from '@ngstarter/components/button';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
+import {  Button } from '@ngstarter-ui/components/button';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Error, Hint } from '@ngstarter/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Error, Hint } from '@ngstarter-ui/components/form-field';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoModule } from '@jsverse/transloco';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   imports: [

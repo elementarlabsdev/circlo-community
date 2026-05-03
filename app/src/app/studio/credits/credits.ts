@@ -2,18 +2,18 @@ import { Component, inject, viewChild, signal, OnInit, OnDestroy } from '@angula
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { StudioCreditsApi } from './credits.api';
-import { cellRenderer, DataView, DataViewColumnDef, DataViewDatasource, DataViewGetRowsParams } from '@ngstarter/components/data-view';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { cellRenderer, DataView, DataViewColumnDef, DataViewDatasource, DataViewGetRowsParams } from '@ngstarter-ui/components/data-view';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoModule } from '@jsverse/transloco';
-import { Alert } from '@ngstarter/components/alert';
-import { Card, CardContent, CardActions, CardTitle, CardHeader } from '@ngstarter/components/card';
-import { FormField, Label, TextSuffix } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { Alert } from '@ngstarter-ui/components/alert';
+import { Card, CardContent, CardActions, CardTitle, CardHeader } from '@ngstarter-ui/components/card';
+import { FormField, Label, TextSuffix } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Icon } from '@ngstarter/components/icon';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { Subscription } from 'rxjs';
 
 @Component({

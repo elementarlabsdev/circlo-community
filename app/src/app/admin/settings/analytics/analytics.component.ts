@@ -1,19 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { AppStore } from '@store/app.store';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import {
   GoogleAnalyticsComponent
 } from '@/admin/settings/_analytics-provider/google-analytics/google-analytics.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card, CardActions, CardContent, CardTitle } from '@ngstarter/components/card';
+import { Card, CardActions, CardContent, CardTitle } from '@ngstarter-ui/components/card';
 import { TranslateService } from '@services/translate.service';
 
 @Component({

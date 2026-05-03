@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label } from '@ngstarter/components/form-field';
+import { DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
 import { ApiService } from '@services/api.service';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Input } from '@ngstarter/components/input';
+import { Input } from '@ngstarter-ui/components/input';
 
 @Component({
   selector: 'tw-change-password-dialog',

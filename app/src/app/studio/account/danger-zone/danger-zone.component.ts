@@ -1,17 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { Divider } from '@ngstarter/components/divider';
-import { Button } from '@ngstarter/components/button';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { Button } from '@ngstarter-ui/components/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { AppStore } from '@store/app.store';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { ApiService } from '@services/api.service';
 import { AuthService } from '@services/auth.service';
 import { ConfirmationManager } from '@services/confirmation-manager.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 
 @Component({
   imports: [

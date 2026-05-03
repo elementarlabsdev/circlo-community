@@ -2,15 +2,15 @@ import { Component, computed, inject, model, OnInit, signal } from '@angular/cor
 import { EditComponent } from '@/studio/publications/edit/edit.component';
 import { PUBLICATION_EDIT_ROOT } from '@/studio/publications/types';
 import { ApiService } from '@services/api.service';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { FormsModule } from '@angular/forms';
-import { Alert } from '@ngstarter/components/alert';
+import { Alert } from '@ngstarter-ui/components/alert';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { DatePipe } from '@angular/common';
-import { Timepicker, TimepickerInput, TimepickerToggle } from '@ngstarter/components/timepicker';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Hint, IconButtonSuffix, Label } from '@ngstarter/components/form-field';
-import { Datepicker, DatepickerInput, DatepickerToggle } from '@ngstarter/components/datepicker';
+import { Timepicker, TimepickerInput, TimepickerToggle } from '@ngstarter-ui/components/timepicker';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Hint, IconButtonSuffix, Label } from '@ngstarter-ui/components/form-field';
+import { Datepicker, DatepickerInput, DatepickerToggle } from '@ngstarter-ui/components/datepicker';
 
 @Component({
   imports: [

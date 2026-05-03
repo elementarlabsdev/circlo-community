@@ -2,11 +2,11 @@ import { Component, input } from '@angular/core';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
 import { Topic } from '@model/interfaces';
 import { RouterLink } from '@angular/router';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
 import { PublicationsCountComponent } from '@app/publications-count/publications-count.component';
 import { TutorialsCount } from '@app/tutorials-count/tutorials-count';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 @Component({
   selector: 'app-topic',

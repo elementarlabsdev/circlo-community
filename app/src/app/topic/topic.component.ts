@@ -1,24 +1,24 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { SettingsService } from '@services/settings.service';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { FollowersCountComponent } from '@app/followers-count/followers-count.component';
 import { PaginatorComponent } from '@app/paginator';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { SeoService } from '@ngstarter/components/core';
+import { SeoService } from '@ngstarter-ui/components/core';
 import { SubscriptionStore } from '@store/subscription.store';
 import { FeedItem, Pagination, Publication, Topic } from '@model/interfaces';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { PublicationsCountComponent } from '@app/publications-count/publications-count.component';
 import {
   BreadcrumbItem,
   Breadcrumbs,
   BreadcrumbSeparator
-} from '@ngstarter/components/breadcrumbs';
+} from '@ngstarter-ui/components/breadcrumbs';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Skeleton } from '@ngstarter/components/skeleton';
+import { Skeleton } from '@ngstarter-ui/components/skeleton';
 import { PublicationSkeletonComponent } from '@app/publication-skeleton/publication-skeleton.component';
 import { BookmarkStore } from '@store/bookmark.store';
 import { AppStore } from '@store/app.store';

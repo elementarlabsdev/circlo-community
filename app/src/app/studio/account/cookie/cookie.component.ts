@@ -4,18 +4,18 @@ import {
   ExpansionPanel,
   ExpansionPanelDescription,
   ExpansionPanelHeader, ExpansionPanelTitle
-} from '@ngstarter/components/expansion';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
+} from '@ngstarter-ui/components/expansion';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 
 @Component({
   selector: 'app-cookie',

@@ -6,7 +6,7 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 
 @Component({
   selector: 'app-file-list-layout',

@@ -1,9 +1,9 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { ConfirmManager } from '@ngstarter/components/confirm';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { AppStore } from '@store/app.store';
 import {
   cellRenderer,
@@ -11,10 +11,10 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 import { TutorialsApi } from '../tutorials.api';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
 
 @Component({
   selector: 'app-admin-tutorials-table',

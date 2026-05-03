@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Skeleton } from '@ngstarter/components/skeleton';
-import { Divider } from '@ngstarter/components/divider';
+import { Skeleton } from '@ngstarter-ui/components/skeleton';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 @Component({
   selector: 'app-publication-skeleton',

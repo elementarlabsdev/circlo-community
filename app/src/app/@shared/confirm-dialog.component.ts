@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { DIALOG_DATA, DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
+import { DIALOG_DATA, DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 export interface ConfirmDialogData {

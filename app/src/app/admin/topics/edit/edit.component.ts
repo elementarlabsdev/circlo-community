@@ -1,23 +1,23 @@
 import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { Topic } from '@model/interfaces';
-import { Button } from '@ngstarter/components/button';
-import { Error, FormField, Hint, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { Button } from '@ngstarter-ui/components/button';
+import { Error, FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { isPlatformBrowser } from '@angular/common';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { AppStore } from '@store/app.store';
 import { slugValidator, topicUniqueSlugValidator } from '@/@validators';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoModule } from '@jsverse/transloco';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   standalone: true,

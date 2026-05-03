@@ -4,7 +4,7 @@ import { SubscriptionComponent } from '@app/subscription/subscription.component'
 import { RouterLink } from '@angular/router';
 import { SubscriptionStore } from '@store/subscription.store';
 import { FollowersCountComponent } from '@app/followers-count/followers-count.component';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
 

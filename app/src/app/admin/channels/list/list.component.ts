@@ -1,8 +1,8 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { FormsModule } from '@angular/forms';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoService } from '@jsverse/transloco';
 import {
   cellRenderer,
@@ -10,13 +10,13 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+} from '@ngstarter-ui/components/data-view';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import { ChannelsApi } from '../channels.api';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 
 @Component({
   selector: 'admin-channels-list',

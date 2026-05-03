@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { SettingsService } from '@services/settings.service';
 import { ApiService } from '@services/api.service';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 @Component({
   selector: 'app-checkout',

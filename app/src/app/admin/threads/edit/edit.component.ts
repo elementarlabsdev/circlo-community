@@ -1,21 +1,21 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ThreadsApi } from '../threads.api';
-import { Button } from '@ngstarter/components/button';
-import { Input } from '@ngstarter/components/input';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
+import { Button } from '@ngstarter-ui/components/button';
+import { Input } from '@ngstarter-ui/components/input';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { ConfirmManager } from '@ngstarter/components/confirm';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { AdminQualityScoreComponent } from '../../shared/quality-score/quality-score.component';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { TranslateService } from '@services/translate.service';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'admin-thread-edit',

@@ -1,18 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import {
   DIALOG_DATA,
   DialogActions,
   DialogContent,
   DialogRef,
   DialogTitle
-} from '@ngstarter/components/dialog';
-import { FormField, Hint, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
+} from '@ngstarter-ui/components/dialog';
+import { FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { TranslateService } from '@services/translate.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 

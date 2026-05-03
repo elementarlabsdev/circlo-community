@@ -1,18 +1,18 @@
 import { Component, inject, signal } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { AppStore } from '@store/app.store';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { TranslateService } from '@services/translate.service';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'app-search-engine-crawlers',

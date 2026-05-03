@@ -8,10 +8,10 @@ import {
   SidebarNav,
   SidebarNavHeading,
   SidebarNavItem, SidebarNavItemIconDirective,
-} from '@ngstarter/components/sidebar';
+} from '@ngstarter-ui/components/sidebar';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { Icon } from '@ngstarter/components/icon';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { AppStore } from '@store/app.store';
 import { LogoComponent } from '@app/logo/logo.component';
 

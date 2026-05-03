@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DIALOG_DATA, DialogContent, DialogRef, DialogTitle } from '@ngstarter/components/dialog';
+import { DIALOG_DATA, DialogContent, DialogRef, DialogTitle } from '@ngstarter-ui/components/dialog';
 import { ThreadAdd } from '@app/thread-add/thread-add';
 
 export interface ThreadDialogData {

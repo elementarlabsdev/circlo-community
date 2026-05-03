@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Dialog } from '@ngstarter/components/dialog';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { Dialog } from '@ngstarter-ui/components/dialog';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
 import { Thread } from '@model/interfaces';
 import { ThreadReplyDialogComponent } from '@modals/thread-reply-dialog/thread-reply-dialog';

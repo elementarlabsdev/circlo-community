@@ -1,9 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { ProgressBar } from '@ngstarter/components/progress-bar';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { Checkbox } from '@ngstarter/components/checkbox';
-import { RadioButton, RadioGroup } from '@ngstarter/components/radio';
+import { ProgressBar } from '@ngstarter-ui/components/progress-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Checkbox } from '@ngstarter-ui/components/checkbox';
+import { RadioButton, RadioGroup } from '@ngstarter-ui/components/radio';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';

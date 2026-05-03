@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
-import { Dicebear } from '@ngstarter/components/avatar';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { AppStore } from '@store/app.store';
 import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';

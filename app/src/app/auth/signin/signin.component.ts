@@ -1,16 +1,16 @@
 import { ChangeDetectorRef, Component, inject, OnInit, signal, ChangeDetectionStrategy, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label, Suffix } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label, Suffix } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LogoComponent } from '@app/logo/logo.component';
 import { AuthService } from '@services/auth.service';
 import { ApiService } from '@services/api.service';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { AppStore } from '@store/app.store';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 import { CaptchaService } from '@services/captcha.service';
 
 @Component({

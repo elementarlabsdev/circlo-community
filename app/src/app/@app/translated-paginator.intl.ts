@@ -1,4 +1,4 @@
-import { PaginatorIntl } from '@ngstarter/components/paginator';
+import { PaginatorIntl } from '@ngstarter-ui/components/paginator';
 import { inject, Injectable } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TranslocoService } from '@jsverse/transloco';

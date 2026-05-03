@@ -1,8 +1,8 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
 import { ResendMailProviderDialog } from '../_mail-provider/resend-mail-provider/resend-mail-provider.dialog';
 import { MailchimpMailProviderDialog } from '../_mail-provider/mailchimp-mail-provider/mailchimp-mail-provider.dialog';
 import {
@@ -10,20 +10,20 @@ import {
 } from '../_mail-provider/amazon-ses-mail-provider/amazon-ses-mail-provider.dialog';
 import { SendgridMailProviderDialog } from '../_mail-provider/sendgrid-mail-provider/sendgrid-mail-provider.dialog';
 import { MandrillMailProviderDialog } from '../_mail-provider/mandrill-mail-provider/mandrill-mail-provider.dialog';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
-import { Alert } from '@ngstarter/components/alert';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { Card, CardActions, CardContent, CardTitle } from '@ngstarter/components/card';
-import { Icon } from '@ngstarter/components/icon';
+import { Alert } from '@ngstarter-ui/components/alert';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Card, CardActions, CardContent, CardTitle } from '@ngstarter-ui/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { TranslateService } from '@services/translate.service';
-import { FormField, Hint, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { Divider } from '@ngstarter/components/divider';
+import { FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({

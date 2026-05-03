@@ -1,18 +1,18 @@
 import { Component, computed, forwardRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { LayoutContent, Layout, LayoutHeader } from '@ngstarter/components/layout';
-import { Button } from '@ngstarter/components/button';
+import { LayoutContent, Layout, LayoutHeader } from '@ngstarter-ui/components/layout';
+import { Button } from '@ngstarter-ui/components/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { PanelContent, Panel, PanelSidebar } from '@ngstarter/components/panel';
-import { Icon } from '@ngstarter/components/icon';
-import { Tooltip } from '@ngstarter/components/tooltip';
-import { Navigation, NavigationItem } from '@ngstarter/components/navigation';
+import { PanelContent, Panel, PanelSidebar } from '@ngstarter-ui/components/panel';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
+import { Navigation, NavigationItem } from '@ngstarter-ui/components/navigation';
 import { ApiService } from '@services/api.service';
 import { TUTORIAL_EDIT_ROOT } from '@/studio/tutorials/types';
 import { TutorialInterface } from '@model/interfaces';
-import { Chip } from '@ngstarter/components/chips';
+import { Chip } from '@ngstarter-ui/components/chips';
 
 @Component({
   imports: [

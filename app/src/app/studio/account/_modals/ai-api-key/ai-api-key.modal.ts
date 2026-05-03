@@ -1,16 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import {
   DIALOG_DATA,
   DialogActions,
   DialogContent,
   DialogRef,
   DialogTitle
-} from '@ngstarter/components/dialog';
-import { Input } from '@ngstarter/components/input';
+} from '@ngstarter-ui/components/dialog';
+import { Input } from '@ngstarter-ui/components/input';
 import { ApiService } from '@services/api.service';
-import { FormField, Label } from '@ngstarter/components/form-field';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
 
 @Component({
   selector: 'app-ai-api-key',

@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
-import { DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter/components/dialog';
+import { DialogActions, DialogContent, DialogRef, DialogTitle } from '@ngstarter-ui/components/dialog';
 import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { FormRenderer } from '@ngstarter/components/form-renderer';
-import { Button } from '@ngstarter/components/button';
-import { BlockLoader } from '@ngstarter/components/block-loader';
+import { FormRenderer } from '@ngstarter-ui/components/form-renderer';
+import { Button } from '@ngstarter-ui/components/button';
+import { BlockLoader } from '@ngstarter-ui/components/block-loader';
 import { ApiService } from '@services/api.service';
 import { TranslocoModule } from '@jsverse/transloco';
 

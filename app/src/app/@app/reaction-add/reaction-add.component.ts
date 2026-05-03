@@ -1,7 +1,7 @@
 import { Component, inject, input, output, computed } from '@angular/core';
 import { ReactionItem } from '@model/interfaces';
-import { Ripple } from '@ngstarter/components/core';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Ripple } from '@ngstarter-ui/components/core';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 import { ApiService } from '@services/api.service';
 import { LoginGuardComponent } from '@app/login-guard/login-guard.component';
 import { AppStore } from '@store/app.store';

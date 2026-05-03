@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import {  Skeleton } from '@ngstarter/components/skeleton';
+import {  Skeleton } from '@ngstarter-ui/components/skeleton';
 
 @Component({
   selector: 'app-data-view-skeleton',

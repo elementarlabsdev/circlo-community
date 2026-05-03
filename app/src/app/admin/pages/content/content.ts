@@ -1,16 +1,16 @@
 import { Component, DestroyRef, inject, model, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { PagesApi } from '../pages.api';
 import { ADMIN_PAGE_EDIT_ROOT, Edit } from '@/admin/pages/edit/edit';
-import { ContentBuilderComponent, ContentEditorBlock } from '@ngstarter/components/content-editor';
+import { ContentBuilderComponent, ContentEditorBlock } from '@ngstarter-ui/components/content-editor';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Button } from '@ngstarter/components/button';
-import { UploadArea, UploadTriggerDirective } from '@ngstarter/components/upload';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { UploadArea, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   imports: [

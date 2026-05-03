@@ -1,17 +1,17 @@
 import { Component, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { Input } from '@ngstarter/components/input';
+import { Button } from '@ngstarter-ui/components/button';
+import { Input } from '@ngstarter-ui/components/input';
 import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { Icon } from '@ngstarter/components/icon';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { ThreadService } from '@services/thread.service';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { forkJoin, map, of, switchMap } from 'rxjs';
 import { AppStore } from '@store/app.store';
-import { FormField } from '@ngstarter/components/form-field';
-import { Card, CardContent } from '@ngstarter/components/card';
-import { TextareaAutoSize } from '@ngstarter/components/core';
-import { EmojiPicker, EmojiPickerTriggerForDirective } from '@ngstarter/components/emoji-picker';
+import { FormField } from '@ngstarter-ui/components/form-field';
+import { Card, CardContent } from '@ngstarter-ui/components/card';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
+import { EmojiPicker, EmojiPickerTriggerForDirective } from '@ngstarter-ui/components/emoji-picker';
 
 export interface Attachment {
   file: File;

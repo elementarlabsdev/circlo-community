@@ -1,13 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Dialog } from '@ngstarter/components/dialog';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Dialog } from '@ngstarter-ui/components/dialog';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { AppStore } from '@store/app.store';
-import { Button } from '@ngstarter/components/button';
-import { Alert } from '@ngstarter/components/alert';
+import { Button } from '@ngstarter-ui/components/button';
+import { Alert } from '@ngstarter-ui/components/alert';
 import {
   IntegrationSettingsComponent
 } from '@/admin/settings/_modals/integration-settings/integration-settings.component';
@@ -20,15 +20,15 @@ import {
 import {
   DigitaloceanFileStorageProviderDialog
 } from '@/admin/settings/_file-storage-provider/digitalocean-file-storage-provider/digitalocean-file-storage-provider.dialog';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card, CardActions, CardContent, CardTitle } from '@ngstarter/components/card';
-import { Icon } from '@ngstarter/components/icon';
+import { Card, CardActions, CardContent, CardTitle } from '@ngstarter-ui/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslateService } from '@services/translate.service';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { Divider } from '@ngstarter/components/divider';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 @Component({
   imports: [

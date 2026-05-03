@@ -8,7 +8,7 @@ import {
   input
 } from '@angular/core';
 import { getState } from '@ngrx/signals';
-import { GlobalState, GlobalStore } from '@ngstarter/components/core';
+import { GlobalState, GlobalStore } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'app-screen-loader',

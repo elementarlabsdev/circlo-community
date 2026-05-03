@@ -1,5 +1,5 @@
 import { Component, input, OnInit } from '@angular/core';
-import { DataViewCellRenderer } from '@ngstarter/components/data-view';
+import { DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
 
 @Component({
   selector: 'app-publication-status-cell-renderer',

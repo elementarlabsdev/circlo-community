@@ -1,13 +1,13 @@
 import { booleanAttribute, Component, inject, input, OnInit, PLATFORM_ID } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '@services/auth.service';
 import { ApiService } from '@services/api.service';
 import { SubscriptionStore } from '@store/subscription.store';
-import { Skeleton } from '@ngstarter/components/skeleton';
+import { Skeleton } from '@ngstarter-ui/components/skeleton';
 import { LoginGuardComponent } from '@app/login-guard/login-guard.component';
-import { Tooltip } from '@ngstarter/components/tooltip';
-import { Icon } from '@ngstarter/components/icon';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { AppStore } from '@store/app.store';
 import { TranslocoPipe } from '@jsverse/transloco';
 

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoModule } from '@jsverse/transloco';
 import { FormsModule } from '@angular/forms';
 import {
@@ -11,13 +11,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions
-} from '@ngstarter/components/dialog';
+} from '@ngstarter-ui/components/dialog';
 import {
   Accordion,
   ExpansionPanel,
   ExpansionPanelDescription,
   ExpansionPanelHeader, ExpansionPanelTitle
-} from '@ngstarter/components/expansion';
+} from '@ngstarter-ui/components/expansion';
 
 export interface CookieCategory {
   id: number;

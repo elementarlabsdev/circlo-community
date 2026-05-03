@@ -1,5 +1,5 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { EnvironmentService } from '@ngstarter/components/core';
+import { EnvironmentService } from '@ngstarter-ui/components/core';
 
 @Pipe({
   name: 'mediaItemUrl',

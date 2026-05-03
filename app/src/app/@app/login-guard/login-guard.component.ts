@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { AppStore } from '@store/app.store';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 
 @Component({
   selector: 'app-login-guard',

@@ -1,22 +1,22 @@
 import { Component, computed, forwardRef, inject, OnInit, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { LayoutContent, Layout, LayoutHeader } from '@ngstarter/components/layout';
+import { LayoutContent, Layout, LayoutHeader } from '@ngstarter-ui/components/layout';
 import {
   PanelContent,
   Panel,
   PanelSidebar
-} from '@ngstarter/components/panel';
-import { Navigation, NavigationItem } from '@ngstarter/components/navigation';
+} from '@ngstarter-ui/components/panel';
+import { Navigation, NavigationItem } from '@ngstarter-ui/components/navigation';
 import { PUBLICATION_EDIT_ROOT } from '@/studio/publications/types';
-import { Alert } from '@ngstarter/components/alert';
-import { Chip } from '@ngstarter/components/chips';
+import { Alert } from '@ngstarter-ui/components/alert';
+import { Chip } from '@ngstarter-ui/components/chips';
 
 @Component({
   standalone: true,

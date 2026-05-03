@@ -8,12 +8,12 @@ import {
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+} from '@ngstarter-ui/components/data-view';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Toolbar, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Toolbar, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'app-transactions',

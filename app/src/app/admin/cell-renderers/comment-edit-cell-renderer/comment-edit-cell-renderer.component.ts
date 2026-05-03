@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
-import { SafeHtmlPipe } from '@ngstarter/components/core';
+import { SafeHtmlPipe } from '@ngstarter-ui/components/core';
 import { RouterLink } from '@angular/router';
-import { DataViewCellRenderer } from '@ngstarter/components/data-view';
+import { DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
 
 @Component({
   selector: 'app-comment-edit-cell-renderer',

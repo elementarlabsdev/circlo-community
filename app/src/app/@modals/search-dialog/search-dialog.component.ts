@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DialogRef } from '@ngstarter/components/dialog';
+import { DialogRef } from '@ngstarter-ui/components/dialog';
 import { AssistantSearchComponent } from '@app/header/_assistant-search/assistant-search.component';
 
 @Component({

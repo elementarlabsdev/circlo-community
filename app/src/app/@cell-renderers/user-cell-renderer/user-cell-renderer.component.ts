@@ -1,6 +1,6 @@
 import { Component, input, OnInit } from '@angular/core';
-import { DataViewCellRenderer } from '@ngstarter/components/data-view';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { RouterLink } from '@angular/router';
 

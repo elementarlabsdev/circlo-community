@@ -4,9 +4,9 @@ import { Channel } from '@model/interfaces';
 import { RouterLink } from '@angular/router';
 import { ImageProxyPipe } from '../../pipes/image-proxy.pipe';
 import { PublicationsCountComponent } from '@app/publications-count/publications-count.component';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { TutorialsCount } from '@app/tutorials-count/tutorials-count';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 @Component({
   selector: 'app-channel',

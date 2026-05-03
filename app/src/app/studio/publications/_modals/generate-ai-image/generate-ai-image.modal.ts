@@ -1,23 +1,23 @@
 import { Component, inject, signal } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import {
   DIALOG_DATA,
   DialogActions,
   DialogContent,
   DialogRef,
   DialogTitle
-} from '@ngstarter/components/dialog';
+} from '@ngstarter-ui/components/dialog';
 import { ApiService } from '@services/api.service';
 import { GoogleGenAI } from '@google/genai';
-import { Alert } from '@ngstarter/components/alert';
-import { Card, CardContent, CardImage } from '@ngstarter/components/card';
+import { Alert } from '@ngstarter-ui/components/alert';
+import { Card, CardContent, CardImage } from '@ngstarter-ui/components/card';
 // import { generateText } from 'ai';
 // import { openai } from '@ai-sdk/openai';
 // import { google } from '@ai-sdk/google';
-import { BlockLoader } from '@ngstarter/components/block-loader';
-import { RadioButton, RadioGroup } from '@ngstarter/components/radio';
+import { BlockLoader } from '@ngstarter-ui/components/block-loader';
+import { RadioButton, RadioGroup } from '@ngstarter-ui/components/radio';
 import { FormsModule } from '@angular/forms';
-import { CardOverlay, CardOverlayContainerDirective } from '@ngstarter/components/card-overlay';
+import { CardOverlay, CardOverlayContainerDirective } from '@ngstarter-ui/components/card-overlay';
 
 // const { text } = await generateText({
 //   model: openai('gpt-4o'),

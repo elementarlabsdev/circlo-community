@@ -3,13 +3,13 @@ import { ApiService } from '@services/api.service';
 import { FormsModule } from '@angular/forms';
 import { Pagination, TutorialInterface } from '@model/interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { CommonModule } from '@angular/common';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import {
@@ -17,17 +17,17 @@ import {
   Panel,
   PanelFooter,
   PanelHeader
-} from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+} from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import {
   EmptyStateActions,
   EmptyState,
   EmptyStateContent, EmptyStateIcon
-} from '@ngstarter/components/empty-state';
+} from '@ngstarter-ui/components/empty-state';
 import { CanDirective } from '@directives/can.directive';
-import { Card, CardActions } from '@ngstarter/components/card';
-import { Chip, ChipListbox } from '@ngstarter/components/chips';
+import { Card, CardActions } from '@ngstarter-ui/components/card';
+import { Chip, ChipListbox } from '@ngstarter-ui/components/chips';
 import { Action } from '@services/ability.service';
 
 @Component({

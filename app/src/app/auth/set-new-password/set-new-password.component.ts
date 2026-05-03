@@ -1,15 +1,15 @@
 import { Component, inject, signal, ChangeDetectionStrategy, computed } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { PasswordStrength } from '@ngstarter/components/password-strength';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { PasswordStrength } from '@ngstarter-ui/components/password-strength';
 import { LogoComponent } from '@app/logo/logo.component';
 import { ApiService } from '@services/api.service';
 import { passwordMatchValidator } from '@/@validators/password-match.validator';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 import { CaptchaService } from '@services/captcha.service';
 
  @Component({

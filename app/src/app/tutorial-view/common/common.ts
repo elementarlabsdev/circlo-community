@@ -1,20 +1,20 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, computed, signal } from '@angular/core';
-import { ListItem, NavList } from '@ngstarter/components/list';
+import { ListItem, NavList } from '@ngstarter-ui/components/list';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Icon } from '@ngstarter/components/icon';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { ApiService } from '@services/api.service';
-import { PopoverTriggerForDirective } from '@ngstarter/components/popover';
+import { PopoverTriggerForDirective } from '@ngstarter-ui/components/popover';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { BookmarkButtonComponent } from '@app/bookmark-button/bookmark-button.component';
 import { ReactionAddComponent } from '@app/reaction-add/reaction-add.component';
 import { ReactionListComponent } from '@app/reaction-list/reaction-list.component';
 import { ReactionItem } from '@model/interfaces';
 import { environment } from '../../../environments/environment';
-import { SeoService } from '@ngstarter/components/core';
+import { SeoService } from '@ngstarter-ui/components/core';
 import { SubscriptionStore } from '@store/subscription.store';
 import { BookmarkStore } from '@store/bookmark.store';
 import { AppStore } from '@store/app.store';
-import { Toolbar } from '@ngstarter/components/toolbar';
+import { Toolbar } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   imports: [

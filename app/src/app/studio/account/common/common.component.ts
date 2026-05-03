@@ -3,11 +3,11 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { filter } from 'rxjs';
 import { Location } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Navigation, NavigationItem } from '@ngstarter/components/navigation';
+import { Navigation, NavigationItem } from '@ngstarter-ui/components/navigation';
 import { AppStore } from '@store/app.store';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { PanelContent, Panel, PanelSidebar } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { PanelContent, Panel, PanelSidebar } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 
 export interface NavItem {
   name: string;

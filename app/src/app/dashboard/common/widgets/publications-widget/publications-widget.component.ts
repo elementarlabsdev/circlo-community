@@ -1,8 +1,8 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { GRID, Grid } from '@ngstarter/components/grid';
+import { GRID, Grid } from '@ngstarter-ui/components/grid';
 import { ApiService } from '@services/api.service';
-import { Icon } from '@ngstarter/components/icon';
-import { Card, CardContent } from '@ngstarter/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Card, CardContent } from '@ngstarter-ui/components/card';
 
 @Component({
   selector: 'app-publications-widget',

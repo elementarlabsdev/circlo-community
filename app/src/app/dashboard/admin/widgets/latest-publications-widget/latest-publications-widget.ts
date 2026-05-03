@@ -1,10 +1,10 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { RouterLink } from '@angular/router';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { Icon } from '@ngstarter/components/icon';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card, CardContent, CardHeader, CardTitle } from '@ngstarter/components/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@ngstarter-ui/components/card';
 
 @Component({
   selector: 'app-latest-publications-widget',

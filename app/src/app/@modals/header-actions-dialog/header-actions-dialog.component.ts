@@ -1,20 +1,20 @@
 import { Ability } from '@casl/ability';
 import { Action } from '@services/ability.service';
 import { Component, computed, inject } from '@angular/core';
-import { DIALOG_DATA, DialogContent, DialogRef } from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { DIALOG_DATA, DialogContent, DialogRef } from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { Router, RouterLink } from '@angular/router';
 import { AppStore } from '@store/app.store';
 import { LoginDto } from '@model/interfaces';
 import { CanDirective } from '@directives/can.directive';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { ColorScheme, ColorSchemeDarkDirective, ColorSchemeLightDirective, ColorSchemeSwitcher } from '@ngstarter/components/color-scheme';
-import { SoundEffectDirective } from '@ngstarter/components/core';
+import { ColorScheme, ColorSchemeDarkDirective, ColorSchemeLightDirective, ColorSchemeSwitcher } from '@ngstarter-ui/components/color-scheme';
+import { SoundEffectDirective } from '@ngstarter-ui/components/core';
 import { AuthService } from '@services/auth.service';
 import { ApiService } from '@services/api.service';
 import { ActionManager } from '@services/action-manager';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { SettingsService } from '@services/settings.service';
 
 @Component({

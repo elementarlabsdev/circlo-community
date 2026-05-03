@@ -1,29 +1,29 @@
 import { Component, inject, OnInit, signal, ViewContainerRef, ComponentRef, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ApiService } from '@services/api.service';
-import { Menu, MenuDivider, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
+import { Menu, MenuDivider, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Icon } from '@ngstarter/components/icon';
-import { Button } from '@ngstarter/components/button';
-import { Ripple } from '@ngstarter/components/core';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Ripple } from '@ngstarter-ui/components/core';
 import { FileGridLayout } from '@/admin/media/_layout/file-grid-layout/file-grid-layout.component';
 import { FileListLayout } from '@/admin/media/_layout/file-list-layout/file-list-layout.component';
 import { FileSelectedEvent, File } from '@/admin/media/types';
-import { UploadTriggerDirective } from '@ngstarter/components/upload';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { UploadTriggerDirective } from '@ngstarter-ui/components/upload';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Overlay, GlobalPositionStrategy, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { UploadOverlayComponent, UploadFileViewModel } from '@/admin/media/_upload/upload-overlay.component';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { ConfirmManager } from '@ngstarter/components/confirm';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { firstValueFrom } from 'rxjs';
-import { Segmented, SegmentedButton, SegmentedIconDirective } from '@ngstarter/components/segmented';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { Segmented, SegmentedButton, SegmentedIconDirective } from '@ngstarter-ui/components/segmented';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'app-list',

@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 import { PagesApi } from '../pages.api';
 import { ADMIN_PAGE_EDIT_ROOT, Edit } from '@/admin/pages/edit/edit';
 import { TranslocoModule } from '@jsverse/transloco';

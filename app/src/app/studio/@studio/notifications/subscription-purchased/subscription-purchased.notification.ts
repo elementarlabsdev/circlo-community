@@ -4,8 +4,8 @@ import {
   Notification,
   NotificationMessage,
   NotificationTime
-} from '@ngstarter/components/notifications';
-import { Icon } from '@ngstarter/components/icon';
+} from '@ngstarter-ui/components/notifications';
+import { Icon } from '@ngstarter-ui/components/icon';
 
 @Component({
   selector: 'app-subscription-purchased',

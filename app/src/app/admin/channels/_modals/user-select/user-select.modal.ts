@@ -5,15 +5,15 @@ import {
   DialogContent,
   DialogRef,
   DialogTitle
-} from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
+} from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
 import {
   cellRenderer,
   DataView,
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
+} from '@ngstarter-ui/components/data-view';
 import { UsersApi } from '@/admin/users/users.api';
 import { User } from '@model/interfaces';
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';

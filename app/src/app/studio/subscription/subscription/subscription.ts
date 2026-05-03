@@ -4,18 +4,18 @@ import { SubscriptionService, Transaction } from '@services/subscription.service
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { ConfirmationManager } from '@services/confirmation-manager.service';
 import { TranslateService } from '@services/translate.service';
-import { Card, CardActions, CardContent, CardHeader, CardTitle } from '@ngstarter/components/card';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { Card, CardActions, CardContent, CardHeader, CardTitle } from '@ngstarter-ui/components/card';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import {
   cellRenderer,
   DataView,
   DataViewColumnDef,
   DataViewDatasource,
   DataViewGetRowsParams
-} from '@ngstarter/components/data-view';
-import { Button } from '@ngstarter/components/button';
+} from '@ngstarter-ui/components/data-view';
+import { Button } from '@ngstarter-ui/components/button';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

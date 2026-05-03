@@ -1,15 +1,15 @@
 import { Component, inject, OnInit, Signal, signal } from '@angular/core';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Icon } from '@ngstarter/components/icon';
-import { Tooltip } from '@ngstarter/components/tooltip';
-import { ContentBuilderComponent } from '@ngstarter/components/content-editor';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
+import { ContentBuilderComponent } from '@ngstarter-ui/components/content-editor';
 import { TUTORIAL_EDIT_ROOT } from '@/studio/tutorials/types';
 import { EditComponent } from '@/studio/tutorials/edit/edit.component';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 
 @Component({
   imports: [

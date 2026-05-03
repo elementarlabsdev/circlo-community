@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { DataViewColumnDef } from '@ngstarter/components/data-view';
+import { DataViewColumnDef } from '@ngstarter-ui/components/data-view';
 import { RouterLink } from '@angular/router';
 
 @Component({

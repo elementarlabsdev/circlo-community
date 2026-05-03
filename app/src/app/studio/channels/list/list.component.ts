@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { ConfirmManager } from '@ngstarter/components/confirm';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { StudioChannelsApi } from '../channels.api';
 
 @Component({

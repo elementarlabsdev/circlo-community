@@ -1,17 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label, Hint, Error } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
-import { UploadTriggerDirective } from '@ngstarter/components/upload';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label, Hint, Error } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
+import { UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Icon } from '@ngstarter/components/icon';
-import { Accordion, ExpansionPanel, ExpansionPanelHeader, ExpansionPanelTitle } from '@ngstarter/components/expansion';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Accordion, ExpansionPanel, ExpansionPanelHeader, ExpansionPanelTitle } from '@ngstarter-ui/components/expansion';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { AppStore } from '@store/app.store';
 import { SubscriptionStore } from '@store/subscription.store';
 import { ChannelRule, User } from '@model/interfaces';
@@ -20,11 +20,11 @@ import { slugValidator, channelUniqueSlugValidator } from '@/@validators';
 import { ApiService } from '@services/api.service';
 import { NewComponent as NewRuleComponent } from '../../../admin/channels/_rule/new/new.component';
 import { EditComponent as EditRuleComponent } from '../../../admin/channels/_rule/edit/edit.component';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { UserSelectModal } from '../../../admin/channels/_modals/user-select/user-select.modal';
-import { Dicebear } from '@ngstarter/components/avatar';
-import { Select, Option } from '@ngstarter/components/select';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
+import { Select, Option } from '@ngstarter-ui/components/select';
 
 @Component({
   selector: 'studio-channel-edit',

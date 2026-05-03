@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { DataViewCellRenderer } from '@ngstarter/components/data-view';
+import { DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
 import { DecimalPipe } from '@angular/common';
 
 @Component({

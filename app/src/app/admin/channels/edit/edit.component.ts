@@ -1,35 +1,35 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Input } from '@ngstarter/components/input';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { Input } from '@ngstarter-ui/components/input';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import {
   Accordion,
   ExpansionPanel,
   ExpansionPanelHeader,
   ExpansionPanelTitle
-} from '@ngstarter/components/expansion';
+} from '@ngstarter-ui/components/expansion';
 import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Dialog } from '@ngstarter/components/dialog';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { channelUniqueSlugValidator, slugValidator } from '@/@validators';
 import { Channel, ChannelRule, User } from '@model/interfaces';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslocoModule } from '@jsverse/transloco';
 import { EditComponent as EditRuleComponent } from '@/admin/channels/_rule/edit/edit.component';
 import { NewComponent as NewRuleComponent } from '@/admin/channels/_rule/new/new.component';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { Error, FormField, Hint, Label } from '@ngstarter/components/form-field';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Error, FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
 import { TranslateService } from '@services/translate.service';
-import { TextareaAutoSize } from '@ngstarter/components/core';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { UserSelectModal } from '../_modals/user-select/user-select.modal';
-import { Select, Option } from '@ngstarter/components/select';
+import { Select, Option } from '@ngstarter-ui/components/select';
 
 @Component({
   selector: 'app-edit',

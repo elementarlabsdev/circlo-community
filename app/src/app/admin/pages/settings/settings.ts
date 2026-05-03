@@ -1,15 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { FormField, Label, Hint } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { FormField, Label, Hint } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import { PagesApi } from '../pages.api';
 import { ADMIN_PAGE_EDIT_ROOT, Edit } from '@/admin/pages/edit/edit';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { TextareaAutoSize } from '@ngstarter/components/core';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'app-settings',

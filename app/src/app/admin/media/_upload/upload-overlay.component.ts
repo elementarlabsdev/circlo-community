@@ -1,6 +1,6 @@
 import { Component, output, signal } from '@angular/core';
-import { Icon } from '@ngstarter/components/icon';
-import { File, FileControl, FileList } from '@ngstarter/components/upload';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { File, FileControl, FileList } from '@ngstarter-ui/components/upload';
 
 export type UploadState = 'queued' | 'uploading' | 'done' | 'error' | 'canceled';
 

@@ -1,8 +1,8 @@
 import { afterNextRender, Component, DestroyRef, inject, OnInit, Renderer2, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
-import { PageLoadingBar } from '@ngstarter/components/page-loading-bar';
-import { EnvironmentService, SeoService } from '@ngstarter/components/core';
+import { PageLoadingBar } from '@ngstarter-ui/components/page-loading-bar';
+import { EnvironmentService, SeoService } from '@ngstarter-ui/components/core';
 import { DOCUMENT } from '@angular/common';
 import { AppStore } from '@store/app.store';
 import { ImageProxyService } from '@services/image-proxy.service';
@@ -14,7 +14,7 @@ import { NotificationService } from '@services/notification.service';
 import { ApiService } from '@services/api.service';
 import { ActionManager } from '@services/action-manager';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 
 declare let gtag: any;
 

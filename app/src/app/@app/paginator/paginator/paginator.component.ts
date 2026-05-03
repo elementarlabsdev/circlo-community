@@ -1,5 +1,5 @@
 import { Component, computed, input, numberAttribute, OnInit, output } from '@angular/core';
-import {  Button } from '@ngstarter/components/button';
+import {  Button } from '@ngstarter-ui/components/button';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 

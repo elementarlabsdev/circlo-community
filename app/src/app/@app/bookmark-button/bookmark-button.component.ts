@@ -1,10 +1,10 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import { Icon } from '@ngstarter/components/icon';
-import { Button } from '@ngstarter/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
 import { AuthService } from '@services/auth.service';
 import { ApiService } from '@services/api.service';
 import { BookmarkStore } from '@store/bookmark.store';
-import { Skeleton } from '@ngstarter/components/skeleton';
+import { Skeleton } from '@ngstarter-ui/components/skeleton';
 import { LoginGuardComponent } from '@app/login-guard/login-guard.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 

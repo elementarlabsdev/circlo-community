@@ -3,7 +3,7 @@ import { ThreadAdd } from './thread-add';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { EnvironmentService } from '@ngstarter/components/core';
+import { EnvironmentService } from '@ngstarter-ui/components/core';
 import { ThreadService } from '@services/thread.service';
 
 describe('ThreadAdd', () => {

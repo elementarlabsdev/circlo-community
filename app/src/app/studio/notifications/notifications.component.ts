@@ -3,16 +3,16 @@ import { ApiService } from '@services/api.service';
 import {
   NotificationDefDirective,
   NotificationList,
-} from '@ngstarter/components/notifications';
+} from '@ngstarter-ui/components/notifications';
 import {
   EmptyState,
   EmptyStateContent, EmptyStateIcon
-} from '@ngstarter/components/empty-state';
-import { Icon } from '@ngstarter/components/icon';
+} from '@ngstarter-ui/components/empty-state';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { AppStore } from '@store/app.store';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActivatedRoute } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { NewCommentComponent } from '@/studio/@studio/notifications/new-comment/new-comment.component';
 import { NewFollowerNotification } from '@/studio/@studio/notifications/new-follower/new-follower.notification';
 import { ReplyCommentNotification } from '@/studio/@studio/notifications/reply-comment/reply-comment.notification';

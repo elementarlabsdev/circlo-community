@@ -1,19 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
-import { Icon } from '@ngstarter/components/icon';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
-import { Button } from '@ngstarter/components/button';
-import { Select, Option } from '@ngstarter/components/select';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { Button } from '@ngstarter-ui/components/button';
+import { Select, Option } from '@ngstarter-ui/components/select';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter/components/upload';
+import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
 import { AppStore } from '@store/app.store';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
-import { FormField, Label } from '@ngstarter/components/form-field';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
 import { TranslateService } from '@services/translate.service';
 
 @Component({

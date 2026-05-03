@@ -3,8 +3,8 @@ import { SettingsService } from '@services/settings.service';
 import { Channel, FeedItem, Pagination, Publication } from '@model/interfaces';
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Divider } from '@ngstarter/components/divider';
-import { SeoService } from '@ngstarter/components/core';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { SeoService } from '@ngstarter-ui/components/core';
 import { PaginatorComponent } from '@app/paginator';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
 import { SubscriptionStore } from '@store/subscription.store';
@@ -14,7 +14,7 @@ import {
   BreadcrumbItem,
   Breadcrumbs,
   BreadcrumbSeparator
-} from '@ngstarter/components/breadcrumbs';
+} from '@ngstarter-ui/components/breadcrumbs';
 import { BookmarkStore } from '@store/bookmark.store';
 import { AppStore } from '@store/app.store';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
@@ -23,8 +23,8 @@ import {
   ExpansionPanel,
   ExpansionPanelHeader,
   ExpansionPanelTitle
-} from '@ngstarter/components/expansion';
-import { Dicebear } from '@ngstarter/components/avatar';
+} from '@ngstarter-ui/components/expansion';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { FeedItems } from '@app/feed-items/feed-items';
 import { TutorialsCount } from '@app/tutorials-count/tutorials-count';

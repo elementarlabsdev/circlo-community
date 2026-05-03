@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DialogRef } from '@ngstarter/components/dialog';
+import { DialogRef } from '@ngstarter-ui/components/dialog';
 import { Sidebar } from '@app/sidebar/sidebar/sidebar.component';
 
 @Component({

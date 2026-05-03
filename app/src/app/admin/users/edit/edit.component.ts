@@ -2,18 +2,18 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UsersApi } from '../users.api';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { Input } from '@ngstarter/components/input';
-import { Error, FormField, IconButtonSuffix, Label } from '@ngstarter/components/form-field';
-import { Option, Select } from '@ngstarter/components/select';
-import { Checkbox } from '@ngstarter/components/checkbox';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Input } from '@ngstarter-ui/components/input';
+import { Error, FormField, IconButtonSuffix, Label } from '@ngstarter-ui/components/form-field';
+import { Option, Select } from '@ngstarter-ui/components/select';
+import { Checkbox } from '@ngstarter-ui/components/checkbox';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { Icon } from '@ngstarter/components/icon';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TranslocoModule } from '@jsverse/transloco';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 
 @Component({
   imports: [

@@ -7,12 +7,12 @@ import {
   EmptyState,
   EmptyStateContent,
   EmptyStateIcon
-} from '@ngstarter/components/empty-state';
-import { Icon } from '@ngstarter/components/icon';
-import { ButtonToggle, ButtonToggleGroup } from '@ngstarter/components/button-toggle';
+} from '@ngstarter-ui/components/empty-state';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { ButtonToggle, ButtonToggleGroup } from '@ngstarter-ui/components/button-toggle';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
 import { SubscriptionStore } from '@store/subscription.store';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 
 @Component({

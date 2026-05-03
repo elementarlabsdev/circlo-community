@@ -1,6 +1,6 @@
 import { inject, Injectable, PLATFORM_ID, NgZone } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
 import { AppStore } from '@store/app.store';
 import Cap from '@cap.js/widget';

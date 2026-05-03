@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { GlobalStore } from '@ngstarter/components/core';
+import { GlobalStore } from '@ngstarter-ui/components/core';
 import { TranslocoService } from '@jsverse/transloco';
 
 @Injectable({

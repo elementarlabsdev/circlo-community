@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { SafeHtmlPipe } from '@ngstarter/components/core';
+import { SafeHtmlPipe } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'ngs-markdown',

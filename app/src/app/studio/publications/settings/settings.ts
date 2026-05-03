@@ -1,30 +1,30 @@
 import { Component, DestroyRef, ElementRef, inject, model, OnInit, signal, viewChild } from '@angular/core';
-import { ChipGrid, ChipInput, ChipInputEvent, ChipRemove, ChipRow } from '@ngstarter/components/chips';
+import { ChipGrid, ChipInput, ChipInputEvent, ChipRemove, ChipRow } from '@ngstarter-ui/components/chips';
 import { Channel, Publication, Topic } from '@model/interfaces';
 import {
   Autocomplete,
   AutocompleteSelectedEvent,
   AutocompleteTrigger,
   Option
-} from '@ngstarter/components/autocomplete';
+} from '@ngstarter-ui/components/autocomplete';
 import { EditComponent } from '@/studio/publications/edit/edit.component';
 import { PUBLICATION_EDIT_ROOT } from '@/studio/publications/types';
 import { ApiService } from '@services/api.service';
 import findRecursive from '@/_utils/find-recursive';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Dialog } from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
+import { Dialog } from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Icon } from '@ngstarter/components/icon';
-import { Checkbox, CheckboxGroup } from '@ngstarter/components/checkbox';
-import { Input } from '@ngstarter/components/input';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Checkbox, CheckboxGroup } from '@ngstarter-ui/components/checkbox';
+import { Input } from '@ngstarter-ui/components/input';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormField, Hint, Label } from '@ngstarter/components/form-field';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { FormField, Hint, Label } from '@ngstarter-ui/components/form-field';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { debounceTime } from 'rxjs';
-import { Optgroup, Select } from '@ngstarter/components/select';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { Optgroup, Select } from '@ngstarter-ui/components/select';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 
 @Component({
   imports: [

@@ -2,14 +2,14 @@ import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy,
 import { ApiService } from '@services/api.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { PinInput } from '@ngstarter/components/pin-input';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { PinInput } from '@ngstarter-ui/components/pin-input';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LogoComponent } from '@app/logo/logo.component';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 import { CaptchaService } from '@services/captcha.service';
 import { AuthService } from '@services/auth.service';
 

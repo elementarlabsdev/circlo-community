@@ -2,20 +2,20 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { SettingsService } from '@services/settings.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService } from '@services/api.service';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { TutorialInterface } from '@model/interfaces';
-import { Accordion, ExpansionPanel, ExpansionPanelHeader } from '@ngstarter/components/expansion';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Accordion, ExpansionPanel, ExpansionPanelHeader } from '@ngstarter-ui/components/expansion';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { TranslocoPipe, TranslocoModule } from '@jsverse/transloco';
 import { ReadingTime } from '@app/reading-time/reading-time';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { SubscriptionComponent } from '@app/subscription/subscription.component';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { FollowersCountComponent } from '@app/followers-count/followers-count.component';
 import { PublicationsCountComponent } from '@app/publications-count/publications-count.component';
 import { TutorialsCount } from '@app/tutorials-count/tutorials-count';
-import { Divider } from '@ngstarter/components/divider';
+import { Divider } from '@ngstarter-ui/components/divider';
 
 @Component({
   imports: [

@@ -1,5 +1,5 @@
 import { booleanAttribute, Component, computed, inject, input, output } from '@angular/core';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import {
   CommentEditorBubbleMenu,
   CommentEditorCommandBlockquoteDirective,
@@ -20,17 +20,17 @@ import {
   CommentEditor as NgsCommentEditor,
   CommentEditorDivider,
   CommentEditorToolbar
-} from '@ngstarter/components/comment-editor';
+} from '@ngstarter-ui/components/comment-editor';
 import { AppStore } from '@store/app.store';
 import { LoginDto } from '@model/interfaces';
 import { ApiService } from '@services/api.service';
-import { EnvironmentService } from '@ngstarter/components/core';
-import { Button } from '@ngstarter/components/button';
-import { Tooltip } from '@ngstarter/components/tooltip';
-import { Icon } from '@ngstarter/components/icon';
+import { EnvironmentService } from '@ngstarter-ui/components/core';
+import { Button } from '@ngstarter-ui/components/button';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
+import { Icon } from '@ngstarter-ui/components/icon';
 import {
   CommentEditorFooterBar
-} from '@ngstarter/components/comment-editor';
+} from '@ngstarter-ui/components/comment-editor';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { LoginGuardComponent } from '@app/login-guard/login-guard.component';
 import { TranslocoPipe } from '@jsverse/transloco';

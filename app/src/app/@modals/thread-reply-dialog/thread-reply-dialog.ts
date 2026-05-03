@@ -1,8 +1,8 @@
 import { Component, forwardRef, inject } from '@angular/core';
-import { DIALOG_DATA, DialogContent, DialogRef, DialogTitle } from '@ngstarter/components/dialog';
+import { DIALOG_DATA, DialogContent, DialogRef, DialogTitle } from '@ngstarter-ui/components/dialog';
 import { ThreadAdd } from '@app/thread-add/thread-add';
 import { ThreadItemComponent } from '@app/thread/thread-item.component';
-import { SnackBar } from '@ngstarter/components/snack-bar';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
 import { Thread } from '@model/interfaces';
 
 export interface ThreadReplyDialogData {

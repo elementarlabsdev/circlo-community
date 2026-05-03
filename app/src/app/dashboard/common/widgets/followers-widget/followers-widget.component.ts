@@ -1,8 +1,8 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { ApiService } from '@services/api.service';
-import { GRID, Grid } from '@ngstarter/components/grid';
-import { Icon } from '@ngstarter/components/icon';
-import { Card, CardContent } from '@ngstarter/components/card';
+import { GRID, Grid } from '@ngstarter-ui/components/grid';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Card, CardContent } from '@ngstarter-ui/components/card';
 
 @Component({
   selector: 'app-followers-widget',

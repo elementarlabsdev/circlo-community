@@ -2,19 +2,19 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { Icon } from '@ngstarter/components/icon';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { ImageDesignCard } from '@/studio/image-designer/image-design-card/image-design-card';
 import {
   EmptyState,
   EmptyStateContent,
   EmptyStateIcon
-} from '@ngstarter/components/empty-state';
+} from '@ngstarter-ui/components/empty-state';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { Button } from '@ngstarter/components/button';
-import { ConfirmManager } from '@ngstarter/components/confirm';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { Button } from '@ngstarter-ui/components/button';
+import { ConfirmManager } from '@ngstarter-ui/components/confirm';
 
 @Component({
   selector: 'app-list',

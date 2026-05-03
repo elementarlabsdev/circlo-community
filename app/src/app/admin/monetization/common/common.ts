@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Navigation, NavigationItem } from '@ngstarter/components/navigation';
-import { Panel, PanelContent, PanelSidebar } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { Navigation, NavigationItem } from '@ngstarter-ui/components/navigation';
+import { Panel, PanelContent, PanelSidebar } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Location } from '@angular/common';
 import { NavItem } from '@model/interfaces';

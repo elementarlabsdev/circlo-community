@@ -1,11 +1,11 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import {  Button } from '@ngstarter/components/button';
-import { Card, CardContent, CardTitle } from '@ngstarter/components/card';
+import {  Button } from '@ngstarter-ui/components/button';
+import { Card, CardContent, CardTitle } from '@ngstarter-ui/components/card';
 import { environment } from '../../../../../environments/environment';
 import { AppStore } from '@store/app.store';
-import { Dicebear } from '@ngstarter/components/avatar';
-import { Icon } from '@ngstarter/components/icon';
-import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Menu, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({

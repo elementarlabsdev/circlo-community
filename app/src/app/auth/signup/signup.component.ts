@@ -1,16 +1,16 @@
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy, computed } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
-import { FormField, Label } from '@ngstarter/components/form-field';
-import { Input } from '@ngstarter/components/input';
+import { Button } from '@ngstarter-ui/components/button';
+import { FormField, Label } from '@ngstarter-ui/components/form-field';
+import { Input } from '@ngstarter-ui/components/input';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LogoComponent } from '@app/logo/logo.component';
 import { ApiService } from '@services/api.service';
 import { CaptchaService } from '@services/captcha.service';
-import { Divider } from '@ngstarter/components/divider';
-import { ColorSchemeStore } from '@ngstarter/components/color-scheme';
+import { Divider } from '@ngstarter-ui/components/divider';
+import { ColorSchemeStore } from '@ngstarter-ui/components/color-scheme';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card } from '@ngstarter/components/card';
+import { Card } from '@ngstarter-ui/components/card';
 
 @Component({
   standalone: true,

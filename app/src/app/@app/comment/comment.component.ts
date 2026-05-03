@@ -1,18 +1,18 @@
 import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { Comment, ReactionItem } from '@model/interfaces';
-import { Dicebear } from '@ngstarter/components/avatar';
+import { Dicebear } from '@ngstarter-ui/components/avatar';
 import { TimeAgoPipe } from '@pipes/time-ago.pipe';
 import { RouterLink } from '@angular/router';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { CommentEditorComponent } from '@app/comment-editor/comment-editor.component';
 import { ApiService } from '@services/api.service';
 import { ImageProxyPipe } from '@/pipes/image-proxy.pipe';
 import { CommentLikesCountComponent } from '@app/comment-likes-count/comment-likes-count.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AddComplaintDirective } from '@/@directives/add-complaint.directive';
-import { Menu, MenuItem, MenuTrigger } from '@ngstarter/components/menu';
-import { SafeHtmlPipe } from '@ngstarter/components/core';
+import { Menu, MenuItem, MenuTrigger } from '@ngstarter-ui/components/menu';
+import { SafeHtmlPipe } from '@ngstarter-ui/components/core';
 
 @Component({
   selector: 'app-comment',

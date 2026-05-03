@@ -1,9 +1,9 @@
 import { Component, inject, input } from '@angular/core';
-import { DATA_VIEW, DataViewCellRenderer } from '@ngstarter/components/data-view';
+import { DATA_VIEW, DataViewCellRenderer } from '@ngstarter-ui/components/data-view';
 import { RouterLink } from '@angular/router';
-import { Button } from '@ngstarter/components/button';
-import { Icon } from '@ngstarter/components/icon';
-import { Tooltip } from '@ngstarter/components/tooltip';
+import { Button } from '@ngstarter-ui/components/button';
+import { Icon } from '@ngstarter-ui/components/icon';
+import { Tooltip } from '@ngstarter-ui/components/tooltip';
 
 @Component({
   selector: 'app-admin-roles-actions-cell-renderer',

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { DialogRef, DialogContent, DialogTitle, DialogActions } from '@ngstarter/components/dialog';
-import { Button } from '@ngstarter/components/button';
+import { DialogRef, DialogContent, DialogTitle, DialogActions } from '@ngstarter-ui/components/dialog';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({

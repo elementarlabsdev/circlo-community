@@ -1,14 +1,14 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
 import { ApiService } from '@services/api.service';
-import { Panel, PanelContent, PanelHeader } from '@ngstarter/components/panel';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { Panel, PanelContent, PanelHeader } from '@ngstarter-ui/components/panel';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { Card, CardContent, CardHeader } from '@ngstarter/components/card';
-import { Icon } from '@ngstarter/components/icon';
+import { Card, CardContent, CardHeader } from '@ngstarter-ui/components/card';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { RouterLink } from '@angular/router';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { AppStore } from '@store/app.store';
 
 @Component({

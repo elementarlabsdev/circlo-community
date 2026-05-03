@@ -2,14 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RolesApi } from '../roles.api';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
-import { Input } from '@ngstarter/components/input';
-import { Error, FormField, Label } from '@ngstarter/components/form-field';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
+import { Input } from '@ngstarter-ui/components/input';
+import { Error, FormField, Label } from '@ngstarter-ui/components/form-field';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { TranslateService } from '@services/translate.service';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
-import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter/components/toolbar';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
+import { Toolbar, ToolbarSpacer, ToolbarTitle } from '@ngstarter-ui/components/toolbar';
 
 @Component({
   selector: 'app-roles-edit',

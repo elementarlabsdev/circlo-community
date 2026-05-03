@@ -1,25 +1,25 @@
 import { Component, inject, signal } from '@angular/core';
-import { Button } from '@ngstarter/components/button';
+import { Button } from '@ngstarter-ui/components/button';
 import { ApiService } from '@services/api.service';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
 import { ActivatedRoute } from '@angular/router';
 import { AppStore } from '@store/app.store';
-import { Dialog } from '@ngstarter/components/dialog';
+import { Dialog } from '@ngstarter-ui/components/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
 import {
   PanelContent,
   Panel,
   PanelHeader,
-} from '@ngstarter/components/panel';
+} from '@ngstarter-ui/components/panel';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import {
   Card,
   CardActions,
   CardContent,
   CardTitle,
-} from '@ngstarter/components/card';
+} from '@ngstarter-ui/components/card';
 import { GoogleRecaptchaComponent } from '@/admin/settings/_captcha-provider/google-recaptcha/google-recaptcha.component';
 import { LocalCaptchaComponent } from '@/admin/settings/_captcha-provider/local-captcha/local-captcha.component';
 

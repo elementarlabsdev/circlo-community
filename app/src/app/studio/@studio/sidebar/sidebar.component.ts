@@ -11,12 +11,12 @@ import {
   SidebarNav,
   SidebarNavHeading,
   SidebarNavItem, SidebarNavItemIconDirective,
-} from '@ngstarter/components/sidebar';
-import { LayoutApiService } from '@ngstarter/components/layout';
-import { NavigationItem } from '@ngstarter/components/navigation';
+} from '@ngstarter-ui/components/sidebar';
+import { LayoutApiService } from '@ngstarter-ui/components/layout';
+import { NavigationItem } from '@ngstarter-ui/components/navigation';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { Icon } from '@ngstarter/components/icon';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { Icon } from '@ngstarter-ui/components/icon';
 import { LogoComponent } from '@app/logo/logo.component';
 import { AppStore } from '@store/app.store';
 import { SettingsService } from '@services/settings.service';

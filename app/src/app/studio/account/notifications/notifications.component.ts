@@ -1,16 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { SlideToggle } from '@ngstarter/components/slide-toggle';
-import { Divider } from '@ngstarter/components/divider';
+import { SlideToggle } from '@ngstarter-ui/components/slide-toggle';
+import { Divider } from '@ngstarter-ui/components/divider';
 import { ApiService } from '@services/api.service';
 import { AppStore } from '@store/app.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SnackBar } from '@ngstarter/components/snack-bar';
-import { Button } from '@ngstarter/components/button';
+import { SnackBar } from '@ngstarter-ui/components/snack-bar';
+import { Button } from '@ngstarter-ui/components/button';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActivatedRoute } from '@angular/router';
-import { BreadcrumbsStore } from '@ngstarter/components/breadcrumbs';
-import { ScrollbarArea } from '@ngstarter/components/scrollbar-area';
-import { PanelContent, Panel, PanelHeader } from '@ngstarter/components/panel';
+import { BreadcrumbsStore } from '@ngstarter-ui/components/breadcrumbs';
+import { ScrollbarArea } from '@ngstarter-ui/components/scrollbar-area';
+import { PanelContent, Panel, PanelHeader } from '@ngstarter-ui/components/panel';
 
 @Component({
   imports: [
