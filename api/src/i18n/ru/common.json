@@ -1,6 +1,7 @@
 {
 	"sidebar.main": "Главный сайдбар",
 	"menu.main.home": "Главная",
+	"publish": "Publish",
 	"menu.main.channels": "Каналы",
 	"menu.main.topics": "Темы",
 	"menu.main.subscriptions": "Подписки",

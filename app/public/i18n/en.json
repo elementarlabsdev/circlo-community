@@ -2,6 +2,7 @@
   "publicationsCount": "{count, plural, =0 {0 publications} one {1 publication} other {# publications}}",
   "followersCount": "{count, plural, =0 {0 followers} one {1 follower} other {# followers}}",
   "Home": "Home",
+  "publish": "Publish",
   "reactionsCount": "{count, plural, =0 {0 reactions} one {1 reaction} other {# reactions}}",
   "tutorialsCount": "{count, plural, =0 {0 tutorials} one {1 tutorial} other {# tutorials}}",
   "settings": "Settings",

@@ -1,63 +1,45 @@
 @if (isLogged()) {
-  <ngs-card appearance="filled">
-    <ngs-card-content>
-      <form [formGroup]="threadForm" (ngSubmit)="post()">
-        <ngs-form-field class="w-full" subscriptHiddenIfEmpty>
-          <textarea #threadTextarea
-                    ngsInput
-                    ngsTextareaAutoSize
-                    formControlName="content" placeholder="What's on your mind?"></textarea>
-        </ngs-form-field>
-
-        @if (attachments().length > 0) {
-          <div class="flex flex-wrap gap-4 mb-4 px-3 mt-4">
-            @for (attachment of attachments(); track attachment; let i = $index) {
+  <form [formGroup]="threadForm" (ngSubmit)="post()">
+    <ngs-comment-editor [allowEmptyContent]="attachments().length > 0"
+                        placeholder="What's on your mind?"
+                        #editor
+                        class="rounded-2xl border border-border"
+                        [buttonSendLabel]="'publish' | transloco"
+                        (sent)="onSent($event, threadForm)"
+                        (canceled)="onCanceled()">
+      @if (attachments().length > 0) {
+        <div class="flex flex-wrap gap-4">
+          @for (attachment of attachments(); track attachment; let i = $index) {
+            <div
+              class="relative group size-48 rounded-xl overflow-hidden border border-border bg-surface-container">
+              @if (attachment.type === 'image') {
+                <img [src]="attachment.url" class="w-full h-full object-cover">
+              } @else if (attachment.type === 'video') {
+                <video [src]="attachment.url" class="w-full h-full object-cover" preload="metadata" playsinline muted></video>
+              }
               <div
-                class="relative group size-48 rounded-xl overflow-hidden border border-border bg-surface-container">
-                @if (attachment.type === 'image') {
-                  <img [src]="attachment.url" class="w-full h-full object-cover">
-                } @else if (attachment.type === 'video') {
-                  <video [src]="attachment.url" class="w-full h-full object-cover" preload="metadata" playsinline muted></video>
-                }
-                <div
-                  class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <button type="button" ngsIconButton (click)="removeAttachment(i)">
-                    <ngs-icon name="fluent:delete-24-filled" class="text-white"/>
-                  </button>
-                </div>
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <button type="button" ngsIconButton (click)="removeAttachment(i)">
+                  <ngs-icon name="fluent:delete-24-filled" class="text-white"/>
+                </button>
               </div>
-            }
-          </div>
-        }
-
-        <div class="flex items-center justify-between mt-4">
-          <div class="flex">
-            <button ngsIconButton type="button"
-                    ngsUploadTrigger multiple accept="image/*,video/*"
-                    (fileSelected)="onFileSelected($event)">
-              <ngs-icon name="fluent:image-24-regular"/>
-            </button>
-            <button ngsIconButton type="button" [ngsEmojiPickerTriggerFor]="emojiPicker">
-              <ngs-icon name="fluent:emoji-24-regular"/>
-            </button>
-
-            <ng-template #emojiPicker>
-              <ngs-emoji-picker (emojiSelected)="onEmojiSelected($event)"/>
-            </ng-template>
-            <!--            <button ngsIconButton type="button"><ngs-icon name="fluent:chart-person-24-regular"/></button>-->
-            <!--            <button ngsIconButton type="button"><ngs-icon name="fluent:location-24-regular"/></button>-->
-          </div>
-          <div class="flex gap-3">
-            @if (parentId()) {
-              <button ngsButton type="button" (click)="cancel()">Cancel</button>
-            }
-            <button ngsButton="filled"
-                    [loading]="saving()"
-                    [disabled]="!threadForm.value.content?.trim() && attachments().length === 0">Post
-            </button>
-          </div>
+            </div>
+          }
         </div>
-      </form>
-    </ngs-card-content>
-  </ngs-card>
+      }
+      <ngs-comment-editor-footer-bar>
+        <button ngsIconButton type="button" ngsCommentEditorCommand
+                ngsUploadTrigger multiple accept="image/*,video/*"
+                (fileSelected)="onFileSelected($event)">
+          <ngs-icon name="fluent:image-24-regular"/>
+        </button>
+        <button ngsIconButton type="button" ngsCommentEditorCommand [ngsEmojiPickerTriggerFor]="emojiPicker">
+          <ngs-icon name="fluent:emoji-24-regular"/>
+        </button>
+        <ng-template #emojiPicker>
+          <ngs-emoji-picker (emojiSelected)="onEmojiSelected($event, editor)"/>
+        </ng-template>
+      </ngs-comment-editor-footer-bar>
+    </ngs-comment-editor>
+  </form>
 }

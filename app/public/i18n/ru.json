@@ -2,6 +2,7 @@
   "publicationsCount": "{count, plural, =0 {0 публикаций} one {1 публикация} few {# публикации} many {# публикаций} other {# публикаций}}",
   "followersCount": "{count, plural, =0 {0 подписчиков} one {1 подписчик} few {# подписчика} many {# подписчиков} other {# подписчиков}}",
   "Home": "Главная",
+  "publish": "Publish",
   "reactionsCount": "{count, plural, =0 {0 реакций} one {1 реакция} few {# реакции} many {# реакций} other {# реакций}}",
   "tutorialsCount": "{count, plural, =0 {0 уроков} one {1 урок} few {# урока} many {# уроков} other {# уроков}}",
   "settings": "Настройки",

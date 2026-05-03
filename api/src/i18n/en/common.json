@@ -1,6 +1,7 @@
 {
 	"sidebar.main": "Sidebar Main",
 	"menu.main.home": "Home",
+	"publish": "Publish",
 	"menu.main.channels": "Channels",
 	"menu.main.topics": "Topics",
 	"menu.main.subscriptions": "Subscriptions",

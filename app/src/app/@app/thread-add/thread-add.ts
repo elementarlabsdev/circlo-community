@@ -1,6 +1,15 @@
-import { Component, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  OnDestroy,
+  output,
+  signal,
+  viewChild
+} from '@angular/core';
 import { Button } from '@ngstarter-ui/components/button';
-import { Input } from '@ngstarter-ui/components/input';
 import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { Icon } from '@ngstarter-ui/components/icon';
 import { ThreadService } from '@services/thread.service';
@@ -8,10 +17,9 @@ import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/c
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { forkJoin, map, of, switchMap } from 'rxjs';
 import { AppStore } from '@store/app.store';
-import { FormField } from '@ngstarter-ui/components/form-field';
-import { Card, CardContent } from '@ngstarter-ui/components/card';
-import { TextareaAutoSize } from '@ngstarter-ui/components/core';
 import { EmojiPicker, EmojiPickerTriggerForDirective } from '@ngstarter-ui/components/emoji-picker';
+import { CommentEditor, CommentEditorFooterBar } from "@ngstarter-ui/components/comment-editor";
+import {TranslocoPipe} from "@jsverse/transloco";
 
 export interface Attachment {
   file: File;
@@ -24,20 +32,19 @@ export interface Attachment {
   selector: 'app-thread-add',
   imports: [
     Button,
-    Input,
-    FormField,
     ReactiveFormsModule,
     Button,
     Icon,
     UploadTriggerDirective,
-    Card,
-    CardContent,
-    TextareaAutoSize,
     EmojiPicker,
-    EmojiPickerTriggerForDirective
+    EmojiPickerTriggerForDirective,
+    CommentEditor,
+    CommentEditorFooterBar,
+    TranslocoPipe
   ],
   templateUrl: './thread-add.html',
   styleUrl: './thread-add.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.hidden]': '!isLogged()'
   }
@@ -51,9 +58,9 @@ export class ThreadAdd implements OnDestroy {
 
   saving = signal(false);
   parentId = input<string>();
+  allowEmptyContent = signal(false);
 
   private _formDirective = viewChild(FormGroupDirective);
-  private _textarea = viewChild<ElementRef<HTMLTextAreaElement>>('threadTextarea');
 
   readonly threadForm = this.formBuilder.group({
     content: [''],
@@ -111,7 +118,19 @@ export class ThreadAdd implements OnDestroy {
     this.canceled.emit();
   }
 
+  onSent($event, threadForm) {
+    threadForm.patchValue({content: $event});
+    this.post();
+  }
+
+  onCanceled() {
+    this.cancel();
+  }
+
   onFileSelected(event: UploadFileSelectedEvent) {
+    event.event.preventDefault();
+    event.event.stopPropagation();
+
     const newAttachments: Attachment[] = [];
     Array.from(event.files).forEach(file => {
       const isImage = file.type.startsWith('image/');
@@ -142,38 +161,7 @@ export class ThreadAdd implements OnDestroy {
     });
   }
 
-  onEmojiSelected(emoji: string) {
-    const textarea = this._textarea()?.nativeElement;
-    if (!textarea) return;
-
-    const control = this.threadForm.controls.content;
-    const value = control.value || '';
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    let newValue = '';
-    let newCursorPos = 0;
-
-    const hasFocus = document.activeElement === textarea;
-
-    if (hasFocus || (start !== null && end !== null && start !== end)) {
-      newValue = value.slice(0, start) + emoji + value.slice(end);
-      newCursorPos = start + emoji.length;
-    } else {
-      if (value.length === 0) {
-        newValue = emoji;
-        newCursorPos = emoji.length;
-      } else {
-        newValue = value + ' ' + emoji;
-        newCursorPos = newValue.length;
-      }
-    }
-
-    control.setValue(newValue);
-
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    });
+  onEmojiSelected(emoji: string, editor: CommentEditor) {
+    editor.insertText(emoji);
   }
 }
