@@ -3,8 +3,8 @@ import { PublicationsService } from '@/publications/application/services/publica
 import { Publication } from '@/publications/domain/entities/publication.entity';
 
 /**
- * Загружает публикацию по :hash и помещает в request.resource
- * Используется перед PoliciesGuard для ABAC-проверок
+ * Loads a publication by :hash and places it in request.resource
+ * Used before PoliciesGuard for ABAC checks
  */
 @Injectable()
 export class PublicationResourceGuard implements CanActivate {
@@ -15,7 +15,7 @@ export class PublicationResourceGuard implements CanActivate {
     const hash = request.params?.hash as string;
     if (!hash) return false;
 
-    // Для студии требуется черновик; при необходимости можно обобщить
+    // Studio requires a draft; this can be generalized if needed
     const publication = await this.publicationsService.findDraftByHash(hash);
     request.resource = Publication.reconstitute(publication);
     return true;

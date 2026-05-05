@@ -295,4 +295,32 @@ export class ThreadItemComponent implements OnInit {
     }
     return `${baseSize}x${baseSize},q90`;
   }
+
+  getScaledWidth(mediaItem: MediaItem, targetWidth: number): number | undefined {
+    const width = mediaItem.payload?.width;
+    const height = mediaItem.payload?.height;
+    if (!width || !height) return width;
+
+    if (mediaItem.orientation === 'portrait') {
+      return targetWidth;
+    }
+
+    return width > targetWidth ? targetWidth : width;
+  }
+
+  getScaledHeight(mediaItem: MediaItem, targetWidth: number): number | undefined {
+    const width = mediaItem.payload?.width;
+    const height = mediaItem.payload?.height;
+    const aspectRatio = mediaItem.payload?.aspectRatio;
+
+    if (!width || !height) return height;
+
+    const actualWidth = this.getScaledWidth(mediaItem, targetWidth) || width;
+
+    if (aspectRatio) {
+      return Math.round(actualWidth / aspectRatio);
+    }
+
+    return Math.round((actualWidth * height) / width);
+  }
 }

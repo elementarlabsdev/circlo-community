@@ -32,9 +32,14 @@ import { CommonPublicationListService } from '@/publications/application/service
 @Module({
   imports: [
     ConfigModule,
-    BullModule.registerQueue({
-      name: 'publication-queue',
-    }),
+    BullModule.registerQueue(
+      {
+        name: 'publication-queue',
+      },
+      {
+        name: 'recommendation-queue',
+      },
+    ),
   ],
   controllers: [
     PublicationsController,

@@ -38,6 +38,8 @@ export class PublicationsService {
     private readonly recommendationService: RecommendationService,
     @InjectQueue('publication-queue')
     private readonly publicationQueue: Queue,
+    @InjectQueue('recommendation-queue')
+    private readonly recommendationQueue: Queue,
     private readonly contentBlocksToTextConverter: ContentBlocksToTextConverter,
     private readonly textQualityQueue: TextQualityQueue,
   ) {}
@@ -762,14 +764,14 @@ export class PublicationsService {
       }
     }
 
-    this.recommendationService
-      .generateAndSaveEmbedding(
-        publication.id,
-        'publication',
-        `${publication.title} ${publication.textContent || ''}`,
-      )
+    this.recommendationQueue
+      .add('generate-embedding', {
+        targetId: publication.id,
+        targetType: 'publication',
+        text: `${publication.title} ${publication.textContent || ''}`,
+      })
       .catch((e) =>
-        console.error('Failed to generate embedding for publication', e),
+        console.error('Failed to queue embedding generation for publication', e),
       );
 
     // Ensure feed item exists for this publication

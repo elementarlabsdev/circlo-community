@@ -104,6 +104,7 @@ export class ThreadsPrismaRepository implements ThreadRepositoryInterface {
     parent: Thread,
     authorId: string,
     textContent: string,
+    mediaItemIds?: string[],
   ): Promise<Thread> {
     const htmlContent = textContent.replace(/\n/g, '<br>');
     const result = await this.prisma.$transaction(async (tx) => {
@@ -117,12 +118,16 @@ export class ThreadsPrismaRepository implements ThreadRepositoryInterface {
           mainThread: { connect: { id: parent.mainThreadId || parent.id } },
           createdAt: new Date(),
           status: { connect: { type: 'published' } },
+          mediaItems: mediaItemIds?.length ? {
+            connect: mediaItemIds.map(id => ({ id }))
+          } : undefined
         },
         include: {
           author: true,
           respondingTo: true,
           mainThread: true,
           status: true,
+          mediaItems: true,
           poll: {
             include: {
               options: true,

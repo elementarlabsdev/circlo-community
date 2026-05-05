@@ -40,13 +40,18 @@
         <div class="mt-5">
           @let mediaItem = thread().mediaItems![0];
           <div class="rounded-2xl overflow-hidden border border-border bg-surface-container-low
-                      [&.is-portrait]:max-w-[300px]"
+                      [&.is-portrait]:max-w-[300px] leading-[0]"
                [class.max-w-2xl]="mediaItem.orientation === 'landscape'"
                [class.is-portrait]="mediaItem.orientation === 'portrait'">
             @if (mediaItem.type === 'image') {
-              <img [src]="mediaItem.url | imageProxy: getMediaImageSize(mediaItem, 300)"
-                   class="w-full h-auto block"
-                   [alt]="mediaItem.name">
+              <ngs-image-zoom-viewer>
+                <img [src]="mediaItem.url | imageProxy: getMediaImageSize(mediaItem, 600)"
+                     class="w-full h-auto block"
+                     ngsImageZoomViewerImage
+                     [width]="getScaledWidth(mediaItem, 600)"
+                     [height]="getScaledHeight(mediaItem, 600)"
+                     [alt]="mediaItem.name">
+              </ngs-image-zoom-viewer>
             } @else if (mediaItem.type === 'video') {
               <ngs-video-player [src]="mediaItem.url"
                                 [payload]="mediaItem.payload"
@@ -73,6 +78,8 @@
                     <ngs-image-zoom-viewer class="h-[270px]">
                       <img [src]="mediaItem.url | imageProxy: getMediaImageSize(mediaItem)"
                            class="w-full h-full max-h-[270px] object-cover block"
+                           [width]="getScaledWidth(mediaItem, 270)"
+                           [height]="getScaledHeight(mediaItem, 270)"
                            [alt]="mediaItem.name" ngsImageZoomViewerImage>
                     </ngs-image-zoom-viewer>
                   } @else if (mediaItem.type === 'video') {
@@ -133,12 +140,14 @@
 </div>
 
 <div>
-  @if (thread().replies && thread().replies!.length > 0 && depth() < 1) {
+  @if (depth() === 1) {
     <app-thread-add class="!w-full mb-6 mt-6"
                     [parentId]="thread().id"
                     (itemAdded)="onSent()"
                     (canceled)="onCancel()"/>
+  }
 
+  @if (thread().replies && thread().replies!.length > 0 && depth() === 1) {
     <div class="overflow-hidden rounded-3xl border border-border">
       @for (reply of thread().replies; track reply.id) {
         <app-thread-item

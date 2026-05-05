@@ -13,6 +13,7 @@ CREATE TABLE "MediaItem" (
     "extension" TEXT NOT NULL,
     "path" TEXT NOT NULL,
     "url" TEXT NOT NULL,
+    "thumbnailUrl" TEXT,
     "name" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
     "category" TEXT NOT NULL,
@@ -158,6 +159,7 @@ CREATE TABLE "Page" (
     "featuredImageId" TEXT,
     "authorId" TEXT,
     "statusId" TEXT NOT NULL,
+    "qualityScore" JSONB,
 
     CONSTRAINT "Page_pkey" PRIMARY KEY ("id")
 );
@@ -1130,6 +1132,7 @@ CREATE TABLE "Thread" (
     "scheduleAt" TIMESTAMP(3),
     "reactionsCount" INTEGER NOT NULL DEFAULT 0,
     "repliesCount" INTEGER NOT NULL DEFAULT 0,
+    "isHidden" BOOLEAN NOT NULL DEFAULT false,
     "authorId" TEXT NOT NULL,
     "respondingToId" TEXT,
     "mainThreadId" TEXT,
@@ -1348,6 +1351,9 @@ CREATE UNIQUE INDEX "ChannelVisibility_type_key" ON "ChannelVisibility"("type");
 
 -- CreateIndex
 CREATE INDEX "Comment_qualityScore_idx" ON "Comment"("qualityScore");
+
+-- CreateIndex
+CREATE INDEX "Page_qualityScore_idx" ON "Page"("qualityScore");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Page_hash_key" ON "Page"("hash");
@@ -1740,13 +1746,13 @@ ALTER TABLE "ChannelRule" ADD CONSTRAINT "ChannelRule_channelId_fkey" FOREIGN KE
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_publicationId_fkey" FOREIGN KEY ("publicationId") REFERENCES "Publication"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_publicationId_fkey" FOREIGN KEY ("publicationId") REFERENCES "Publication"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_lessonId_fkey" FOREIGN KEY ("lessonId") REFERENCES "Lesson"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_lessonId_fkey" FOREIGN KEY ("lessonId") REFERENCES "Lesson"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_respondingToId_fkey" FOREIGN KEY ("respondingToId") REFERENCES "Comment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_respondingToId_fkey" FOREIGN KEY ("respondingToId") REFERENCES "Comment"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "MenuItem" ADD CONSTRAINT "MenuItem_iconId_fkey" FOREIGN KEY ("iconId") REFERENCES "MediaItem"("id") ON DELETE SET NULL ON UPDATE CASCADE;

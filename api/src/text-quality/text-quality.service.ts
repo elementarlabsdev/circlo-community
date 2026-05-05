@@ -5,7 +5,7 @@ import { franc } from 'franc-min';
 import { iso6393 } from 'iso-639-3';
 import { join } from 'path';
 
-// Настройка окружения для трансформаторов
+// Environment setup for transformers
 env.allowLocalModels = true;
 env.allowRemoteModels = true;
 env.localModelPath = join(process.cwd(), 'temp');
@@ -81,12 +81,12 @@ export class TextQualityService {
   }
 
   private mapToNllbLanguage(code: string): string {
-    // По умолчанию для большинства языков используется латиница.
-    // NLLB использует формат ISO 639-3 + "_" + ISO 15924 Script.
+    // By default, Latin script is used for most languages.
+    // NLLB uses the format ISO 639-3 + "_" + ISO 15924 Script.
     const language = iso6393.find((l) => l.iso6393 === code);
     if (!language) return 'eng_Latn';
 
-    // Некоторые исключения для скриптов, которые часто не латиница
+    // Some exceptions for scripts that are often not Latin
     const scriptMap: Record<string, string> = {
       rus: 'Cyrl',
       zho: 'Hans',
@@ -398,7 +398,7 @@ export class TextQualityService {
         'Xenova/bert-base-multilingual-uncased-sentiment',
       );
       const result = await classifier(text);
-      // Модель возвращает звезды 1-5.
+      // The model returns stars 1-5.
       const label = result[0].label; // "1 star", "2 stars" ...
       const stars = parseInt(label[0]);
       return stars;
@@ -430,7 +430,7 @@ export class TextQualityService {
         'onnx-community/tanaos-spam-detection-v1-ONNX',
       );
       const result = await classifier(text);
-      // Модель onnx-community/tanaos-spam-detection-v1-ONNX использует метки:
+      // The onnx-community/tanaos-spam-detection-v1-ONNX model uses labels:
       // spam
       // not_spam
       const spamLabel = result.find(
@@ -448,13 +448,13 @@ export class TextQualityService {
 
   private async getAiGeneratedScore(text: string): Promise<number> {
     try {
-      // Для AI detection используем nicoamoretti/roberta-ai-detector-onnx
+      // Use nicoamoretti/roberta-ai-detector-onnx for AI detection
       const classifier = await this.getModel(
         'text-classification',
         'nicoamoretti/roberta-ai-detector-onnx',
       );
       const result = await classifier(text);
-      // Модель nicoamoretti/roberta-ai-detector-onnx использует метки:
+      // The nicoamoretti/roberta-ai-detector-onnx model uses labels:
       // Fake (0)
       // Real (1)
       const fakeLabel = result.find(
@@ -527,15 +527,15 @@ export class TextQualityService {
   }
 
   private calculateReadability(text: string): number {
-    // Упрощенный расчет на основе длины слов и предложений (аналог Flesch-Kincaid)
+    // Simplified calculation based on word and sentence length (analogous to Flesch-Kincaid)
     const words = text.trim().split(/\s+/).length;
     const sentences = text.split(/[.!?]+/).length;
     const avgWordLen = text.length / words;
 
     if (words === 0) return 0;
 
-    // Индекс читаемости (чем меньше слов на предложение и короче слова, тем проще читать)
-    // Нормализуем к 0-1.
+    // Readability index (the fewer words per sentence and shorter words, the easier to read)
+    // Normalize to 0-1.
     let score = (sentences / words) * 10 - avgWordLen / 10;
     return Math.max(0, Math.min(1, 0.5 + score));
   }

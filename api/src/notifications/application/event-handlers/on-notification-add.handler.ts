@@ -11,10 +11,10 @@ export class OnNotificationAddHandler
   ) {}
 
   async handle(event: NotificationAddEvent) {
-    // // Не отправляем уведомление, если пользователь комментирует свой пост
+    // // Do not send notification if the user comments on their own post
     // if (event.commentAuthorId === event.publicationAuthorId) return;
     //
-    // // Вызываем Use Case нашего контекста для создания уведомления
+    // // Call our context's Use Case to create the notification
     // await this.createNotification.execute({
     //   userId: event.publicationAuthorId,
     //   type: 'NEW_COMMENT',

@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 
 /**
- * Интерфейс для свойств, описывающих временные метки.
- * Используется при восстановлении объекта из базы данных.
+ * Interface for properties describing timestamps.
+ * Used when reconstituting the object from the database.
  */
 export interface UserTimestampsProps {
   createdAt: Date;
@@ -12,8 +12,8 @@ export interface UserTimestampsProps {
 }
 
 /**
- * Value Object для управления временными метками пользователя.
- * Обеспечивает неизменяемость и инкапсулирует логику обновления дат.
+ * Value Object for managing user timestamps.
+ * Ensures immutability and encapsulates date update logic.
  */
 export class UserTimestamps {
   public readonly createdAt: Date;
@@ -22,8 +22,8 @@ export class UserTimestamps {
   public readonly notificationsViewedAt: Date | null;
 
   /**
-   * Конструктор является приватным для обеспечения создания
-   * экземпляров только через статические фабричные методы.
+   * The constructor is private to ensure that instances
+   * are created only through static factory methods.
    */
   private constructor(props: UserTimestampsProps) {
     this.createdAt = props.createdAt;
@@ -34,8 +34,8 @@ export class UserTimestamps {
   }
 
   /**
-   * Статический фабричный метод для создания VО для нового пользователя.
-   * Устанавливает `createdAt` и задает начальные значения null для остальных полей.
+   * Static factory method to create a VO for a new user.
+   * Sets `createdAt` and initial null values for other fields.
    */
   public static create(): UserTimestamps {
     return new UserTimestamps({
@@ -47,12 +47,12 @@ export class UserTimestamps {
   }
 
   /**
-   * Статический фабричный метод для восстановления VО из базы данных.
-   * Принимает существующие данные и создает из них объект.
-   * @param props - Данные временных меток из хранилища.
+   * Static factory method to reconstitute the VO from the database.
+   * Accepts existing data and creates an object from it.
+   * @param props - Timestamp data from storage.
    */
   public static reconstitute(props: UserTimestampsProps): UserTimestamps {
-    // Пример бизнес-правила: дата обновления не может быть раньше даты создания.
+    // Example business rule: the update date cannot be earlier than the creation date.
     if (props.updatedAt && props.updatedAt < props.createdAt) {
       throw new BadRequestException(
         'Updated date cannot be earlier than the created date.',
@@ -62,36 +62,36 @@ export class UserTimestamps {
   }
 
   /**
-   * Возвращает новый экземпляр с обновленной датой `updatedAt` на текущее время.
-   * Используется для отслеживания изменений в агрегате.
+   * Returns a new instance with the `updatedAt` date updated to the current time.
+   * Used for tracking changes in the aggregate.
    */
   public touch(): UserTimestamps {
-    // Возвращаем новый экземпляр, сохраняя остальные значения
+    // Return a new instance, preserving other values
     return new UserTimestamps({ ...this, updatedAt: new Date() });
   }
 
   /**
-   * Возвращает новый экземпляр с обновленной датой последней активности.
+   * Returns a new instance with the last activity date updated.
    */
   public recordActivity(): UserTimestamps {
     return new UserTimestamps({ ...this, lastActivityAt: new Date() });
   }
 
   /**
-   * Возвращает новый экземпляр с обновленной датой просмотра уведомлений.
+   * Returns a new instance with the notifications viewed date updated.
    */
   public recordNotificationsViewed(): UserTimestamps {
     return new UserTimestamps({ ...this, notificationsViewedAt: new Date() });
   }
 
   /**
-   * Сравнивает текущий объект с другим по значению.
+   * Compares the current object with another by value.
    */
   public equals(other: UserTimestamps): boolean {
     if (other === null || other === undefined) {
       return false;
     }
-    // Сравниваем время в миллисекундах для корректного сравнения дат
+    // Compare time in milliseconds for correct date comparison
     return (
       this.createdAt.getTime() === other.createdAt.getTime() &&
       this.updatedAt?.getTime() === other.updatedAt?.getTime() &&

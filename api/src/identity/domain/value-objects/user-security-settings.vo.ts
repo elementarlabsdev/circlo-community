@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 
 /**
- * Интерфейс для свойств, описывающих настройки безопасности.
+ * Interface for properties describing security settings.
  */
 export interface UserSecuritySettingsProps {
   mfaConfigured: boolean;
@@ -22,8 +22,8 @@ export class UserSecuritySettings {
   }
 
   /**
-   * Статический фабричный метод для создания объекта настроек.
-   * Устанавливает безопасные значения по умолчанию для нового пользователя.
+   * Static factory method for creating the settings object.
+   * Sets safe default values for a new user.
    */
   public static create(
     initialProps?: Partial<UserSecuritySettingsProps>,
@@ -36,7 +36,7 @@ export class UserSecuritySettings {
 
     const props = { ...defaults, ...initialProps };
 
-    // Бизнес-правило: MFA не может быть включена, если она не настроена.
+    // Business rule: MFA cannot be enabled if it is not configured.
     if (props.mfaEnabled && !props.mfaConfigured) {
       throw new BadRequestException(
         'MFA cannot be enabled until it is configured.',
@@ -47,15 +47,15 @@ export class UserSecuritySettings {
   }
 
   /**
-   * Возвращает новый экземпляр с подтвержденной настройкой MFA.
+   * Returns a new instance with confirmed MFA configuration.
    */
   public confirmMfaConfiguration(): UserSecuritySettings {
     return new UserSecuritySettings({ ...this, mfaConfigured: true });
   }
 
   /**
-   * Возвращает новый экземпляр с включенной MFA.
-   * @throws {Error} если MFA не настроена.
+   * Returns a new instance with MFA enabled.
+   * @throws {Error} if MFA is not configured.
    */
   public enableMfa(): UserSecuritySettings {
     if (!this.mfaConfigured) {
@@ -65,23 +65,23 @@ export class UserSecuritySettings {
   }
 
   /**
-   * Возвращает новый экземпляр с выключенной MFA.
+   * Returns a new instance with MFA disabled.
    */
   public disableMfa(): UserSecuritySettings {
     return new UserSecuritySettings({ ...this, mfaEnabled: false });
   }
 
   /**
-   * Возвращает новый экземпляр с обновленным API ключом.
-   * @param apiKey Новый API ключ или null для его удаления.
+   * Returns a new instance with updated API key.
+   * @param apiKey New API key or null to remove it.
    */
   public updateApiKey(apiKey: string | null): UserSecuritySettings {
-    // Здесь может быть валидация формата ключа, если это необходимо
+    // Validation of the key format can be added here if necessary
     return new UserSecuritySettings({ ...this, openAIApiKey: apiKey });
   }
 
   /**
-   * Сравнивает текущий объект настроек с другим.
+   * Compares the current settings object with another.
    */
   public equals(other: UserSecuritySettings): boolean {
     if (other === null || other === undefined) {

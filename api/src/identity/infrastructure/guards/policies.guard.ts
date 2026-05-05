@@ -20,7 +20,7 @@ export class PoliciesGuard implements CanActivate {
         context.getHandler(),
       ) || [];
 
-    // Если не указаны политики — разрешаем доступ (явное ограничение через Guard или декоратор)
+    // If no policies are specified — allow access (explicit restriction via Guard or decorator)
     if (handlers.length === 0) return true;
 
     const request = context.switchToHttp().getRequest();

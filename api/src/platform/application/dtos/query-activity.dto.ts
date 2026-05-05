@@ -7,7 +7,7 @@ import {
   IsDate,
   IsEnum,
 } from 'class-validator';
-import { Type } from 'class-transformer'; // Для преобразования типов из query params
+import { Type } from 'class-transformer'; // For type conversion from query params
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum ActivitySortBy {
@@ -24,7 +24,7 @@ export enum SortOrder {
 
 export class QueryActivityDto {
   @ApiPropertyOptional({
-    description: 'Номер страницы',
+    description: 'Page number',
     default: 1,
     type: Number,
   })
@@ -35,7 +35,7 @@ export class QueryActivityDto {
   page?: number = 1;
 
   @ApiPropertyOptional({
-    description: 'Количество элементов на странице',
+    description: 'Number of items per page',
     default: 10,
     type: Number,
     maximum: 100,
@@ -44,33 +44,33 @@ export class QueryActivityDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  @Max(100) // Ограничиваем максимальное количество для производительности
+  @Max(100) // Limit the maximum number for performance
   limit?: number = 10;
 
-  @ApiPropertyOptional({ description: 'ID пользователя (актора)' })
+  @ApiPropertyOptional({ description: 'User ID (actor)' })
   @IsOptional()
-  @IsString() // Если у вас UUID, можно использовать @IsUUID()
+  @IsString() // If you have UUID, you can use @IsUUID()
   actorId?: string;
 
   @ApiPropertyOptional({
-    description: 'Тип действия (можно часть строки для поиска)',
+    description: 'Action type (can be partial string for search)',
   })
   @IsOptional()
   @IsString()
   action?: string;
 
-  @ApiPropertyOptional({ description: 'Тип целевой сущности' })
+  @ApiPropertyOptional({ description: 'Target entity type' })
   @IsOptional()
   @IsString()
   targetType?: string;
 
-  @ApiPropertyOptional({ description: 'ID целевой сущности' })
+  @ApiPropertyOptional({ description: 'Target entity ID' })
   @IsOptional()
-  @IsString() // Если у вас UUID, можно использовать @IsUUID()
+  @IsString() // If you have UUID, you can use @IsUUID()
   targetId?: string;
 
   @ApiPropertyOptional({
-    description: 'Начальная дата для фильтрации (ISO 8601)',
+    description: 'Start date for filtering (ISO 8601)',
     type: Date,
   })
   @IsOptional()
@@ -79,7 +79,7 @@ export class QueryActivityDto {
   startDate?: Date;
 
   @ApiPropertyOptional({
-    description: 'Конечная дата для фильтрации (ISO 8601)',
+    description: 'End date for filtering (ISO 8601)',
     type: Date,
   })
   @IsOptional()
@@ -88,7 +88,7 @@ export class QueryActivityDto {
   endDate?: Date;
 
   @ApiPropertyOptional({
-    description: 'Поле для сортировки',
+    description: 'Sort field',
     enum: ActivitySortBy,
     default: ActivitySortBy.CREATED_AT,
   })
@@ -97,7 +97,7 @@ export class QueryActivityDto {
   sortBy?: ActivitySortBy = ActivitySortBy.CREATED_AT;
 
   @ApiPropertyOptional({
-    description: 'Порядок сортировки',
+    description: 'Sort order',
     enum: SortOrder,
     default: SortOrder.DESC,
   })

@@ -27,7 +27,7 @@ export class SectionsController {
     @GetUser() user: User,
   ) {
     const item = await this.tutorialsService.addLesson(sectionId, user);
-    // Явно возвращаем readingTime, чтобы фронт мог сразу отобразить длительность чтения
+    // Explicitly return readingTime so the front end can immediately display the reading duration
     const readingTime = (item as any)?.lesson?.readingTime;
     return { item, readingTime };
   }

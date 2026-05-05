@@ -29,6 +29,21 @@ export class RecommendationProcessor extends WorkerHost {
           targetType,
         );
         break;
+      case 'generate-embedding':
+        const { targetId: tId, targetType: tType, text, userId: uId } = job.data;
+        this.logger.debug(`Generating embedding for ${tType} ${tId}`);
+        await this.recommendationService.generateAndSaveEmbedding(
+          tId,
+          tType,
+          text,
+        );
+        if (uId) {
+          this.logger.debug(
+            `Retrying interest update for user ${uId} after embedding generation for ${tType} ${tId}`,
+          );
+          await this.recommendationService.updateUserInterests(uId, tId, tType);
+        }
+        break;
       default:
         this.logger.warn(`Unknown job name: ${job.name}`);
     }

@@ -167,7 +167,7 @@ export class SettingsComponent implements OnInit {
           pinned: res.tutorial.pinned,
           licenseTypeId: res.tutorial.licenseType.id,
         });
-        // Инициализация массива whatYouWillLearn из API (ожидается массив строк)
+        // Initialize the whatYouWillLearn array from API (array of strings expected)
         const points: string[] = Array.isArray(res.tutorial?.whatYouWillLearn)
           ? res.tutorial.whatYouWillLearn
           : [];
@@ -233,7 +233,7 @@ export class SettingsComponent implements OnInit {
   dropLearningPoint(event: CdkDragDrop<FormControl[]>) {
     if (!event || event.previousIndex === event.currentIndex) return;
     const arr = this.whatYouWillLearn;
-    // Оптимистическая перестановка FormArray
+    // Optimistic reordering of FormArray
     const controls = [...arr.controls];
     moveItemInArray(controls, event.previousIndex, event.currentIndex);
     arr.clear();

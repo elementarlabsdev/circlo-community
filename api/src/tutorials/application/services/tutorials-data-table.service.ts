@@ -101,7 +101,7 @@ export class TutorialsDataTableService extends DataTableService<any> {
     const data = roots.map((root: any) => {
       // Candidate versions include root itself (because rootId usually points to self)
       const candidates: any[] = [root, ...(root.versions || [])];
-      // Рабочая версия: сначала ищем 'unpublishedChanges', затем обычный 'draft'
+      // Working version: first look for 'unpublishedChanges', then regular 'draft'
       const working =
         candidates.find((v) => v.status?.type === 'unpublishedChanges') ||
         candidates.find((v) => v.status?.type === 'draft') ||
@@ -114,7 +114,7 @@ export class TutorialsDataTableService extends DataTableService<any> {
         // Core identifiers
         id: display.id,
         rootId: root.id,
-        // Для обратной совместимости оставляем draftId как id рабочей версии, если она есть
+        // For backward compatibility, keep draftId as the working version id, if it exists
         draftId: working?.id ?? null,
         publishedId: published?.id ?? null,
         editId,

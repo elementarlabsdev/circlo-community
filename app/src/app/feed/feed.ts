@@ -57,7 +57,6 @@ export class Feed {
       .listen<FeedItem>('addFeedItem')
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(item => {
-        console.log('Feed item added:', item);
         this.onItemAdded(item);
       });
   }

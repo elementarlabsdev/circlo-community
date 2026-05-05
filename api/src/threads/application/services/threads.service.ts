@@ -61,17 +61,23 @@ export class ThreadsService {
     authorId: string,
     parentId: string,
     content: string,
+    mediaItemIds?: string[],
   ): Promise<Thread> {
     if (!authorId) throw new Error('authorId is required');
     if (!parentId) throw new Error('parentId is required');
-    if (!content || content.trim().length === 0)
+    const textContent = content?.trim() || '';
+    if (
+      textContent.length === 0 &&
+      (!mediaItemIds || mediaItemIds.length === 0)
+    )
       throw new Error('textContent is required');
 
     const parent = await this.repository.findByIdOrFail(parentId);
     const thread = await this.repository.reply(
       parent,
       authorId,
-      content.trim(),
+      textContent,
+      mediaItemIds,
     );
 
     const actor = await this.users.findOneById(authorId);

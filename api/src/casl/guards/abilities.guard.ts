@@ -44,7 +44,7 @@ export class AbilitiesGuard implements CanActivate {
     for (const rule of rules) {
       const { action, subject } = rule;
 
-      // 1. Проверка виртуальных разделов (напр. 'AdminPanel', 'Studio')
+      // 1. Check virtual sections (e.g., 'AdminPanel', 'Studio')
       const isVirtual = ['AdminPanel', 'Studio', 'all'].includes(subject);
 
       if (isVirtual) {
@@ -54,18 +54,18 @@ export class AbilitiesGuard implements CanActivate {
         continue;
       }
 
-      // 2. Проверка моделей (напр. 'Content' -> 'Publication', 'Tutorial' и т.д.)
-      // В Prisma модели обычно с большой буквы, как и в CASL subject.
-      // Если есть params.id, загружаем объект.
+      // 2. Check models (e.g., 'Content' -> 'Publication', 'Tutorial', etc.)
+      // In Prisma, models are usually capitalized, same as in CASL subject.
+      // If params.id is present, load the object.
       const id = request.params.id;
 
       if (id) {
-        // Мы предполагаем, что subject соответствует имени модели в Prisma (в нижнем регистре для доступа к prisma[model])
-        // Например, если subject = 'Publication', то prisma.publication.findUnique
+        // We assume that subject matches the model name in Prisma (lowercase for access to prisma[model])
+        // For example, if subject = 'Publication', then prisma.publication.findUnique
         const modelName = subject.charAt(0).toLowerCase() + subject.slice(1);
 
         if (!(this.prisma as any)[modelName]) {
-           // Если такой модели нет в Prisma, проверяем как строку
+           // If such a model doesn't exist in Prisma, check as a string
            if (!ability.can(action, subject)) {
               throw new ForbiddenException(`Access denied to ${subject}`);
            }
@@ -80,9 +80,9 @@ export class AbilitiesGuard implements CanActivate {
           throw new NotFoundException(`${subject} not found`);
         }
 
-        // Устанавливаем тип для CASL, чтобы он понимал, что это за объект
-        // Т.к. Prisma возвращает обычный JS объект, CASL не знает его конструктор.
-        // Мы можем добавить свойство constructor.name вручную для detectSubjectType
+        // Set the type for CASL so it understands what kind of object it is.
+        // Since Prisma returns a plain JS object, CASL doesn't know its constructor.
+        // We can manually add the constructor.name property for detectSubjectType
         Object.defineProperty(item, 'constructor', {
            value: { name: subject },
            enumerable: false
@@ -92,7 +92,7 @@ export class AbilitiesGuard implements CanActivate {
           throw new ForbiddenException(`Access denied to this ${subject}`);
         }
       } else {
-        // Проверка права на тип в целом
+        // Check permission for the type as a whole
         if (!ability.can(action, subject)) {
           throw new ForbiddenException(`Access denied to ${subject}`);
         }

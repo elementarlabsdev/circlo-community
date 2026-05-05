@@ -21,9 +21,14 @@ import { PublishTutorialProcessor } from '@/tutorials/application/queue-processo
 @Global()
 @Module({
   imports: [
-    BullModule.registerQueue({
-      name: 'tutorial-queue',
-    }),
+    BullModule.registerQueue(
+      {
+        name: 'tutorial-queue',
+      },
+      {
+        name: 'recommendation-queue',
+      },
+    ),
   ],
   controllers: [
     LessonsController,

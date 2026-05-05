@@ -36,7 +36,7 @@ export class Menu {
     });
   }
 
-  // Метод для восстановления из БД
+  // Method for reconstituting from the database
   public static reconstitute(props: {
     id: string;
     name: string;
@@ -48,7 +48,7 @@ export class Menu {
   }
 
   public addItem(props: MenuItemCreateProps): void {
-    // Бизнес-правило, которое защищает агрегат
+    // Business rule that protects the aggregate
     if (this.type === 'HEADER' && this._items.length >= 10) {
       throw new Error('The main menu cannot contain more than 10 items.');
     }
@@ -68,7 +68,7 @@ export class Menu {
 
 
   /**
-   * Преобразует агрегат в "плоскую" структуру для сохранения в БД.
+   * Converts the aggregate to a "flat" structure for saving to the database.
    */
   public toPrimitives() {
     return {

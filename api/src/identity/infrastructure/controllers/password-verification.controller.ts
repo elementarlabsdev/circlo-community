@@ -79,7 +79,7 @@ export class PasswordVerificationController {
 
     const now = new Date();
 
-    // Если пользователь временно заблокирован для ресенда
+    // If user is temporarily blocked from resending
     if (passwordReset.blockedUntil && passwordReset.blockedUntil > now) {
       const retryAt = passwordReset.blockedUntil.toISOString();
       throw new HttpException(
@@ -92,7 +92,7 @@ export class PasswordVerificationController {
       );
     }
 
-    // Интервал между отправками (минуты) — используем те же настройки, что и для email verification
+    // Interval between sends (minutes) — use the same settings as for email verification
     const intervalMinutes = await this._settingsService.findValueByName(
       'emailVerificationIntervalBetweenSendsTime',
     );
@@ -114,7 +114,7 @@ export class PasswordVerificationController {
       );
     }
 
-    // Проверяем лимит отправок
+    // Check send limit
     const sentLimit = await this._settingsService.findValueByName(
       'emailVerificationSentCount',
     );
@@ -140,11 +140,11 @@ export class PasswordVerificationController {
       );
     }
 
-    // Генерируем новый код и хэш
+    // Generate new code and hash
     const newHash = crypto.randomUUID().toString();
     const newCode = Math.floor(100000 + Math.random() * 900000);
 
-    // Обновляем запись (оставляем одну активную запись сброса пароля)
+    // Update record (keep one active password reset record)
     await this._prisma.passwordReset.update({
       where: { id: passwordReset.id },
       data: {

@@ -41,7 +41,7 @@ export class TutorialSettingsDto {
   @IsOptional()
   whatYouWillLearn?: string[] | null;
 
-  // SEO/meta (пока не сохраняем, но принимаем из формы)
+  // SEO/meta (not saving for now, but accepting from form)
   @IsString()
   @IsOptional()
   metaTitle?: string;

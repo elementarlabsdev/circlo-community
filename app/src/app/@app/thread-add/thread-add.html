@@ -1,11 +1,13 @@
 @if (isLogged()) {
-  <form [formGroup]="threadForm" (ngSubmit)="post()">
+  <form [formGroup]="threadForm" (ngSubmit)="post(editor)">
     <ngs-comment-editor [allowEmptyContent]="attachments().length > 0"
                         placeholder="What's on your mind?"
+                        [loading]="saving()"
+                        [autoClear]="false"
                         #editor
                         class="rounded-2xl border border-border"
                         [buttonSendLabel]="'publish' | transloco"
-                        (sent)="onSent($event, threadForm)"
+                        (sent)="onSent($event, threadForm, editor)"
                         (canceled)="onCanceled()">
       @if (attachments().length > 0) {
         <div class="flex flex-wrap gap-4">

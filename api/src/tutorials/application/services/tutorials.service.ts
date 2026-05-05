@@ -38,6 +38,7 @@ export class TutorialsService {
     private readonly settingsService: SettingsService,
     private readonly recommendationService: RecommendationService,
     @InjectQueue('tutorial-queue') private tutorialQueue: Queue,
+    @InjectQueue('recommendation-queue') private recommendationQueue: Queue,
     private readonly i18n: I18nService,
   ) {}
 
@@ -101,7 +102,7 @@ export class TutorialsService {
   }
 
   /**
-   * Проверяет, существует ли опубликованный туториал с указанным id
+   * Checks if a published tutorial with the specified id exists
    */
   async getTutorialById(id: string) {
     return this.prisma.tutorial.findUnique({ where: { id } });
@@ -119,8 +120,8 @@ export class TutorialsService {
   }
 
   /**
-   * Пересчитывает aggregated estimatedTime для Tutorial по всем его урокам.
-   * Использует значения readingTime у Lesson и агрегирует minutes/words, формируя text.
+   * Recomputes the aggregated estimatedTime for a Tutorial based on all its lessons.
+   * Uses readingTime values from Lesson and aggregates minutes/words, forming the text.
    */
   private async recomputeTutorialReadingTime(tutorialId: string) {
     const lessons = await this.prisma.lesson.findMany({
@@ -257,12 +258,12 @@ export class TutorialsService {
     user: User,
     dto?: PublishTutorialDto,
   ) {
-    // Сначала проверим права на переданный tutorialId
+    // First, check permissions for the passed tutorialId
     let tutorial = await this.checkTutorialOwnership(tutorialId, user.id);
 
-    // Если пришёл id опубликованной версии, но у корня есть драфт с неопубликованными изменениями —
-    // публикуем именно этот драфт. Это делает endpoint устойчивым к тому,
-    // какой id передаёт клиент (published или draft).
+    // If the id of a published version came in, but the root has a draft with unpublished changes —
+    // publish that specific draft. This makes the endpoint resilient to
+    // which id the client sends (published or draft).
     if (tutorial.status.type === 'published') {
       const rootId = tutorial.rootId ?? tutorial.id;
       const draftWithChanges = await this.prisma.tutorial.findFirst({
@@ -272,12 +273,12 @@ export class TutorialsService {
       if (!draftWithChanges) {
         throw new BadRequestException('This tutorial is already published.');
       }
-      // Переключаем контекст публикации на драфт с изменениями
+      // Switch publication context to the draft with changes
       tutorial = draftWithChanges as any;
       tutorialId = draftWithChanges.id;
     }
 
-    // Разрешаем публикацию/расписание из 'draft', 'unpublishedChanges' и 'scheduled'
+    // Allow publication/scheduling from 'draft', 'unpublishedChanges', and 'scheduled'
     if (
       !['draft', 'unpublishedChanges', 'scheduled'].includes(
         tutorial.status.type,
@@ -498,11 +499,11 @@ export class TutorialsService {
         slugToUse = await this.generateUniqueSlug(tx, draftTitle);
       }
 
-      // Before switching statuses, если есть предыдущая опубликованная версия,
-      // бэкофилим slug-и уроков/викторин в текущем драфте (если они пустые),
-      // сопоставляя по stableKey, а при отсутствии — по позиции (legacy).
+      // Before switching statuses, if there is a previous published version,
+      // backfill slugs of lessons/quizzes in the current draft (if they are empty),
+      // matching by stableKey, and if missing — by position (legacy).
       if (currentPublished) {
-        // Загружаем минимальные деревья для сопоставления
+        // Load minimal trees for matching
         const [draftTree, publishedTree] = await Promise.all([
           tx.section.findMany({
             where: { tutorialId: currentDraft.id },
@@ -543,7 +544,7 @@ export class TutorialsService {
           }),
         ]);
 
-        // Готовим быстрые словари для поиска соответствий
+        // Prepare fast dictionaries for lookup
         const pubSectionsByKey = new Map(
           publishedTree
             .filter((s) => s.stableKey)
@@ -576,14 +577,14 @@ export class TutorialsService {
                 : undefined) || pubItemsByPos.get(dItem.position);
             if (!pItem) continue;
 
-            // Если у драфтового урока нет slug, но у опубликованного есть — переносим
+            // If the draft lesson has no slug, but the published one does — transfer it
             if (dItem.lesson && !dItem.lesson.slug && pItem.lesson?.slug) {
               await tx.lesson.update({
                 where: { id: dItem.lesson.id },
                 data: { slug: pItem.lesson.slug },
               });
             }
-            // Аналогично для викторины
+            // Same for the quiz
             if (dItem.quiz && !dItem.quiz.slug && pItem.quiz?.slug) {
               await tx.quiz.update({
                 where: { id: (dItem.quiz as any).id },
@@ -701,14 +702,14 @@ export class TutorialsService {
     }
 
     if (published) {
-      this.recommendationService
-        .generateAndSaveEmbedding(
-          (published as any).id,
-          'tutorial',
-          `${(published as any).title} ${(published as any).description || ''}`,
-        )
+      this.recommendationQueue
+        .add('generate-embedding', {
+          targetId: (published as any).id,
+          targetType: 'tutorial',
+          text: `${(published as any).title} ${(published as any).description || ''}`,
+        })
         .catch((e) =>
-          console.error('Failed to generate embedding for tutorial', e),
+          console.error('Failed to queue embedding generation for tutorial', e),
         );
     }
 
@@ -917,11 +918,11 @@ export class TutorialsService {
   }
 
   /**
-   * Возвращает опубликованный туториал по id с нужными связями и сразу добавляет внутрь `firstItem`.
-   * `firstItem` вычисляется аналогично методу `getFirstPublishedItemByTutorialSlug`, но на основе slug найденного туториала.
+   * Returns a published tutorial by id with required relations and immediately adds `firstItem` inside.
+   * `firstItem` is calculated similarly to the `getFirstPublishedItemByTutorialSlug` method, but based on the slug of the found tutorial.
    */
   async findOneByIdWithRelationsAndFirstItem(id: string) {
-    // Выполняем один запрос к БД, включая нужные связи и первый контентный элемент
+    // Perform a single database query including required relations and the first content item
     const tutorialWithRelations = await this.prisma.tutorial.findFirstOrThrow({
       where: { id, status: { type: 'published' } },
       include: {
@@ -964,7 +965,7 @@ export class TutorialsService {
 
     const tutorial: any = tutorialWithRelations as any;
 
-    // Собираем firstItem из уже загруженных секций/айтемов
+    // Assemble firstItem from already loaded sections/items
     let firstItem: any = null;
     try {
       const section = tutorialWithRelations.sections?.[0];
@@ -972,8 +973,8 @@ export class TutorialsService {
       if (section && item) {
         if (item.type === 'lesson' && item.lesson) {
           firstItem = {
-            // ВНИМАНИЕ: не добавляем сюда ссылку на сам tutorial,
-            // т.к. ниже мы вставим firstItem внутрь tutorial и это создаст циклическую ссылку
+            // ATTENTION: do not add a link to the tutorial itself here,
+            // as below we will insert firstItem into the tutorial and this would create a circular reference
             section: {
               id: section.id,
               name: section.name,
@@ -988,7 +989,7 @@ export class TutorialsService {
           } as any;
         } else if (item.type === 'quiz' && item.quiz) {
           firstItem = {
-            // Аналогично не вкладываем tutorial внутрь firstItem
+            // Similarly, do not embed tutorial inside firstItem
             section: {
               id: section.id,
               name: section.name,
@@ -1008,10 +1009,10 @@ export class TutorialsService {
       firstItem = null;
     }
 
-    // Добавляем в объект tutorial поле firstItem и очищаем служебные данные, если нужно
+    // Add the firstItem field to the tutorial object and clear technical data if needed
     tutorial.firstItem = firstItem;
-    // Мы включали sections только для вычисления firstItem. Чтобы ответ был легче и безопаснее,
-    // удалим их из возвращаемого объекта.
+    // We included sections only for calculating firstItem. To make the response lighter and safer,
+    // remove them from the returned object.
     if (Array.isArray(tutorial.sections)) {
       delete tutorial.sections;
     }
@@ -1019,14 +1020,14 @@ export class TutorialsService {
   }
 
   /**
-   * Возвращает опубликованный item (sectionItem) по его id вместе с нужными связями,
-   * а также вычисляет соседние элементы previousItem и nextItem по позиции в пределах той же секции.
-   * Если туториал не опубликован или элемент не найден — возвращает null.
+   * Returns a published item (sectionItem) by its id with required relations,
+   * and calculates previousItem and nextItem neighbors based on position within the same section.
+   * If the tutorial is not published or the item is not found — returns null.
    */
   async getPublishedItemByIdWithNeighbors(itemId: string) {
     if (!itemId) return null;
 
-    // Находим сам элемент, убеждаемся что его туториал опубликован
+    // Find the item itself, ensure its tutorial is published
     const current = await this.prisma.sectionItem.findFirst({
       where: {
         id: itemId,
@@ -1090,7 +1091,7 @@ export class TutorialsService {
     const sectionId = current.sectionId;
     const position = current.position;
 
-    // Предыдущий элемент в рамках той же секции (только контентные элементы)
+    // Previous item within the same section (content items only)
     const prev = await this.prisma.sectionItem.findFirst({
       where: {
         sectionId,
@@ -1105,7 +1106,7 @@ export class TutorialsService {
       },
     });
 
-    // Следующий элемент
+    // Next item
     const next = await this.prisma.sectionItem.findFirst({
       where: {
         sectionId,
@@ -1120,7 +1121,7 @@ export class TutorialsService {
       },
     });
 
-    // Формируем ответ, избегая циклических ссылок
+    // Format the response, avoiding circular references
     const tutorial = (current.section as any).tutorial as any;
     const section = {
       id: current.section.id,
@@ -1151,7 +1152,7 @@ export class TutorialsService {
                 : (n.quiz?.slug ?? null),
           };
 
-    // Если нет предыдущего/следующего в той же секции — ищем в соседних секциях
+    // If there is no previous/next in the same section — look in neighboring sections
     let previousItem = mapNeighbor(prev);
     let nextItem = mapNeighbor(next);
 
@@ -1253,8 +1254,8 @@ export class TutorialsService {
   }
 
   /**
-   * По tutorial slug вернуть первый раздел (section) и первый контентный элемент (lesson/quiz) внутри него.
-   * Возвращает null, если туториал не найден/не опубликован или нет подходящих элементов.
+   * By tutorial slug, return the first section and the first content item (lesson/quiz) inside it.
+   * Returns null if the tutorial is not found/not published or if there are no suitable items.
    */
   async getFirstPublishedItemByTutorialSlug(
     tutorialSlug: string,
@@ -1270,7 +1271,7 @@ export class TutorialsService {
     });
     if (!tutorialRaw) return null;
 
-    // Находим первый section, у которого есть хотя бы один lesson/quiz item
+    // Find the first section that has at least one lesson/quiz item
     const section = await this.prisma.section.findFirst({
       where: {
         tutorialId: tutorialRaw.id,
@@ -1341,11 +1342,11 @@ export class TutorialsService {
     if (!section || section.items.length === 0) return null;
     const firstItem = section.items[0];
 
-    // Формируем компактный ответ
+    // Format a compact response
     if (firstItem.type === 'lesson' && firstItem.lesson) {
       return {
-        // Не возвращаем здесь объект tutorial, чтобы избежать возможных циклических ссылок,
-        // оставляем только необходимые данные: секцию и первый элемент
+        // Do not return the tutorial object here to avoid potential circular references,
+        // leave only necessary data: section and first item
         section: {
           id: section.id,
           name: section.name,
@@ -1379,7 +1380,7 @@ export class TutorialsService {
   }
 
   /**
-   * Получить опубликованный урок по паре slug'ов: tutorialSlug + lessonSlug
+   * Get a published lesson by slug pair: tutorialSlug + lessonSlug
    */
   async getPublishedLessonBySlugs(tutorialSlug: string, lessonSlug: string) {
     if (!tutorialSlug || !lessonSlug) return null;
@@ -1395,7 +1396,7 @@ export class TutorialsService {
     const lesson = await this.prisma.lesson.findFirst({
       where: {
         slug: lessonSlug,
-        // Используем relation-path фильтр для совместимости текущих Prisma типов
+        // Use relation-path filter for compatibility with current Prisma types
         sectionItem: { section: { tutorialId: tutorialRaw.id } },
       },
       select: {
@@ -1414,7 +1415,7 @@ export class TutorialsService {
       },
     });
     if (!lesson) return null;
-    // Находим текущий sectionItem для урока, чтобы вычислить соседей
+    // Find the current sectionItem for the lesson to calculate neighbors
     const currentItem = await this.prisma.sectionItem.findFirst({
       where: {
         lessonId: lesson.id,
@@ -1465,7 +1466,7 @@ export class TutorialsService {
       previousItem = mapNeighbor(prev);
       nextItem = mapNeighbor(next);
 
-      // Фолбэк к соседним секциям, если в текущей секции соседа нет
+      // Fallback to neighboring sections if no neighbor is found in the current section
       if (!previousItem || !nextItem) {
         const sectionMeta = await this.prisma.section.findFirst({
           where: { id: currentItem.sectionId },
@@ -1553,7 +1554,7 @@ export class TutorialsService {
   }
 
   /**
-   * Получить опубликованный квиз по паре slug'ов: tutorialSlug + quizSlug
+   * Get a published quiz by slug pair: tutorialSlug + quizSlug
    */
   async getPublishedQuizBySlugs(tutorialSlug: string, quizSlug: string) {
     if (!tutorialSlug || !quizSlug) return null;
@@ -1569,7 +1570,7 @@ export class TutorialsService {
     const quiz = await this.prisma.quiz.findFirst({
       where: {
         slug: quizSlug,
-        // Используем relation-path фильтр для совместимости текущих Prisma типов
+        // Use relation-path filter for compatibility with current Prisma types
         sectionItem: { section: { tutorialId: tutorialRaw.id } },
       },
       select: {
@@ -1589,7 +1590,7 @@ export class TutorialsService {
                 id: true,
                 text: true,
                 position: true,
-                // Не возвращаем isCorrect в публичном API
+                // Do not return isCorrect in public API
               },
               orderBy: { position: 'asc' },
             },
@@ -1599,7 +1600,7 @@ export class TutorialsService {
       },
     });
     if (!quiz) return null;
-    // Находим текущий sectionItem для квиза, чтобы вычислить соседей
+    // Find the current sectionItem for the quiz to calculate neighbors
     const currentItem = await this.prisma.sectionItem.findFirst({
       where: {
         quizId: quiz.id,
@@ -1650,7 +1651,7 @@ export class TutorialsService {
       previousItem = mapNeighbor(prev);
       nextItem = mapNeighbor(next);
 
-      // Фолбэк к соседним секциям
+      // Fallback to neighboring sections
       if (!previousItem || !nextItem) {
         const sectionMeta = await this.prisma.section.findFirst({
           where: { id: currentItem.sectionId },
@@ -2442,7 +2443,7 @@ export class TutorialsService {
         },
       },
     });
-    // Пересчитываем aggregated readingTime для соответствующего туториала
+    // Recompute aggregated readingTime for the corresponding tutorial
     await this.recomputeTutorialReadingTime(effectiveTutorialId);
     return created;
   }
@@ -3042,7 +3043,7 @@ export class TutorialsService {
         where: { id: targetSectionId },
         data: { name: dto.name },
       });
-      // Обновляем updatedAt у драфт-туториала
+      // Update updatedAt of the draft tutorial
       await this.prisma.tutorial.update({
         where: { id: draft.id },
         data: { hasChanges: true, updatedAt: new Date() },
@@ -3055,7 +3056,7 @@ export class TutorialsService {
       where: { id: sectionId },
       data: { name: dto.name },
     });
-    // Обновляем updatedAt у текущего (чернового) туториала
+    // Update updatedAt of the current (draft) tutorial
     await this.prisma.tutorial.update({
       where: { id: section.tutorialId },
       data: { hasChanges: true, updatedAt: new Date() },
@@ -3386,8 +3387,8 @@ export class TutorialsService {
                 lesson: {
                   create: {
                     name: item.lesson.name,
-                    // ВАЖНО: сохраняем slug исходного опубликованного урока,
-                    // чтобы ссылки по slug продолжали работать и в драфте, и после публикации
+                    // IMPORTANT: preserve the slug of the original published lesson,
+                    // so that slug links continue to work in both draft and after publication
                     slug: item.lesson.slug ?? null,
                     textContent: item.lesson.textContent,
                     blocksContent: item.lesson.blocksContent,
@@ -3412,7 +3413,7 @@ export class TutorialsService {
                 quiz: {
                   create: {
                     name: item.quiz.name,
-                    // Аналогично сохраняем исходный slug викторины
+                    // Similarly preserve the original quiz slug
                     slug: item.quiz.slug ?? null,
                     description: item.quiz.description,
                     passingScore: item.quiz.passingScore,
@@ -3458,7 +3459,7 @@ export class TutorialsService {
         }
       }
 
-      // После полного копирования пересчитываем aggregated readingTime для драфта
+      // After full copying, recompute aggregated readingTime for the draft
       await this.recomputeTutorialReadingTime(createdDraft.id);
       return createdDraft;
     });

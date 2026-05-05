@@ -29,7 +29,7 @@ export class ComplaintNotificationService {
         return;
       }
 
-      // Находим всех администраторов
+      // Find all administrators
       const admins = await this.prisma.user.findMany({
         where: {
           OR: [
@@ -56,7 +56,7 @@ export class ComplaintNotificationService {
           }
         : undefined;
 
-      // Пытаемся получить имя контента, на который подана жалоба
+      // Try to get the name of the content being complained about
       let targetName = `${complaint.targetType}: ${complaint.targetId}`;
       try {
         if (complaint.targetType === 'publication') {

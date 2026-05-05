@@ -45,6 +45,7 @@ export class ThreadsController {
         request.user.id,
         createThreadDto.parentId,
         createThreadDto.content,
+        createThreadDto.mediaItemIds,
       );
 
       const primitives = reply.toPrimitives();

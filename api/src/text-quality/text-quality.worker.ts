@@ -5,7 +5,7 @@ import { TextQualityService } from './text-quality.service';
 import { PrismaService } from '@/platform/application/services/prisma.service';
 
 @Processor('text-quality', {
-  concurrency: 2, // Поддерживаем многопоточность для ускорения анализа
+  concurrency: 2, // Supporting multi-threading to speed up analysis
 })
 export class TextQualityWorker extends WorkerHost {
   private readonly logger = new Logger(TextQualityWorker.name);

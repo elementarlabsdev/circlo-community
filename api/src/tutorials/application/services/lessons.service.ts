@@ -55,8 +55,8 @@ export class LessonsService {
   }
 
   async getLesson(lessonId: string, instructorId: string) {
-    // Определяем целевой урок для редактирования: если туториал опубликован,
-    // используем драфтовую копию (создаём/находим при необходимости), иначе — исходный.
+    // Determine the target lesson for editing: if the tutorial is published,
+    // use a draft copy (create/find if necessary), otherwise use the original.
     const { targetLessonId } = await this.ensureDraftLessonTarget(
       lessonId,
       instructorId,
@@ -91,15 +91,15 @@ export class LessonsService {
       },
     });
 
-    // Обновляем updatedAt у соответствующего драфт- или текущего туториала
+    // Update updatedAt of the corresponding draft or current tutorial
     const tutorialId = target.draftTutorialId;
     if (tutorialId) {
-      // Обновляем updatedAt
+      // Update updatedAt
       await this.prisma.tutorial.update({
         where: { id: tutorialId },
         data: { hasChanges: true, updatedAt: new Date() },
       });
-      // Пересчитываем aggregated readingTime на уровне Tutorial
+      // Recompute aggregated readingTime at the Tutorial level
       await this.recomputeTutorialReadingTime(tutorialId);
     }
 
@@ -140,7 +140,7 @@ export class LessonsService {
       },
     });
 
-    // Обновляем updatedAt у соответствующего драфт- или текущего туториала
+    // Update updatedAt of the corresponding draft or current tutorial
     const tutorialId = target.draftTutorialId;
     if (tutorialId) {
       await this.prisma.tutorial.update({
@@ -414,11 +414,11 @@ export class LessonsService {
           lessonsCount: source.lessonsCount,
           quizesCount: quizzesCount,
           learningDuration: source.learningDuration,
-          // рабочая версия изменений над публикацией
+          // working version of changes for the publication
           status: { connect: { type: 'unpublishedChanges' } },
           root: { connect: { id: rootId } },
           revision: nextRevision,
-          // Черновик не должен занимать уникальный slug, пока не опубликован
+          // Draft should not occupy a unique slug until published
           slug: null,
           scheduledAt: null,
           // Preserve license type from source (required relation in schema)
@@ -478,7 +478,7 @@ export class LessonsService {
                 quiz: {
                   create: {
                     name: item.quiz.name,
-                    // Черновики и клоны не должны занимать уникальный slug
+                    // Drafts and clones should not occupy a unique slug
                     slug: null,
                     description: item.quiz.description,
                     passingScore: item.quiz.passingScore,

@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export interface NotificationCreateProps {
-  userId: string; // Кому предназначено уведомление
-  type: string; // Тип, например 'NEW_COMMENT' или 'NEW_FOLLOWER'
-  data?: any; // JSON с деталями: id комментария, имя подписчика и т.д.
+  userId: string; // Who the notification is for
+  type: string; // Type, e.g., 'NEW_COMMENT' or 'NEW_FOLLOWER'
+  data?: any; // JSON with details: comment id, follower name, etc.
   relatedEntityId?: string;
 }
 
@@ -32,11 +32,11 @@ export class Notification {
     return new Notification({ id: uuidv4(), createdAt: new Date(), ...props });
   }
 
-  // Бизнес-метод, который защищает инвариант
+  // Business method that protects the invariant
   public markAsRead(): void {
     if (!this._isRead) {
       this._isRead = true;
-      // Здесь можно опубликовать событие домена: NotificationMarkedAsReadEvent
+      // A domain event can be published here: NotificationMarkedAsReadEvent
     }
   }
 

@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface MenuItemCreateProps {
   name: string;
-  url: string; // В реальном проекте это мог бы быть VO `MenuItemUrl`
+  url: string; // In a real project, this could be the `MenuItemUrl` VO
   position: number;
   iconId?: string;
   authorisedOnly: boolean;
@@ -32,7 +32,7 @@ export class MenuItem {
   }
 
   public static create(props: MenuItemCreateProps): MenuItem {
-    // Здесь могут быть бизнес-правила, например:
+    // Business rules can be placed here, for example:
     if (props.position < 0) {
       throw new Error('Position cannot be negative.');
     }
@@ -43,7 +43,7 @@ export class MenuItem {
     return new MenuItem({ id: uuidv4(), ...props });
   }
 
-  // Метод для восстановления из БД
+  // Method for reconstituting from the database
   public static reconstitute(
     props: { id: string } & MenuItemCreateProps,
   ): MenuItem {

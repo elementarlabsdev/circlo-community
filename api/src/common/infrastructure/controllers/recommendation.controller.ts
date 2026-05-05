@@ -37,8 +37,8 @@ export class RecommendationController {
 
   @Post('sync')
   async syncRecommendations() {
-    // Синк публикаций
-    // Используем $queryRaw, так как Prisma не поддерживает фильтрацию по Unsupported("vector")
+    // Publication sync
+    // We use $queryRaw because Prisma doesn't support filtering by Unsupported("vector")
     const publications = await this.prisma.$queryRaw<any[]>`
       SELECT p.id, p.title, p."textContent"
       FROM "Publication" p
@@ -54,7 +54,7 @@ export class RecommendationController {
       );
     }
 
-    // Синк туториалов
+    // Tutorial sync
     const tutorials = await this.prisma.$queryRaw<any[]>`
       SELECT t.id, t.title, t.description
       FROM "Tutorial" t
@@ -70,7 +70,7 @@ export class RecommendationController {
       );
     }
 
-    // Синк топиков
+    // Topic sync
     const topics = await this.prisma.$queryRaw<any[]>`
       SELECT id, name, description FROM "Topic" WHERE embedding IS NULL
     `;
@@ -83,7 +83,7 @@ export class RecommendationController {
       );
     }
 
-    // Синк каналов
+    // Channel sync
     const channels = await this.prisma.$queryRaw<any[]>`
       SELECT id, name, description FROM "Channel" WHERE embedding IS NULL
     `;
@@ -96,7 +96,7 @@ export class RecommendationController {
       );
     }
 
-    // Синк тредов
+    // Thread sync
     const threads = await this.prisma.$queryRaw<any[]>`
       SELECT id, content FROM "Thread" WHERE embedding IS NULL
     `;

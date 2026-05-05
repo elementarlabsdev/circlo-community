@@ -1,7 +1,5 @@
 import {
-  ChangeDetectionStrategy,
   Component,
-  ElementRef,
   inject,
   input,
   OnDestroy,
@@ -10,7 +8,7 @@ import {
   viewChild
 } from '@angular/core';
 import { Button } from '@ngstarter-ui/components/button';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule} from '@angular/forms';
 import { Icon } from '@ngstarter-ui/components/icon';
 import { ThreadService } from '@services/thread.service';
 import { UploadFileSelectedEvent, UploadTriggerDirective } from '@ngstarter-ui/components/upload';
@@ -44,7 +42,6 @@ export interface Attachment {
   ],
   templateUrl: './thread-add.html',
   styleUrl: './thread-add.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.hidden]': '!isLogged()'
   }
@@ -58,7 +55,6 @@ export class ThreadAdd implements OnDestroy {
 
   saving = signal(false);
   parentId = input<string>();
-  allowEmptyContent = signal(false);
 
   private _formDirective = viewChild(FormGroupDirective);
 
@@ -76,12 +72,13 @@ export class ThreadAdd implements OnDestroy {
     });
   }
 
-  post(): void {
+  post(editor: CommentEditor): void {
     this.saving.set(true);
     const { content } = this.threadForm.getRawValue();
     const attachments = this.attachments();
 
     if (!content?.trim() && attachments.length === 0) {
+      this.saving.set(false);
       return;
     }
 
@@ -100,12 +97,17 @@ export class ThreadAdd implements OnDestroy {
     ).subscribe({
       next: () => {
         this._formDirective()?.resetForm();
-        this.attachments().forEach(attachment => {
+        this.attachments.set([]);
+
+        attachments.forEach(attachment => {
           URL.revokeObjectURL(attachment.previewUrl);
         });
-        this.attachments.set([]);
-        this.saving.set(false);
+
         this.itemAdded.emit();
+        editor.clear();
+        editor.hideToolbar();
+        editor.hideFullView();
+        this.saving.set(false);
       },
       error: (err) => {
         console.error('Failed to post thread', err);
@@ -118,9 +120,9 @@ export class ThreadAdd implements OnDestroy {
     this.canceled.emit();
   }
 
-  onSent($event, threadForm) {
-    threadForm.patchValue({content: $event});
-    this.post();
+  onSent($event: any, threadForm: FormGroup, editor: CommentEditor) {
+    threadForm.patchValue({ content: $event });
+    this.post(editor);
   }
 
   onCanceled() {

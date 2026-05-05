@@ -1,6 +1,6 @@
 /**
- * Интерфейс для всех возможных настроек уведомлений.
- * Все поля опциональны для удобства при создании и обновлении.
+ * Interface for all possible notification settings.
+ * All fields are optional for convenience when creating and updating.
  */
 export interface UserNotificationSettingsProps {
   enableWeeklyNewsletterEmails?: boolean;
@@ -16,7 +16,7 @@ export interface UserNotificationSettingsProps {
 }
 
 export class UserNotificationSettings {
-  // --- Свойства с четкими именами ---
+  // --- Properties with clear names ---
   public readonly weeklyNewsletter: boolean;
   public readonly topicDigest: boolean;
   public readonly emailOnReply: boolean;
@@ -43,8 +43,8 @@ export class UserNotificationSettings {
   }
 
   /**
-   * Статический фабричный метод, который устанавливает разумные
-   * значения по умолчанию для нового пользователя.
+   * Static factory method that sets sensible
+   * default values for a new user.
    */
   public static create(
     initialProps?: UserNotificationSettingsProps,
@@ -67,8 +67,8 @@ export class UserNotificationSettings {
   }
 
   /**
-   * Обновляет настройки, возвращая новый экземпляр.
-   * @param updatedProps Объект с настройками, которые нужно изменить.
+   * Updates the settings, returning a new instance.
+   * @param updatedProps Object with settings to be changed.
    */
   public update(updatedProps: UserNotificationSettingsProps): UserNotificationSettings {
     const currentProps = this.toProps();
@@ -77,21 +77,21 @@ export class UserNotificationSettings {
   }
 
   /**
-   * Возвращает новый экземпляр с выключенными уведомлениями.
+   * Returns a new instance with all notifications muted.
    */
   public muteAllNotifications(): UserNotificationSettings {
     return this.update({ muteAllNotifications: true });
   }
 
   /**
-   * Возвращает новый экземпляр с включенными уведомлениями.
+   * Returns a new instance with notifications unmuted.
    */
   public unmuteAllNotifications(): UserNotificationSettings {
     return this.update({ muteAllNotifications: false });
   }
 
   /**
-   * Вспомогательный метод для преобразования текущего состояния в Props-объект.
+   * Helper method to convert the current state to a Props object.
    */
   private toProps(): UserNotificationSettingsProps {
     return {
@@ -109,7 +109,7 @@ export class UserNotificationSettings {
   }
 
   /**
-   * Сравнивает два объекта настроек.
+   * Compares two settings objects.
    */
   public equals(other: UserNotificationSettings): boolean {
     if (other === null || other === undefined) {

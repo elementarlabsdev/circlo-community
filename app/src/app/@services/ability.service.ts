@@ -11,7 +11,7 @@ export enum Action {
   Delete = 'delete',
 }
 
-// Упрощенный тип для фронтенда, при необходимости расширить
+// Simplified type for the frontend, extend if necessary
 export type Subject = any;
 export type AppAbility = PureAbility<[Action, Subject]>;
 

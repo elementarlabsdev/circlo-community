@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 
 /**
- * Интерфейс для свойств, описывающих статус аккаунта.
- * Использование `Partial` в `create` делает его более гибким.
+ * Interface for properties describing the account status.
+ * Using `Partial` in `create` makes it more flexible.
  */
 export interface UserAccountStatusProps {
   isBlocked: boolean;
@@ -20,7 +20,7 @@ export class UserAccountStatus {
   public readonly hasPaidAccount: boolean;
 
   /**
-   * Приватный конструктор для контроля над созданием экземпляров.
+   * Private constructor for instance creation control.
    */
   private constructor(props: UserAccountStatusProps) {
     this.isBlocked = props.isBlocked;
@@ -32,15 +32,15 @@ export class UserAccountStatus {
   }
 
   /**
-   * Статический фабричный метод для создания статуса.
-   * Устанавливает безопасные значения по умолчанию для нового аккаунта.
+   * Static factory method for creating the status.
+   * Sets safe default values for a new account.
    */
   public static create(
     initialProps?: Partial<UserAccountStatusProps>,
   ): UserAccountStatus {
     const defaults: UserAccountStatusProps = {
       isBlocked: false,
-      verified: false, // Часто верификация происходит позже
+      verified: false, // Verification often happens later
       isSuperAdmin: false,
       isDeactivated: false,
       hasPaidAccount: false,
@@ -48,7 +48,7 @@ export class UserAccountStatus {
 
     const props = { ...defaults, ...initialProps };
 
-    // Бизнес-правило: Суперадмин не может быть создан в заблокированном состоянии.
+    // Business rule: A super admin cannot be created in a blocked state.
     if (props.isSuperAdmin && props.isBlocked) {
       throw new BadRequestException(
         'A super admin cannot be blocked at creation.',
@@ -59,16 +59,16 @@ export class UserAccountStatus {
   }
 
   /**
-   * Возвращает новый экземпляр статуса с флагом блокировки.
-   * Инкапсулирует бизнес-правило о блокировке суперадмина.
-   * @returns {UserAccountStatus} Новый объект статуса.
-   * @throws {Error} Если есть попытка заблокировать суперадмина.
+   * Returns a new status instance with the blocked flag.
+   * Encapsulates the business rule about blocking a super admin.
+   * @returns {UserAccountStatus} New status object.
+   * @throws {Error} If there is an attempt to block a super admin.
    */
   public block(): UserAccountStatus {
     if (this.isSuperAdmin) {
       throw new Error('You cannot block a super admin.');
     }
-    // Возвращаем новый экземпляр, а не мутируем текущий
+    // Return a new instance instead of mutating the current one
     return new UserAccountStatus({ ...this, isBlocked: true });
   }
 
@@ -81,7 +81,7 @@ export class UserAccountStatus {
   }
 
   /**
-   * Сравнивает текущий объект статуса с другим.
+   * Compares the current status object with another.
    */
   public equals(other: UserAccountStatus): boolean {
     if (other === null || other === undefined) {

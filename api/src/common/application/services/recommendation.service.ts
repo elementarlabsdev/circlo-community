@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@/platform/application/services/prisma.service';
 import { EmbeddingService } from './embedding.service';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class RecommendationService {
@@ -9,11 +11,12 @@ export class RecommendationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly embeddingService: EmbeddingService,
+    @InjectQueue('recommendation-queue') private recommendationQueue: Queue,
   ) {}
 
   /**
-   * Обновляет вектор интересов пользователя на основе просмотренного контента.
-   * Использует экспоненциальное затухание: новое состояние = старое * 0.9 + новое * 0.1
+   * Updates the user's interest vector based on the content viewed.
+   * Uses exponential decay: new state = old * 0.9 + new * 0.1
    */
   async updateUserInterests(
     userId: string,
@@ -33,7 +36,7 @@ export class RecommendationService {
         );
         return;
       }
-      // 1. Получаем вектор контента
+      // 1. Get content vector
       let contentEmbedding: number[] | null = null;
       this.logger.debug(
         `Updating interests for user ${userId} based on ${targetType} ${targetId}`,
@@ -73,13 +76,13 @@ export class RecommendationService {
         const item = items[0];
 
         if (item?.embedding) {
-          // pgvector возвращает "[0.1,0.2,...]"
+          // pgvector returns "[0.1,0.2,...]"
           contentEmbedding = item.embedding
             .replace(/[\[\]]/g, '')
             .split(',')
             .map(Number);
         } else if (item) {
-          // Если эмбеддинга нет, генерируем его на лету
+          // If embedding is missing, generate it on the fly
           this.logger.debug(
             `Embedding not found for ${targetType} ${targetId}. Generating on-the-fly...`,
           );
@@ -117,32 +120,35 @@ export class RecommendationService {
           }
 
           if (text.trim()) {
-            await this.generateAndSaveEmbedding(targetId, targetType as any, text);
-            // Повторно запрашиваем обновленный эмбеддинг
-            const updatedItems = (await this.prisma.$queryRawUnsafe(
-              `SELECT embedding::text FROM "${tableName}" WHERE id = $1`,
+            await this.recommendationQueue.add('generate-embedding', {
               targetId,
-            )) as any[];
-            if (updatedItems[0]?.embedding) {
-              contentEmbedding = updatedItems[0].embedding
-                .replace(/[\[\]]/g, '')
-                .split(',')
-                .map(Number);
-            }
+              targetType,
+              text,
+              userId, // Pass userId so that interests can be updated after generation
+            });
+            this.logger.debug(
+              `Queued embedding generation for ${targetType} ${targetId} (user: ${userId})`,
+            );
           }
         }
       }
 
       if (!contentEmbedding) {
-        this.logger.warn(
-          `No embedding found for ${targetType} ${targetId}. Make sure generateAndSaveEmbedding was called for this content.`,
-        );
+        if (targetType !== 'user') {
+          this.logger.debug(
+            `Embedding for ${targetType} ${targetId} is being generated. Interest update will be retried automatically.`,
+          );
+        } else {
+          this.logger.warn(
+            `No embedding found for ${targetType} ${targetId}. Make sure generateAndSaveEmbedding was called for this content.`,
+          );
+        }
         return;
       }
 
-      // 2. Обновляем вектор пользователя
-      // Вместо выполнения арифметики на стороне БД, что вызывает ошибки типизации в pgvector/Prisma,
-      // выполняем ее в памяти. Это надежнее.
+      // 2. Update user vector
+      // Instead of performing arithmetic on the database side, which causes typing errors in pgvector/Prisma,
+      // we perform it in memory. This is more reliable.
       const users = (await this.prisma.$queryRawUnsafe(
         `SELECT "interestVector"::text FROM "User" WHERE id = $1`,
         userId,
@@ -183,7 +189,7 @@ export class RecommendationService {
   }
 
   /**
-   * Получает персонализированную ленту для пользователя на основе его вектора интересов.
+   * Gets a personalized feed for the user based on their interest vector.
    */
   async getRecommendedFeed(
     userId: string,
@@ -191,9 +197,9 @@ export class RecommendationService {
     offset: number = 0,
   ): Promise<any[]> {
     try {
-      // Используем оператор <=> (косинусное расстояние) для ранжирования
-      // Мы джойним FeedItem с Publication/Tutorial и сортируем по близости к interestVector пользователя
-      // Финальная сортировка по publishedAt (COALESCE Publication/Tutorial publishedAt, fallback на FeedItem createdAt)
+      // Use the <=> operator (cosine distance) for ranking
+      // We join FeedItem with Publication/Tutorial and sort by proximity to the user's interestVector
+      // Final sorting by publishedAt (COALESCE Publication/Tutorial publishedAt, fallback to FeedItem createdAt)
       return (await this.prisma.$queryRawUnsafe(
         `
         SELECT
@@ -224,7 +230,7 @@ export class RecommendationService {
   }
 
   /**
-   * Получает рекомендованные топики для пользователя.
+   * Gets recommended topics for the user.
    */
   async getRecommendedTopics(
     userId: string,
@@ -360,7 +366,7 @@ export class RecommendationService {
   }
 
   /**
-   * Получает рекомендованные треды для пользователя.
+   * Gets recommended threads for the user.
    */
   async getRecommendedThreads(
     userId: string,
@@ -394,7 +400,7 @@ export class RecommendationService {
   }
 
   /**
-   * Получает рекомендованных пользователей (экспертов) на основе интересов.
+   * Gets recommended users (experts) based on interests.
    */
   async getRecommendedUsers(
     userId: string,
@@ -402,8 +408,8 @@ export class RecommendationService {
     offset: number = 0,
   ) {
     try {
-      // Ищем пользователей, чей вектор интересов похож на вектор текущего пользователя,
-      // исключая самого пользователя.
+      // Look for users whose interest vector is similar to the current user's vector,
+      // excluding the user themselves.
       return await this.prisma.$queryRawUnsafe(
         `
         SELECT
@@ -431,7 +437,7 @@ export class RecommendationService {
   }
 
   /**
-   * Генерирует и сохраняет эмбеддинг для контента.
+   * Generates and saves the embedding for the content.
    */
   async generateAndSaveEmbedding(
     targetId: string,

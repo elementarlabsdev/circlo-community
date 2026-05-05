@@ -15,7 +15,7 @@
     <app-thread
       [thread]="rootThread()!"
       [reactions]="rootThread()!.reactions || []"
-      [depth]="depth()"
+      [depth]="depth() + 1"
       (deleted)="onThreadDeleted($event)"
     />
   </div>

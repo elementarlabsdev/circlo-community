@@ -56,13 +56,11 @@ async function main() {
   const lang = process.env.LOCALE || 'en';
 
   const alreadyInstalled =
-    (await prisma.setting.count({
+    (await prisma.setting.findFirst({
       where: {
-        name: {
-          notIn: ['maxSizeForTranscoding', 'maxDurationForTranscoding'],
-        },
+        name: 'alreadyInstalled',
       },
-    })) > 0;
+    })) !== null;
 
   if (alreadyInstalled) {
     await app.close();
@@ -655,6 +653,13 @@ async function main() {
   }
 
   const settings = [
+    {
+      name: 'alreadyInstalled',
+      category: 'system',
+      data: {
+        value: true,
+      },
+    },
     {
       name: 'siteTitle',
       category: 'general',

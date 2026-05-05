@@ -98,7 +98,7 @@ export class ContentBlocksToTextConverter {
 
   private stripHtml(html: string): string {
     if (!html) return '';
-    // Простая замена тегов на пустоту
+    // Simple replacement of tags with empty string
     return html.replace(/<[^>]*>?/gm, '');
   }
 }
